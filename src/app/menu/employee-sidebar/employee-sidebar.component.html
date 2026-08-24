@@ -1,1 +1,130 @@
-<p>employee-sidebar works!</p>
+<aside
+  class="h-full min-h-screen w-64 border-r border-blue-100 bg-white">
+
+  <!-- Logo / Portal Name -->
+  <div
+    class="flex h-16 items-center border-b border-blue-100 px-5">
+
+    <div
+      class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600">
+
+      <i class="pi pi-building text-lg text-white"></i>
+
+    </div>
+
+    <div class="ml-3">
+      <h2 class="text-sm font-bold text-slate-800">
+        EMP Portal
+      </h2>
+
+      <p class="text-xs text-slate-400">
+        Employee
+      </p>
+    </div>
+
+  </div>
+
+
+  <!-- Navigation -->
+  <nav class="space-y-1 p-3">
+
+
+    <!-- Dashboard -->
+
+    <a
+      routerLink="/employee/dashboard"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-home text-base"></i>
+
+      <span>
+        Dashboard
+      </span>
+
+    </a>
+
+
+    <!-- Profile -->
+
+    <a
+      routerLink="/employee/profile"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-user text-base"></i>
+
+      <span>
+        Profile
+      </span>
+
+    </a>
+
+
+    <!-- Attendance -->
+
+    <a
+      routerLink="/employee/attendance"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-calendar text-base"></i>
+
+      <span>
+        Attendance
+      </span>
+
+    </a>
+
+
+    <!-- Leave Requests -->
+
+    <a
+      routerLink="/employee/leave-requests"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-calendar-plus text-base"></i>
+
+      <span>
+        Leave Requests
+      </span>
+
+    </a>
+
+
+    <!-- Payslips -->
+
+    <a
+      routerLink="/employee/payslips"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-file text-base"></i>
+
+      <span>
+        Payslips
+      </span>
+
+    </a>
+
+
+    <!-- Reports -->
+
+    <a
+      routerLink="/employee/reports"
+      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600">
+
+      <i class="pi pi-chart-bar text-base"></i>
+
+      <span>
+        Reports
+      </span>
+
+    </a>
+
+  </nav>
+
+</aside>

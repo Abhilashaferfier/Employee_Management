@@ -1,1 +1,151 @@
-<p>payroll works!</p>
+<div class="min-h-full bg-slate-50">
+
+  <div class="mb-6">
+
+    <h2 class="text-2xl font-bold text-slate-800">
+      Payroll Management
+    </h2>
+
+    <p class="mt-1 text-sm text-slate-500">
+      Manage employee payroll.
+    </p>
+
+  </div>
+
+
+  <!-- Summary -->
+
+  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Total Employees
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-slate-800">
+        {{ summary.employees }}
+      </p>
+
+    </div>
+
+
+    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Processed
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-green-600">
+        {{ summary.processed }}
+      </p>
+
+    </div>
+
+
+    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Pending
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-orange-500">
+        {{ summary.pending }}
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- Table -->
+
+  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left text-sm">
+
+        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+          <tr>
+
+            <th class="px-5 py-3">Employee</th>
+            <th class="px-5 py-3">Month</th>
+            <th class="px-5 py-3">Basic Salary</th>
+            <th class="px-5 py-3">Status</th>
+            <th class="px-5 py-3 text-center">Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody class="divide-y divide-slate-100">
+
+          <tr
+            *ngFor="let payroll of payrolls"
+            class="hover:bg-blue-50/50">
+
+            <td class="px-5 py-4 font-medium text-slate-700">
+              {{ payroll.employee }}
+            </td>
+
+            <td class="px-5 py-4 text-slate-500">
+              {{ payroll.month }}
+            </td>
+
+            <td class="px-5 py-4 text-slate-500">
+              {{ payroll.basicSalary }}
+            </td>
+
+            <td class="px-5 py-4">
+
+              <span
+                *ngIf="payroll.status === 'Processed'"
+                class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+
+                Processed
+
+              </span>
+
+              <span
+                *ngIf="payroll.status === 'Pending'"
+                class="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600">
+
+                Pending
+
+              </span>
+
+            </td>
+
+            <td class="px-5 py-4 text-center">
+
+              <button
+                *ngIf="payroll.status === 'Pending'"
+                type="button"
+                (click)="processPayroll(payroll)"
+                class="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700">
+
+                Process
+
+              </button>
+
+              <i
+                *ngIf="payroll.status === 'Processed'"
+                class="pi pi-download cursor-pointer text-blue-600">
+
+              </i>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

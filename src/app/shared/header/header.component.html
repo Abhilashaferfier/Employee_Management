@@ -1,1 +1,86 @@
-<p>header works!</p>
+<header class="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm md:px-6">
+
+  <!-- LEFT -->
+  <div class="flex items-center gap-4">
+
+    <!-- Hamburger -->
+    <button
+      type="button"
+      pButton
+      class="p-button-text p-button-rounded !text-slate-600 hover:!bg-slate-100"
+      (click)="toggleSidebar()"
+      aria-label="Toggle sidebar">
+
+      <i class="pi pi-bars text-lg"></i>
+
+    </button>
+
+
+    <!-- Heading -->
+    <h1 class="text-lg font-semibold text-slate-800 md:text-xl">
+      {{ role }} Dashboard
+    </h1>
+
+  </div>
+
+
+  <!-- RIGHT -->
+  <div class="relative">
+
+    <!-- Profile Button -->
+    <button
+      type="button"
+      pButton
+      class="p-button-text !text-slate-700"
+      (click)="toggleProfileMenu()">
+
+      <span class="mr-2">
+        {{ role }}
+      </span>
+
+      <i
+        class="pi"
+        [ngClass]="profileMenuVisible
+          ? 'pi-chevron-up'
+          : 'pi-chevron-down'">
+      </i>
+
+    </button>
+
+
+    <!-- Dropdown -->
+    <div
+      *ngIf="profileMenuVisible"
+      class="absolute right-0 top-12 z-50 w-48 rounded-lg border border-slate-200 bg-white p-2 shadow-lg">
+
+      <!-- Role -->
+      <div class="border-b border-slate-100 px-3 py-2">
+
+        <p class="text-xs text-slate-500">
+          Role
+        </p>
+
+        <p class="font-semibold text-slate-800">
+          {{ role }}
+        </p>
+
+      </div>
+
+
+      <!-- Logout -->
+      <button
+        type="button"
+        class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+        (click)="logout()">
+
+        <i class="pi pi-sign-out"></i>
+
+        <span>Logout</span>
+
+      </button>
+
+    </div>
+
+  </div>
+
+</header>

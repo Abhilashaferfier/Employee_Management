@@ -3,8 +3,14 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-employee-layout',
   templateUrl: './employee-layout.component.html',
-  styleUrl: './employee-layout.component.css'
+  styleUrls: ['./employee-layout.component.css']
 })
 export class EmployeeLayoutComponent {
+
+  sidebarOpen = true;
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
 
 }

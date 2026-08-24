@@ -1,1 +1,107 @@
-<p>payslips works!</p>
+<div class="min-h-full bg-slate-50">
+
+  <!-- Header -->
+
+  <div class="mb-6">
+
+    <h2 class="text-2xl font-bold text-slate-800">
+      My Payslips
+    </h2>
+
+    <p class="mt-1 text-sm text-slate-500">
+      View and download your monthly payslips.
+    </p>
+
+  </div>
+
+
+  <!-- Payslip Table -->
+
+  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left text-sm">
+
+        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+          <tr>
+
+            <th class="px-5 py-3">
+              Month
+            </th>
+
+            <th class="px-5 py-3">
+              Gross Salary
+            </th>
+
+            <th class="px-5 py-3">
+              Net Salary
+            </th>
+
+            <th class="px-5 py-3">
+              Status
+            </th>
+
+            <th class="px-5 py-3 text-center">
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody class="divide-y divide-slate-100">
+
+          <tr
+            *ngFor="let payslip of payslips"
+            class="hover:bg-blue-50/50">
+
+            <td class="px-5 py-4 font-medium text-slate-700">
+              {{ payslip.month }}
+            </td>
+
+            <td class="px-5 py-4 text-slate-500">
+              {{ payslip.grossSalary }}
+            </td>
+
+            <td class="px-5 py-4 font-medium text-slate-700">
+              {{ payslip.netSalary }}
+            </td>
+
+            <td class="px-5 py-4">
+
+              <span
+                class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+
+                {{ payslip.status }}
+
+              </span>
+
+            </td>
+
+            <td class="px-5 py-4 text-center">
+
+              <button
+                type="button"
+                (click)="downloadPayslip(payslip.month)"
+                class="rounded-lg p-2 text-blue-600 transition hover:bg-blue-50">
+
+                <i class="pi pi-download"></i>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

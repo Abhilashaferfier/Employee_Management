@@ -1,1 +1,135 @@
-<p>employee-management works!</p>
+<div class="min-h-full bg-slate-50">
+
+  <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+
+    <div>
+
+      <h2 class="text-2xl font-bold text-slate-800">
+        Employee Management
+      </h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        Manage employees in your organization.
+      </p>
+
+    </div>
+
+    <button
+      type="button"
+      (click)="addEmployee()"
+      class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+
+      <i class="pi pi-plus mr-2"></i>
+
+      Add Employee
+
+    </button>
+
+  </div>
+
+
+  <div class="rounded-xl border border-blue-100 bg-white shadow-sm">
+
+    <!-- Search -->
+
+    <div class="border-b border-slate-100 p-4">
+
+      <div class="relative max-w-md">
+
+        <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search employee..."
+          class="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+      </div>
+
+    </div>
+
+
+    <!-- Table -->
+
+    <div class="overflow-x-auto">
+
+      <table class="w-full text-left text-sm">
+
+        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+          <tr>
+
+            <th class="px-5 py-3">Name</th>
+            <th class="px-5 py-3">Email</th>
+            <th class="px-5 py-3">Department</th>
+            <th class="px-5 py-3">Status</th>
+            <th class="px-5 py-3 text-center">Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody class="divide-y divide-slate-100">
+
+          <tr
+            *ngFor="let employee of employees"
+            class="hover:bg-blue-50/50">
+
+            <td class="px-5 py-4 font-medium text-slate-700">
+              {{ employee.name }}
+            </td>
+
+            <td class="px-5 py-4 text-slate-500">
+              {{ employee.email }}
+            </td>
+
+            <td class="px-5 py-4 text-slate-500">
+              {{ employee.department }}
+            </td>
+
+            <td class="px-5 py-4">
+
+              <span
+                [class]="employee.status === 'Active'
+                  ? 'text-xs font-medium text-green-600'
+                  : 'text-xs font-medium text-red-500'">
+
+                ● {{ employee.status }}
+
+              </span>
+
+            </td>
+
+            <td class="px-5 py-4 text-center">
+
+              <button
+                type="button"
+                (click)="editEmployee(employee)"
+                class="mr-2 rounded-lg p-2 text-blue-600 hover:bg-blue-50">
+
+                <i class="pi pi-pencil"></i>
+
+              </button>
+
+              <button
+                type="button"
+                (click)="deleteEmployee(employee)"
+                class="rounded-lg p-2 text-red-500 hover:bg-red-50">
+
+                <i class="pi pi-trash"></i>
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

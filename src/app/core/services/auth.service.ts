@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -28,10 +27,23 @@ export interface SignupResponse {
   user: User;
 }
 
+/*
+ * Backend ka actual login response
+ *
+ * {
+ *   email: "...",
+ *   role: "EMPLOYEE",
+ *   token: "...",
+ *   tokenType: "Bearer",
+ *   userId: "..."
+ * }
+ */
 export interface LoginResponse {
-  message: string;
+  email: string;
+  role: string;
   token: string;
-  user: User;
+  tokenType: string;
+  userId: string;
 }
 
 @Injectable({
@@ -40,21 +52,30 @@ export interface LoginResponse {
 export class AuthService {
 
   private readonly apiUrl =
-    'http://localhost:3000/api/auth';
+    'http://localhost:8081/api/v1/auth';
 
   constructor(
     private http: HttpClient
   ) {}
+
+  // ==============================
+  // REGISTER
+  // ==============================
 
   signup(
     data: SignupRequest
   ): Observable<SignupResponse> {
 
     return this.http.post<SignupResponse>(
-      `${this.apiUrl}/signup`,
+      `${this.apiUrl}/register`,
       data
     );
+
   }
+
+  // ==============================
+  // LOGIN
+  // ==============================
 
   login(
     data: LoginRequest
@@ -64,6 +85,7 @@ export class AuthService {
       `${this.apiUrl}/login`,
       data
     );
+
   }
 
 }

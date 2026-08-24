@@ -2,6 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
+    {
+    path: 'admin',
+    loadChildren: () =>
+      import('./pages/admin/admin.module')
+        .then(m => m.AdminModule)
+  },
+
+
    {
     path: '',
     redirectTo: 'login',
@@ -13,6 +21,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./pages/public/public.module')
         .then(m => m.PublicModule)
+  },
+
+
+   {
+    path: 'employee',
+    loadChildren: () =>
+      import('./pages/employee/employee.module')
+        .then(m => m.EmployeeModule)
   },
 
   {
