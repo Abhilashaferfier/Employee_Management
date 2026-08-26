@@ -9,12 +9,14 @@ import { SignupComponent } from './signup/signup.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { RoleSelectionComponent } from './role-selection/role-selection.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    SignupComponent
+    SignupComponent,
+    RoleSelectionComponent
   ],
   imports: [
     CommonModule,

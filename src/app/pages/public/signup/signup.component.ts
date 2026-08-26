@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -8,7 +7,11 @@ import {
 
 import { Router } from '@angular/router';
 
-import { AuthService } from '../../../core/services/auth.service';
+import {
+  AuthService,
+  SignupResponse
+} from '../../../core/services/auth.service';
+
 
 @Component({
   selector: 'app-signup',
@@ -16,9 +19,7 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-
   signupForm!: FormGroup;
-
   submitted = false;
   loading = false;
   signupError = '';
@@ -28,6 +29,11 @@ export class SignupComponent implements OnInit {
     private authService: AuthService,
     private router: Router
   ) {}
+
+
+  // =====================================================
+  // INITIALIZE FORM
+  // =====================================================
 
   ngOnInit(): void {
 
@@ -69,87 +75,167 @@ export class SignupComponent implements OnInit {
 
   }
 
+
+  // =====================================================
+  // FORM GETTERS
+  // =====================================================
+
   get firstName() {
     return this.signupForm.get('firstName');
   }
+
 
   get lastName() {
     return this.signupForm.get('lastName');
   }
 
+
   get email() {
     return this.signupForm.get('email');
   }
+
 
   get password() {
     return this.signupForm.get('password');
   }
 
+
+  // =====================================================
+  // SIGNUP
+  // =====================================================
+
   onSignup(): void {
 
     this.submitted = true;
+
     this.signupError = '';
 
-    // Validation
+
+    // ===================================================
+    // VALIDATION
+    // ===================================================
+
     if (this.signupForm.invalid) {
 
       this.signupForm.markAllAsTouched();
 
       return;
+
     }
+
 
     this.loading = true;
 
+
+    // ===================================================
+    // REQUEST BODY
+    // ===================================================
+
     const signupData = {
 
-      firstName: this.signupForm.value.firstName,
+      firstName:
+        this.signupForm.value.firstName,
 
-      lastName: this.signupForm.value.lastName,
+      lastName:
+        this.signupForm.value.lastName,
 
-      email: this.signupForm.value.email,
+      email:
+        this.signupForm.value.email,
 
-      password: this.signupForm.value.password
+      password:
+        this.signupForm.value.password
 
     };
 
+
+    console.log(
+      'SIGNUP REQUEST:',
+      signupData
+    );
+
+
+    // ===================================================
     // API CALL
-    this.authService.signup(signupData).subscribe({
+    // ===================================================
 
-      next: (response) => {
+    this.authService
+      .signup(signupData)
+      .subscribe({
 
-        console.log('Signup successful:', response);
+        // ===============================================
+        // SUCCESS
+        // ===============================================
 
-        this.loading = false;
+        next: (
+          response: SignupResponse
+        ) => {
 
-        alert(
-          response.message ||
-          'Signup successful. Please login.'
-        );
+          console.log(
+            'SIGNUP RESPONSE:',
+            response
+          );
 
-        // Signup ke baad login
-        this.router.navigate(['/login']);
 
-      },
+          this.loading = false;
 
-      error: (error) => {
 
-        console.error('Signup error:', error);
+          // =============================================
+          // SUCCESS MESSAGE
+          // =============================================
 
-        this.loading = false;
+          alert(
+            response.message ||
+            'Signup successful. Please login.'
+          );
 
-        this.signupError =
-          error?.error?.message ||
-          'Unable to create account. Please try again.';
 
-      }
+          // =============================================
+          // REDIRECT TO LOGIN
+          // =============================================
 
-    });
+          this.router.navigate([
+            '/login'
+          ]);
+
+        },
+
+
+        // ===============================================
+        // ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'Signup error:',
+            error
+          );
+
+
+          this.loading = false;
+
+
+          this.signupError =
+            error?.error?.message ||
+            error?.error?.responseMessage ||
+            'Unable to create account. Please try again.';
+
+        }
+
+      });
 
   }
 
+
+  // =====================================================
+  // GO TO LOGIN
+  // =====================================================
+
   goToLogin(): void {
 
-    this.router.navigate(['/login']);
+    this.router.navigate([
+      '/login'
+    ]);
 
   }
 

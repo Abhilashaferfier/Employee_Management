@@ -2,49 +2,78 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+
+// ======================================================
+// SIGNUP REQUEST
+// ======================================================
+
 export interface SignupRequest {
+
   firstName: string;
+
   lastName: string;
+
   email: string;
+
   password: string;
+
 }
 
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
 
-export interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-}
+// ======================================================
+// SIGNUP RESPONSE
+// ======================================================
 
 export interface SignupResponse {
+
+  admin: boolean;
+
+  email: string;
+
+  employee: boolean;
+
   message: string;
-  user: User;
+
+  status: string;
+
+  userId: string;
+
 }
 
-/*
- * Backend ka actual login response
- *
- * {
- *   email: "...",
- *   role: "EMPLOYEE",
- *   token: "...",
- *   tokenType: "Bearer",
- *   userId: "..."
- * }
- */
-export interface LoginResponse {
+
+// ======================================================
+// LOGIN REQUEST
+// ======================================================
+
+export interface LoginRequest {
+
   email: string;
-  role: string;
-  token: string;
-  tokenType: string;
-  userId: string;
+
+  password: string;
+
 }
+
+
+// ======================================================
+// LOGIN RESPONSE
+// ======================================================
+
+export interface LoginResponse {
+
+  admin: boolean;
+
+  email: string;
+
+  employee: boolean;
+
+  token: string;
+
+  tokenType: string;
+
+  userId: string;
+
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -54,13 +83,15 @@ export class AuthService {
   private readonly apiUrl =
     'http://localhost:8081/api/v1/auth';
 
+
   constructor(
     private http: HttpClient
   ) {}
 
-  // ==============================
-  // REGISTER
-  // ==============================
+
+  // ======================================================
+  // SIGNUP
+  // ======================================================
 
   signup(
     data: SignupRequest
@@ -73,9 +104,10 @@ export class AuthService {
 
   }
 
-  // ==============================
+
+  // ======================================================
   // LOGIN
-  // ==============================
+  // ======================================================
 
   login(
     data: LoginRequest
@@ -88,4 +120,21 @@ export class AuthService {
 
   }
 
+
+
+
+  // ==============================
+// LOGOUT
+// ==============================
+
+logout(): Observable<any> {
+
+  return this.http.post<any>(
+    `${this.apiUrl}/logout`,
+    {}
+  );
+
 }
+
+}
+

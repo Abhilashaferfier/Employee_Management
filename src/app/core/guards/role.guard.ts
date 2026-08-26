@@ -1,23 +1,124 @@
-import { CanActivateFn, Router } from '@angular/router';
-import { inject } from '@angular/core';
+import {
+  CanActivateFn,
+  Router
+} from '@angular/router';
 
-export const roleGuard: CanActivateFn = (route) => {
+import {
+  inject
+} from '@angular/core';
 
-  const router = inject(Router);
 
-  const userRole = localStorage.getItem('role');
+export const roleGuard: CanActivateFn = (
+  route
+) => {
 
-  const requiredRole = route.data['role'];
+  const router =
+    inject(Router);
 
-  if (userRole === requiredRole) {
-    return true;
+
+  // ======================================================
+  // REQUIRED ROLE
+  // ======================================================
+
+  const requiredRole =
+    String(
+      route.data['role'] || ''
+    ).toUpperCase();
+
+
+  // ======================================================
+  // GET ACCESS FLAGS
+  // ======================================================
+
+  const isAdmin =
+    localStorage.getItem('admin') === 'true';
+
+  const isEmployee =
+    localStorage.getItem('employee') === 'true';
+
+
+  // ======================================================
+  // ADMIN ROUTE
+  // ======================================================
+
+  if (
+    requiredRole === 'ADMIN'
+  ) {
+
+    if (isAdmin) {
+
+      return true;
+
+    }
+
   }
 
-  if (userRole === 'ADMIN') {
-    router.navigate(['/admin/dashboard']);
-  } else {
-    router.navigate(['/employee/dashboard']);
+
+  // ======================================================
+  // EMPLOYEE ROUTE
+  // ======================================================
+
+  if (
+    requiredRole === 'EMPLOYEE'
+  ) {
+
+    if (isEmployee) {
+
+      return true;
+
+    }
+
   }
 
-  return false;
+
+  // ======================================================
+  // BOTH ROLES
+  // ======================================================
+
+  if (
+    isAdmin &&
+    isEmployee
+  ) {
+
+    return router.createUrlTree([
+      '/select-role'
+    ]);
+
+  }
+
+
+  // ======================================================
+  // ADMIN ONLY
+  // ======================================================
+
+  if (isAdmin) {
+
+    return router.createUrlTree([
+      '/admin/dashboard'
+    ]);
+
+  }
+
+
+  // ======================================================
+  // EMPLOYEE ONLY
+  // ======================================================
+
+  if (isEmployee) {
+
+    return router.createUrlTree([
+      '/employee/dashboard'
+    ]);
+
+  }
+
+
+  // ======================================================
+  // NO ACCESS
+  // ======================================================
+
+  return router.createUrlTree([
+    '/login'
+  ]);
+
 };

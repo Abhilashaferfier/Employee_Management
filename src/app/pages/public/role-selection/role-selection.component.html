@@ -1,0 +1,124 @@
+<div class="min-h-screen bg-slate-50 flex items-center justify-center px-4">
+
+  <div class="w-full max-w-4xl">
+
+    <!-- ========================================= -->
+    <!-- HEADING -->
+    <!-- ========================================= -->
+
+    <div class="text-center mb-10">
+
+      <h1 class="text-3xl font-bold text-slate-800">
+        Welcome Back
+      </h1>
+
+      <p class="text-slate-500 mt-2">
+        Select the portal you want to access
+      </p>
+
+      <p
+        *ngIf="email"
+        class="text-sm text-slate-400 mt-2"
+      >
+        {{ email }}
+      </p>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- CARDS -->
+    <!-- ========================================= -->
+
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-6"
+    >
+
+
+      <!-- ======================================= -->
+      <!-- ADMIN CARD -->
+      <!-- ======================================= -->
+
+      <div
+        *ngIf="isAdmin"
+
+        (click)="selectRole('ADMIN')"
+
+        class="bg-white border border-slate-200 rounded-2xl p-8 cursor-pointer shadow-sm hover:shadow-xl hover:border-blue-400 transition duration-200"
+      >
+
+        <div
+          class="w-14 h-14 rounded-xl bg-blue-100 flex items-center justify-center mb-5"
+        >
+
+          <span class="text-2xl">
+            🛡️
+          </span>
+
+        </div>
+
+
+        <h2 class="text-xl font-bold text-slate-800">
+          Admin
+        </h2>
+
+
+        <p class="text-sm text-slate-500 mt-2 leading-6">
+          Manage users, employees, attendance,
+          leave, payroll and reports.
+        </p>
+
+
+        <div class="mt-6 text-blue-600 font-semibold">
+          Enter Admin Portal →
+        </div>
+
+      </div>
+
+
+      <!-- ======================================= -->
+      <!-- EMPLOYEE CARD -->
+      <!-- ======================================= -->
+
+      <div
+        *ngIf="isEmployee"
+
+        (click)="selectRole('EMPLOYEE')"
+
+        class="bg-white border border-slate-200 rounded-2xl p-8 cursor-pointer shadow-sm hover:shadow-xl hover:border-blue-400 transition duration-200"
+      >
+
+        <div
+          class="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center mb-5"
+        >
+
+          <span class="text-2xl">
+            👤
+          </span>
+
+        </div>
+
+
+        <h2 class="text-xl font-bold text-slate-800">
+          Employee
+        </h2>
+
+
+        <p class="text-sm text-slate-500 mt-2 leading-6">
+          View profile, attendance, leave requests,
+          payslips and reports.
+        </p>
+
+
+        <div class="mt-6 text-blue-600 font-semibold">
+          Enter Employee Portal →
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

@@ -17,6 +17,7 @@ import { AttendanceManagementComponent } from './attendance-management/attendanc
 import { PayrollComponent } from './payroll/payroll.component';
 import { ReportsComponent } from './reports/reports.component';
 import { RoleManagementComponent } from './role-management/role-management.component';
+import { UsersComponent } from './users/users.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { RoleManagementComponent } from './role-management/role-management.compo
     AttendanceManagementComponent,
     PayrollComponent,
     ReportsComponent,
-    RoleManagementComponent
+    RoleManagementComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,
