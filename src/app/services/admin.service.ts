@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 // =====================================================
@@ -63,8 +64,12 @@ export interface UserAccessResponse {
 })
 export class AdminService {
 
+  // =====================================================
+  // BASE API URL
+  // =====================================================
+
   private readonly apiUrl =
-    'http://localhost:8081/api/v1/admin';
+    `${environment.apiUrl}/admin`;
 
 
   constructor(

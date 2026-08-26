@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { authInterceptor } from './interceptors/auth.interceptor';
 
 
 import { AppRoutingModule } from './app-routing.module';

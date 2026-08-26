@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 // ======================================================
@@ -80,8 +81,12 @@ export interface LoginResponse {
 })
 export class AuthService {
 
+  // ======================================================
+  // BASE API URL
+  // ======================================================
+
   private readonly apiUrl =
-    'http://localhost:8081/api/v1/auth';
+    `${environment.apiUrl}/auth`;
 
 
   constructor(
@@ -121,20 +126,17 @@ export class AuthService {
   }
 
 
+  // ======================================================
+  // LOGOUT
+  // ======================================================
 
+  logout(): Observable<any> {
 
-  // ==============================
-// LOGOUT
-// ==============================
+    return this.http.post<any>(
+      `${this.apiUrl}/logout`,
+      {}
+    );
 
-logout(): Observable<any> {
-
-  return this.http.post<any>(
-    `${this.apiUrl}/logout`,
-    {}
-  );
-
-}
+  }
 
 }
-

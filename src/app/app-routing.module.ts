@@ -1,13 +1,21 @@
-import { NgModule } from '@angular/core';
+import {
+  NgModule
+} from '@angular/core';
 
 import {
   RouterModule,
   Routes
 } from '@angular/router';
 
-import { authGuard } from './core/guards/auth.guard';
+import { authGuard }
+  from './guards/auth.guard';
 
-import { roleGuard } from './core/guards/role.guard';
+import { roleGuard }
+  from './guards/role.guard';
+
+import {
+  RoleSelectionComponent
+} from './pages/public/role-selection/role-selection.component';
 
 
 const routes: Routes = [
@@ -18,7 +26,9 @@ const routes: Routes = [
 
   {
     path: '',
+
     redirectTo: 'login',
+
     pathMatch: 'full'
   },
 
@@ -29,11 +39,41 @@ const routes: Routes = [
 
   {
     path: '',
+
     loadChildren: () =>
       import('./pages/public/public.module')
         .then(
           m => m.PublicModule
         )
+  },
+
+
+  // =====================================================
+  // ROLE SELECTION
+  // =====================================================
+
+  /*
+   * IMPORTANT:
+   *
+   * Login ke baad agar user ke paas
+   * Admin + Employee dono roles hain,
+   * to yahan aayega.
+   *
+   * Is route par roleGuard nahi lagana hai.
+   *
+   * Sirf authGuard chahiye,
+   * kyunki user logged-in hona chahiye.
+   */
+
+  {
+    path: 'role-selection',
+
+    canActivate: [
+      authGuard
+    ],
+
+    component:
+      RoleSelectionComponent
   },
 
 
@@ -91,6 +131,7 @@ const routes: Routes = [
 
   {
     path: '**',
+
     redirectTo: 'login'
   }
 
@@ -100,11 +141,17 @@ const routes: Routes = [
 @NgModule({
 
   imports: [
-    RouterModule.forRoot(routes)
+
+    RouterModule.forRoot(
+      routes
+    )
+
   ],
 
   exports: [
+
     RouterModule
+
   ]
 
 })

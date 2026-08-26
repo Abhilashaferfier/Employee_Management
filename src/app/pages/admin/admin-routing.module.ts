@@ -12,8 +12,8 @@ import { ReportsComponent } from './reports/reports.component';
 import { RoleManagementComponent } from './role-management/role-management.component';
 import { UsersComponent } from './users/users.component';
 
-import { authGuard } from '../../core/guards/auth.guard';
-import { roleGuard } from '../../core/guards/role.guard';
+import { authGuard } from '../../guards/auth.guard';
+import { roleGuard } from '../../guards/role.guard';
 
 const routes: Routes = [
   {

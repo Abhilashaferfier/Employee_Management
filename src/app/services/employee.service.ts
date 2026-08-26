@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 // ==========================================
@@ -49,8 +50,8 @@ export interface EmployeeProfile {
 })
 export class EmployeeService {
 
-  private apiUrl =
-    'http://localhost:8081/api/v1/employees';
+  private readonly apiUrl =
+    `${environment.apiUrl}/employees`;
 
 
   constructor(

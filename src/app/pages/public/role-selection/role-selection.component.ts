@@ -14,18 +14,24 @@ import {
   templateUrl:
     './role-selection.component.html',
 
-  styleUrls:
-    ['./role-selection.component.css']
+  styleUrls: [
+    './role-selection.component.css'
+  ]
 })
 export class RoleSelectionComponent
   implements OnInit {
 
 
   // ==================================================
-  // ACCESS
+  // ADMIN ACCESS
   // ==================================================
 
   isAdmin = false;
+
+
+  // ==================================================
+  // EMPLOYEE ACCESS
+  // ==================================================
 
   isEmployee = false;
 
@@ -43,29 +49,66 @@ export class RoleSelectionComponent
 
 
   // ==================================================
-  // INIT
+  // INITIALIZE
   // ==================================================
 
   ngOnInit(): void {
 
+    console.log(
+      'ROLE SELECTION LOADED'
+    );
+
+
     // ================================================
-    // GET ACCESS FROM LOCAL STORAGE
+    // GET ADMIN ACCESS
     // ================================================
 
     this.isAdmin =
-      localStorage.getItem('admin') === 'true';
-
-
-    this.isEmployee =
-      localStorage.getItem('employee') === 'true';
-
-
-    this.email =
-      localStorage.getItem('email') || '';
+      localStorage.getItem(
+        'admin'
+      ) === 'true';
 
 
     // ================================================
-    // NO ACCESS
+    // GET EMPLOYEE ACCESS
+    // ================================================
+
+    this.isEmployee =
+      localStorage.getItem(
+        'employee'
+      ) === 'true';
+
+
+    // ================================================
+    // GET EMAIL
+    // ================================================
+
+    this.email =
+      localStorage.getItem(
+        'email'
+      ) || '';
+
+
+    console.log(
+      'ADMIN:',
+      this.isAdmin
+    );
+
+
+    console.log(
+      'EMPLOYEE:',
+      this.isEmployee
+    );
+
+
+    console.log(
+      'EMAIL:',
+      this.email
+    );
+
+
+    // ================================================
+    // NO ROLE
     // ================================================
 
     if (
@@ -73,7 +116,10 @@ export class RoleSelectionComponent
       !this.isEmployee
     ) {
 
-      localStorage.clear();
+      console.log(
+        'No access. Redirecting login.'
+      );
+
 
       this.router.navigate([
         '/login'
@@ -93,6 +139,11 @@ export class RoleSelectionComponent
       !this.isEmployee
     ) {
 
+      console.log(
+        'Only Admin access.'
+      );
+
+
       this.router.navigate([
         '/admin/dashboard'
       ]);
@@ -111,6 +162,11 @@ export class RoleSelectionComponent
       this.isEmployee
     ) {
 
+      console.log(
+        'Only Employee access.'
+      );
+
+
       this.router.navigate([
         '/employee/dashboard'
       ]);
@@ -122,11 +178,35 @@ export class RoleSelectionComponent
 
     // ================================================
     // BOTH ROLES
-    //
-    // Yahan kuch navigate nahi karna.
-    //
-    // Cards show honge.
     // ================================================
+
+    if (
+      this.isAdmin &&
+      this.isEmployee
+    ) {
+
+      console.log(
+        'Admin + Employee access.'
+      );
+
+
+      /*
+       * IMPORTANT:
+       *
+       * Yahan koi navigation nahi hai.
+       *
+       * User isi page par rahega.
+       *
+       * HTML automatically dono cards
+       * show karega because:
+       *
+       * isAdmin = true
+       * isEmployee = true
+       */
+
+      return;
+
+    }
 
   }
 
@@ -140,17 +220,17 @@ export class RoleSelectionComponent
   ): void {
 
 
-    // ================================================
+    // ==================================================
     // ADMIN
-    // ================================================
+    // ==================================================
 
     if (
       role === 'ADMIN'
     ) {
 
-      // Safety check
-
-      if (!this.isAdmin) {
+      if (
+        !this.isAdmin
+      ) {
 
         return;
 
@@ -172,17 +252,17 @@ export class RoleSelectionComponent
     }
 
 
-    // ================================================
+    // ==================================================
     // EMPLOYEE
-    // ================================================
+    // ==================================================
 
     if (
       role === 'EMPLOYEE'
     ) {
 
-      // Safety check
-
-      if (!this.isEmployee) {
+      if (
+        !this.isEmployee
+      ) {
 
         return;
 

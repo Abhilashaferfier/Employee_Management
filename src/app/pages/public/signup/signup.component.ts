@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import {
   AuthService,
   SignupResponse
-} from '../../../core/services/auth.service';
+} from '../../../services/auth.service';
 
 
 @Component({

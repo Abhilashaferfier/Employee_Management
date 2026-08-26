@@ -25,6 +25,10 @@ interface LoginResponse {
 
   employee?: boolean;
 
+  firstName?: string;
+
+  lastName?: string;
+
   email?: string;
 
   token?: string;
@@ -111,6 +115,35 @@ export const authInterceptor: HttpInterceptorFn = (
             );
 
           }
+
+
+           // ================================================
+  // FIRST NAME
+  // ================================================
+
+  if (body?.firstName) {
+
+    localStorage.setItem(
+      'firstName',
+      body.firstName
+    );
+
+  }
+
+
+         // ================================================
+  // LAST NAME
+  // ================================================
+
+  if (body?.lastName) {
+
+    localStorage.setItem(
+      'lastName',
+      body.lastName
+    );
+
+  }
+ 
 
 
           // ================================================

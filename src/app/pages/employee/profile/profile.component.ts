@@ -10,7 +10,7 @@ import {
 import {
   EmployeeService,
   EmployeeProfile
-} from '../../../core/services/employee.service';
+} from '../../../services/employee.service';
 
 
 @Component({

@@ -14,13 +14,18 @@ import { Router } from '@angular/router';
 import {
   AuthService,
   LoginResponse
-} from '../../../core/services/auth.service';
+} from '../../../services/auth.service';
 
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+
+  templateUrl:
+    './login.component.html',
+
+  styleUrls: [
+    './login.component.css'
+  ]
 })
 export class LoginComponent
   implements OnInit {
@@ -50,25 +55,26 @@ export class LoginComponent
 
   ngOnInit(): void {
 
-    this.loginForm = this.fb.group({
+    this.loginForm =
+      this.fb.group({
 
-      email: [
-        '',
-        [
-          Validators.required,
-          Validators.email
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.email
+          ]
+        ],
+
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6)
+          ]
         ]
-      ],
 
-      password: [
-        '',
-        [
-          Validators.required,
-          Validators.minLength(6)
-        ]
-      ]
-
-    });
+      });
 
   }
 
@@ -110,7 +116,9 @@ export class LoginComponent
     // VALIDATION
     // ====================================================
 
-    if (this.loginForm.invalid) {
+    if (
+      this.loginForm.invalid
+    ) {
 
       this.loginForm.markAllAsTouched();
 
@@ -135,6 +143,12 @@ export class LoginComponent
         this.loginForm.value.password
 
     };
+
+
+    console.log(
+      'LOGIN REQUEST:',
+      loginData
+    );
 
 
     // ====================================================
@@ -163,7 +177,7 @@ export class LoginComponent
 
 
           // =================================================
-          // ACCESS FLAGS
+          // GET ACCESS FLAGS
           // =================================================
 
           const isAdmin =
@@ -177,6 +191,7 @@ export class LoginComponent
             'Admin:',
             isAdmin
           );
+
 
           console.log(
             'Employee:',
@@ -193,8 +208,17 @@ export class LoginComponent
             isEmployee
           ) {
 
+            /*
+             * User ke paas dono roles hain.
+             *
+             * Role selection page par jayega.
+             *
+             * IMPORTANT:
+             * Route = /role-selection
+             */
+
             this.router.navigate([
-              '/select-role'
+              '/role-selection'
             ]);
 
             return;
@@ -215,6 +239,7 @@ export class LoginComponent
               'selectedRole',
               'ADMIN'
             );
+
 
             this.router.navigate([
               '/admin/dashboard'
@@ -238,6 +263,7 @@ export class LoginComponent
               'selectedRole',
               'EMPLOYEE'
             );
+
 
             this.router.navigate([
               '/employee/dashboard'

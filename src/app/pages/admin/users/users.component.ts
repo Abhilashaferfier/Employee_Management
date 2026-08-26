@@ -7,7 +7,7 @@ import {
   AdminService,
   AdminUser,
   UserAccessRequest
-} from '../../../core/services/admin.service';
+} from '../../../services/admin.service';
 
 
 @Component({

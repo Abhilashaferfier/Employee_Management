@@ -10,8 +10,8 @@ import { LeaveRequestsComponent } from './leave-requests/leave-requests.componen
 import { PayslipsComponent } from './payslips/payslips.component';
 import { ReportsComponent } from './reports/reports.component';
 
-import { authGuard } from '../../core/guards/auth.guard';
-import { roleGuard } from '../../core/guards/role.guard';
+import { authGuard } from '../../guards/auth.guard';
+import { roleGuard } from '../../guards/role.guard';
 
 
 const routes: Routes = [
