@@ -12,13 +12,29 @@ export const roleGuard: CanActivateFn = (
   route
 ) => {
 
-  const router =
-    inject(Router);
+  const router = inject(Router);
 
 
-  // ======================================================
+  // =====================================================
+  // TOKEN CHECK
+  // =====================================================
+
+  const token =
+    localStorage.getItem('token');
+
+
+  if (!token || token.trim() === '') {
+
+    return router.createUrlTree([
+      '/login'
+    ]);
+
+  }
+
+
+  // =====================================================
   // REQUIRED ROLE
-  // ======================================================
+  // =====================================================
 
   const requiredRole =
     String(
@@ -26,9 +42,9 @@ export const roleGuard: CanActivateFn = (
     ).toUpperCase();
 
 
-  // ======================================================
-  // GET ACCESS FLAGS
-  // ======================================================
+  // =====================================================
+  // USER ACCESS
+  // =====================================================
 
   const isAdmin =
     localStorage.getItem('admin') === 'true';
@@ -37,13 +53,11 @@ export const roleGuard: CanActivateFn = (
     localStorage.getItem('employee') === 'true';
 
 
-  // ======================================================
+  // =====================================================
   // ADMIN ROUTE
-  // ======================================================
+  // =====================================================
 
-  if (
-    requiredRole === 'ADMIN'
-  ) {
+  if (requiredRole === 'ADMIN') {
 
     if (isAdmin) {
 
@@ -51,16 +65,29 @@ export const roleGuard: CanActivateFn = (
 
     }
 
+    // User has no Admin access
+    // but may have Employee access
+
+    if (isEmployee) {
+
+      return router.createUrlTree([
+        '/employee/dashboard'
+      ]);
+
+    }
+
+    return router.createUrlTree([
+      '/login'
+    ]);
+
   }
 
 
-  // ======================================================
+  // =====================================================
   // EMPLOYEE ROUTE
-  // ======================================================
+  // =====================================================
 
-  if (
-    requiredRole === 'EMPLOYEE'
-  ) {
+  if (requiredRole === 'EMPLOYEE') {
 
     if (isEmployee) {
 
@@ -68,54 +95,27 @@ export const roleGuard: CanActivateFn = (
 
     }
 
-  }
+    // User has no Employee access
+    // but may have Admin access
 
+    if (isAdmin) {
 
-  // ======================================================
-  // BOTH ROLES
-  // ======================================================
+      return router.createUrlTree([
+        '/admin/dashboard'
+      ]);
 
-  if (
-    isAdmin &&
-    isEmployee
-  ) {
+    }
 
     return router.createUrlTree([
-      '/select-role'
+      '/login'
     ]);
 
   }
 
 
-  // ======================================================
-  // ADMIN ONLY
-  // ======================================================
-
-  if (isAdmin) {
-
-    return router.createUrlTree([
-      '/admin/dashboard'
-    ]);
-
-  }
-
-
-  // ======================================================
-  // EMPLOYEE ONLY
-  // ======================================================
-
-  if (isEmployee) {
-
-    return router.createUrlTree([
-      '/employee/dashboard'
-    ]);
-
-  }
-
-
-  // ======================================================
-  // NO ACCESS
-  // ======================================================
+  // =====================================================
+  // UNKNOWN ROLE
+  // =====================================================
 
   return router.createUrlTree([
     '/login'

@@ -1,6 +1,11 @@
 <div class="min-h-full bg-slate-50">
 
-  <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+  <!-- ===================================================== -->
+  <!-- HEADING -->
+  <!-- ===================================================== -->
+
+  <div
+    class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
 
     <div>
 
@@ -14,56 +19,67 @@
 
     </div>
 
+
+    <!-- ================================================= -->
+    <!-- DATE DROPDOWN -->
+    <!-- ================================================= -->
+
     <select
+      [(ngModel)]="selectedDate"
+      (change)="onDateChange()"
       class="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none">
 
-      <option>21 May 2025</option>
-      <option>20 May 2025</option>
-      <option>19 May 2025</option>
+      <option
+        *ngFor="let date of dateOptions"
+        [value]="date.value">
+
+        {{ date.label }}
+
+      </option>
 
     </select>
 
   </div>
 
 
-  <!-- Summary -->
+  <!-- ===================================================== -->
+  <!-- SUMMARY -->
+  <!-- ===================================================== -->
 
-  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+
+    <!-- ================================================= -->
+    <!-- PRESENT -->
+    <!-- ================================================= -->
+
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
 
       <p class="text-sm text-slate-500">
         Present
       </p>
 
       <p class="mt-2 text-3xl font-bold text-blue-600">
-        {{ summary.present }}
+        {{ summary.present ?? '—' }}
       </p>
 
     </div>
 
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <!-- ================================================= -->
+    <!-- ABSENT -->
+    <!-- ================================================= -->
+
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
 
       <p class="text-sm text-slate-500">
         Absent
       </p>
 
       <p class="mt-2 text-3xl font-bold text-red-500">
-        {{ summary.absent }}
-      </p>
-
-    </div>
-
-
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
-
-      <p class="text-sm text-slate-500">
-        Late
-      </p>
-
-      <p class="mt-2 text-3xl font-bold text-orange-500">
-        {{ summary.late }}
+        {{ summary.absent ?? '—' }}
       </p>
 
     </div>
@@ -71,46 +87,138 @@
   </div>
 
 
-  <!-- Table -->
+  <!-- ===================================================== -->
+  <!-- ATTENDANCE TABLE -->
+  <!-- ===================================================== -->
 
-  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+  <div
+    class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
 
     <div class="overflow-x-auto">
 
       <table class="w-full text-left text-sm">
 
-        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+        <!-- ================================================= -->
+        <!-- TABLE HEADER -->
+        <!-- ================================================= -->
+
+        <thead
+          class="bg-blue-50 text-xs uppercase text-slate-500">
 
           <tr>
 
-            <th class="px-5 py-3">Employee</th>
-            <th class="px-5 py-3">Check In</th>
-            <th class="px-5 py-3">Check Out</th>
-            <th class="px-5 py-3">Status</th>
+            <th class="px-5 py-3">
+              Employee
+            </th>
+
+            <th class="px-5 py-3">
+              Check In
+            </th>
+
+            <th class="px-5 py-3">
+              Check Out
+            </th>
+
+            <th class="px-5 py-3">
+              Status
+            </th>
 
           </tr>
 
         </thead>
 
+
+        <!-- ================================================= -->
+        <!-- TABLE BODY -->
+        <!-- ================================================= -->
+
         <tbody class="divide-y divide-slate-100">
+
+
+          <!-- ================================================= -->
+          <!-- LOADING -->
+          <!-- ================================================= -->
+
+          <tr *ngIf="loading">
+
+            <td
+              colspan="4"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              Loading attendance...
+
+            </td>
+
+          </tr>
+
+
+          <!-- ================================================= -->
+          <!-- ERROR -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="
+              !loading &&
+              errorMessage
+            ">
+
+            <td
+              colspan="4"
+              class="px-5 py-8 text-center text-sm text-red-500">
+
+              {{ errorMessage }}
+
+            </td>
+
+          </tr>
+
+
+          <!-- ================================================= -->
+          <!-- ATTENDANCE RECORDS -->
+          <!-- ================================================= -->
 
           <tr
             *ngFor="let record of records"
             class="hover:bg-blue-50/50">
 
-            <td class="px-5 py-4 font-medium text-slate-700">
+
+            <!-- EMPLOYEE -->
+
+            <td
+              class="px-5 py-4 font-medium text-slate-700">
+
               {{ record.employee }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
-              {{ record.checkIn }}
-            </td>
+
+            <!-- CHECK IN -->
 
             <td class="px-5 py-4 text-slate-500">
-              {{ record.checkOut }}
+
+              {{ record.checkIn || '--' }}
+
             </td>
+
+
+            <!-- CHECK OUT -->
+
+            <td class="px-5 py-4 text-slate-500">
+
+              {{ record.checkOut || '--' }}
+
+            </td>
+
+
+            <!-- STATUS -->
 
             <td class="px-5 py-4">
+
+
+              <!-- ================================================= -->
+              <!-- PRESENT -->
+              <!-- ================================================= -->
 
               <span
                 *ngIf="record.status === 'Present'"
@@ -120,13 +228,10 @@
 
               </span>
 
-              <span
-                *ngIf="record.status === 'Late'"
-                class="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600">
 
-                Late
-
-              </span>
+              <!-- ================================================= -->
+              <!-- ABSENT -->
+              <!-- ================================================= -->
 
               <span
                 *ngIf="record.status === 'Absent'"
@@ -139,6 +244,29 @@
             </td>
 
           </tr>
+
+
+          <!-- ================================================= -->
+          <!-- NO DATA -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="
+              !loading &&
+              !errorMessage &&
+              records.length === 0
+            ">
+
+            <td
+              colspan="4"
+              class="px-5 py-8 text-center text-sm text-slate-400">
+
+              No attendance data available.
+
+            </td>
+
+          </tr>
+
 
         </tbody>
 

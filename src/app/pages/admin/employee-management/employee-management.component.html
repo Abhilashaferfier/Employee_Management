@@ -1,6 +1,11 @@
 <div class="min-h-full bg-slate-50">
 
-  <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+  <!-- ================================================= -->
+  <!-- HEADING -->
+  <!-- ================================================= -->
+
+  <div
+    class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
 
     <div>
 
@@ -14,29 +19,44 @@
 
     </div>
 
-    <button
-      type="button"
-      (click)="addEmployee()"
-      class="rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700">
+  </div>
 
-      <i class="pi pi-plus mr-2"></i>
 
-      Add Employee
+  <!-- ================================================= -->
+  <!-- ERROR MESSAGE -->
+  <!-- ================================================= -->
 
-    </button>
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+
+    {{ errorMessage }}
 
   </div>
 
 
-  <div class="rounded-xl border border-blue-100 bg-white shadow-sm">
+  <!-- ================================================= -->
+  <!-- TABLE CARD -->
+  <!-- ================================================= -->
 
-    <!-- Search -->
+  <div
+    class="rounded-xl border border-blue-100 bg-white shadow-sm">
 
-    <div class="border-b border-slate-100 p-4">
 
-      <div class="relative max-w-md">
+    <!-- ================================================= -->
+    <!-- SEARCH -->
+    <!-- ================================================= -->
 
-        <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+    <div
+      class="border-b border-slate-100 p-4">
+
+      <div
+        class="relative max-w-md">
+
+        <i
+          class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+        </i>
+
 
         <input
           type="text"
@@ -49,48 +69,188 @@
     </div>
 
 
-    <!-- Table -->
+
+    <!-- ================================================= -->
+    <!-- TABLE -->
+    <!-- ================================================= -->
 
     <div class="overflow-x-auto">
 
-      <table class="w-full text-left text-sm">
+      <table
+        class="w-full text-left text-sm">
 
-        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+        <!-- ================================================= -->
+        <!-- TABLE HEADER -->
+        <!-- ================================================= -->
+
+        <thead
+          class="bg-blue-50 text-xs uppercase text-slate-500">
 
           <tr>
 
-            <th class="px-5 py-3">Name</th>
-            <th class="px-5 py-3">Email</th>
-            <th class="px-5 py-3">Department</th>
-            <th class="px-5 py-3">Status</th>
-            <th class="px-5 py-3 text-center">Action</th>
+            <th class="px-5 py-3">
+              Name
+            </th>
+
+            <th class="px-5 py-3">
+              Email
+            </th>
+
+            <th class="px-5 py-3">
+              Designation
+            </th>
+
+            <th class="px-5 py-3">
+              Department
+            </th>
+
+            <th class="px-5 py-3">
+              DOJ
+            </th>
+
+            <th class="px-5 py-3">
+              Reporting Manager
+            </th>
+
+            <th class="px-5 py-3">
+              Status
+            </th>
+
+            <th class="px-5 py-3 text-center">
+              Action
+            </th>
 
           </tr>
 
         </thead>
 
-        <tbody class="divide-y divide-slate-100">
+
+
+        <!-- ================================================= -->
+        <!-- TABLE BODY -->
+        <!-- ================================================= -->
+
+        <tbody
+          class="divide-y divide-slate-100">
+
+
+          <!-- ================================================= -->
+          <!-- LOADING -->
+          <!-- ================================================= -->
+
+          <tr *ngIf="loadingEmployees">
+
+            <td
+              colspan="8"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              <i class="pi pi-spin pi-spinner mr-2"></i>
+
+              Loading employees...
+
+            </td>
+
+          </tr>
+
+
+
+          <!-- ================================================= -->
+          <!-- EMPLOYEE ROW -->
+          <!-- ================================================= -->
 
           <tr
-            *ngFor="let employee of employees"
+            *ngFor="let employee of filteredEmployees"
             class="hover:bg-blue-50/50">
 
-            <td class="px-5 py-4 font-medium text-slate-700">
-              {{ employee.name }}
+
+            <!-- ================================================= -->
+            <!-- NAME -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 font-medium text-slate-700">
+
+              {{ employee.firstName }}
+              {{ employee.lastName }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
+
+
+            <!-- ================================================= -->
+            <!-- EMAIL -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
               {{ employee.email }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
-              {{ employee.department }}
+
+
+            <!-- ================================================= -->
+            <!-- DESIGNATION -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.designation || '—' }}
+
             </td>
+
+
+
+            <!-- ================================================= -->
+            <!-- DEPARTMENT -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.departmentName || '—' }}
+
+            </td>
+
+
+
+            <!-- ================================================= -->
+            <!-- DATE OF JOINING -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.dateOfJoining || '—' }}
+
+            </td>
+
+
+
+            <!-- ================================================= -->
+            <!-- REPORTING MANAGER -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.reportingManagerName || '—' }}
+
+            </td>
+
+
+
+            <!-- ================================================= -->
+            <!-- STATUS -->
+            <!-- ================================================= -->
 
             <td class="px-5 py-4">
 
               <span
-                [class]="employee.status === 'Active'
+                [class]="employee.status === 'ACTIVE'
                   ? 'text-xs font-medium text-green-600'
                   : 'text-xs font-medium text-red-500'">
 
@@ -100,7 +260,17 @@
 
             </td>
 
-            <td class="px-5 py-4 text-center">
+
+
+            <!-- ================================================= -->
+            <!-- ACTION -->
+            <!-- ================================================= -->
+
+            <td
+              class="px-5 py-4 text-center">
+
+
+              <!-- EDIT -->
 
               <button
                 type="button"
@@ -111,6 +281,9 @@
 
               </button>
 
+
+              <!-- DELETE -->
+
               <button
                 type="button"
                 (click)="deleteEmployee(employee)"
@@ -120,13 +293,378 @@
 
               </button>
 
+
             </td>
 
           </tr>
 
+
+
+          <!-- ================================================= -->
+          <!-- NO DATA -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="
+              !loadingEmployees &&
+              filteredEmployees.length === 0
+            ">
+
+            <td
+              colspan="8"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              No employees found.
+
+            </td>
+
+          </tr>
+
+
         </tbody>
 
       </table>
+
+    </div>
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- EDIT EMPLOYEE MODAL -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="editModalVisible"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+
+
+    <div
+      class="w-full max-w-2xl rounded-xl bg-white shadow-xl">
+
+
+      <!-- ================================================= -->
+      <!-- MODAL HEADER -->
+      <!-- ================================================= -->
+
+      <div
+        class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+
+        <div>
+
+          <h3
+            class="text-lg font-semibold text-slate-800">
+
+            Edit Employee
+
+          </h3>
+
+          <p
+            class="mt-1 text-xs text-slate-500">
+
+            Update employee information.
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="closeEditModal()"
+          [disabled]="updateLoading"
+          class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+
+          <i class="pi pi-times"></i>
+
+        </button>
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- FORM -->
+      <!-- ================================================= -->
+
+      <div
+        class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
+
+
+        <!-- ================================================= -->
+        <!-- FIRST NAME -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            First Name
+
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editForm.firstName"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- LAST NAME -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Last Name
+
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editForm.lastName"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- EMAIL -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Email
+
+          </label>
+
+          <input
+            type="email"
+            [(ngModel)]="editForm.email"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- DESIGNATION -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Designation
+
+          </label>
+
+          <select
+  [(ngModel)]="editForm.designation"
+  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+>
+
+  <option value="">
+    Select Designation
+  </option>
+
+  <option
+    *ngFor="let designation of designations"
+    [value]="designation"
+  >
+    {{ designation }}
+  </option>
+
+</select>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- DEPARTMENT -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Department
+
+          </label>
+
+          <select
+  [(ngModel)]="editForm.departmentName"
+  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+>
+
+  <option value="">
+    Select Department
+  </option>
+
+  <option
+    *ngFor="let department of departments"
+    [value]="department"
+  >
+    {{ department }}
+  </option>
+
+</select>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- DOJ -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Date of Joining
+
+          </label>
+
+          <input
+            type="date"
+            [(ngModel)]="editForm.dateOfJoining"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- REPORTING MANAGER -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Reporting Manager
+
+          </label>
+
+          <select
+  [(ngModel)]="editForm.reportingManagerId"
+  (change)="onReportingManagerChange()"
+  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+>
+
+  <option value="">
+    Select Reporting Manager
+  </option>
+
+  <option
+    *ngFor="let manager of reportingManagers"
+    [value]="manager.id"
+  >
+
+    {{ manager.firstName }}
+    {{ manager.lastName }}
+
+  </option>
+
+</select>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- STATUS -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Status
+
+          </label>
+
+          <select
+            [(ngModel)]="editForm.status"
+            class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+            <option value="ACTIVE">
+              Active
+            </option>
+
+            <option value="INACTIVE">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- MODAL FOOTER -->
+      <!-- ================================================= -->
+
+      <div
+        class="flex justify-end gap-3 border-t border-slate-200 px-6 py-4">
+
+
+        <!-- CANCEL -->
+
+        <button
+          type="button"
+          (click)="closeEditModal()"
+          [disabled]="updateLoading"
+          class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+
+          Cancel
+
+        </button>
+
+
+
+        <!-- UPDATE -->
+
+        <button
+          type="button"
+          (click)="updateEmployee()"
+          [disabled]="updateLoading"
+          class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+
+          <i
+            *ngIf="updateLoading"
+            class="pi pi-spin pi-spinner mr-2">
+          </i>
+
+          {{ updateLoading
+            ? 'Updating...'
+            : 'Update Employee'
+          }}
+
+        </button>
+
+      </div>
 
     </div>
 

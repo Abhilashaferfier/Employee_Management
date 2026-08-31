@@ -1,6 +1,8 @@
 <div class="min-h-full bg-slate-50">
 
-  <!-- Heading -->
+  <!-- ================================================= -->
+  <!-- HEADING -->
+  <!-- ================================================= -->
 
   <div class="mb-6">
 
@@ -15,14 +17,20 @@
   </div>
 
 
-  <!-- Summary Cards -->
+  <!-- ================================================= -->
+  <!-- SUMMARY CARDS -->
+  <!-- ================================================= -->
 
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
 
 
-    <!-- Total Employees -->
+    <!-- ================================================= -->
+    <!-- TOTAL EMPLOYEES -->
+    <!-- ================================================= -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
+    >
 
       <div class="flex items-start justify-between">
 
@@ -37,13 +45,20 @@
           </p>
 
           <p class="mt-1 text-xs text-green-600">
-            +8 this month
+            &nbsp;
           </p>
 
         </div>
 
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-          <i class="pi pi-users text-xl text-blue-600"></i>
+
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50"
+        >
+
+          <i
+            class="pi pi-users text-xl text-blue-600"
+          ></i>
+
         </div>
 
       </div>
@@ -51,9 +66,13 @@
     </div>
 
 
-    <!-- Present -->
+    <!-- ================================================= -->
+    <!-- PRESENT TODAY -->
+    <!-- ================================================= -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
+    >
 
       <div class="flex items-start justify-between">
 
@@ -64,17 +83,24 @@
           </p>
 
           <p class="mt-2 text-3xl font-bold text-slate-800">
-            {{ presentToday }}
+            {{ presentToday ?? '—' }}
           </p>
 
           <p class="mt-1 text-xs text-slate-500">
-            81.66% of total
+            &nbsp;
           </p>
 
         </div>
 
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-          <i class="pi pi-check-circle text-xl text-blue-600"></i>
+
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50"
+        >
+
+          <i
+            class="pi pi-check-circle text-xl text-blue-600"
+          ></i>
+
         </div>
 
       </div>
@@ -82,9 +108,13 @@
     </div>
 
 
-    <!-- Pending Leaves -->
+    <!-- ================================================= -->
+    <!-- PENDING LEAVES -->
+    <!-- ================================================= -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
+    >
 
       <div class="flex items-start justify-between">
 
@@ -95,17 +125,24 @@
           </p>
 
           <p class="mt-2 text-3xl font-bold text-slate-800">
-            {{ pendingLeaves }}
+            {{ pendingLeaves ?? '—' }}
           </p>
 
           <p class="mt-1 text-xs text-orange-500">
-            Requires action
+            &nbsp;
           </p>
 
         </div>
 
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-          <i class="pi pi-clock text-xl text-blue-600"></i>
+
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50"
+        >
+
+          <i
+            class="pi pi-clock text-xl text-blue-600"
+          ></i>
+
         </div>
 
       </div>
@@ -113,9 +150,13 @@
     </div>
 
 
-    <!-- Payroll -->
+    <!-- ================================================= -->
+    <!-- PAYROLL -->
+    <!-- ================================================= -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
+    >
 
       <div class="flex items-start justify-between">
 
@@ -126,17 +167,24 @@
           </p>
 
           <p class="mt-2 text-3xl font-bold text-slate-800">
-            {{ pendingPayroll }}
+            {{ pendingPayroll ?? '—' }}
           </p>
 
           <p class="mt-1 text-xs text-slate-500">
-            Pending this month
+            &nbsp;
           </p>
 
         </div>
 
-        <div class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50">
-          <i class="pi pi-money-bill text-xl text-blue-600"></i>
+
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-blue-50"
+        >
+
+          <i
+            class="pi pi-money-bill text-xl text-blue-600"
+          ></i>
+
         </div>
 
       </div>
@@ -146,27 +194,35 @@
   </div>
 
 
-  <!-- Tables -->
+  <!-- ================================================= -->
+  <!-- TABLES -->
+  <!-- ================================================= -->
 
   <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
 
 
-    <!-- Recent Employees -->
+    <!-- ================================================= -->
+    <!-- RECENT EMPLOYEES -->
+    <!-- ================================================= -->
 
-    <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+    <div
+      class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
+    >
 
-      <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+      <div
+        class="flex items-center justify-between border-b border-slate-100 px-5 py-4"
+      >
 
         <h3 class="font-semibold text-slate-800">
           Recent Employees
         </h3>
 
+
         <a
           routerLink="/admin/employee-management"
-          class="text-xs font-medium text-blue-600">
-
+          class="text-xs font-medium text-blue-600"
+        >
           View All
-
         </a>
 
       </div>
@@ -176,56 +232,171 @@
 
         <table class="w-full text-left text-sm">
 
+          <!-- ================================================= -->
+          <!-- TABLE HEADER -->
+          <!-- ================================================= -->
+
           <thead class="bg-blue-50 text-xs text-slate-500">
 
             <tr>
-              <th class="px-4 py-3">Name</th>
-              <th class="px-4 py-3">Email</th>
-              <th class="px-4 py-3">Department</th>
-              <th class="px-4 py-3">Status</th>
+
+              <th class="w-[35%] px-5 py-3">
+                Name
+              </th>
+
+              <th class="w-[40%] px-5 py-3">
+                Email
+              </th>
+
+              <th class="w-[25%] px-5 py-3">
+                Status
+              </th>
+
             </tr>
 
           </thead>
 
+
           <tbody class="divide-y divide-slate-100">
 
+
+            <!-- ================================================= -->
+            <!-- LOADING -->
+            <!-- ================================================= -->
+
+            <tr *ngIf="loadingEmployees">
+
+              <td
+                colspan="3"
+                class="px-4 py-8 text-center text-slate-500"
+              >
+
+                Loading employees...
+
+              </td>
+
+            </tr>
+
+
+            <!-- ================================================= -->
+            <!-- ERROR -->
+            <!-- ================================================= -->
+
             <tr
-              *ngFor="let employee of employees"
-              class="hover:bg-blue-50/50">
+              *ngIf="
+                !loadingEmployees &&
+                errorMessage
+              "
+            >
 
-              <td class="px-4 py-3 font-medium text-slate-700">
-                {{ employee.name }}
+              <td
+                colspan="3"
+                class="px-4 py-8 text-center text-red-500"
+              >
+
+                {{ errorMessage }}
+
               </td>
 
-              <td class="px-4 py-3 text-slate-500">
+            </tr>
+
+
+            <!-- ================================================= -->
+            <!-- NO DATA -->
+            <!-- ================================================= -->
+
+            <tr
+              *ngIf="
+                !loadingEmployees &&
+                !errorMessage &&
+                recentEmployees.length === 0
+              "
+            >
+
+              <td
+                colspan="3"
+                class="px-4 py-8 text-center text-slate-500"
+              >
+
+                No employees found.
+
+              </td>
+
+            </tr>
+
+
+            <!-- ================================================= -->
+            <!-- DYNAMIC EMPLOYEES -->
+            <!-- ================================================= -->
+
+            <tr
+              *ngFor="let employee of recentEmployees"
+              class="hover:bg-blue-50/50"
+            >
+
+
+              <!-- ================================================= -->
+              <!-- NAME -->
+              <!-- ================================================= -->
+
+              <td
+                class="w-[35%] px-5 py-3 font-medium text-slate-700"
+              >
+
+                {{ employee.firstName }}
+                {{ employee.lastName }}
+
+              </td>
+
+
+              <!-- ================================================= -->
+              <!-- EMAIL -->
+              <!-- ================================================= -->
+
+              <td
+                class="w-[40%] px-5 py-3 text-slate-500"
+              >
+
                 {{ employee.email }}
+
               </td>
 
-              <td class="px-4 py-3 text-slate-500">
-                {{ employee.department }}
-              </td>
 
-              <td class="px-4 py-3">
+              <!-- ================================================= -->
+              <!-- STATUS -->
+              <!-- ================================================= -->
+
+              <td
+                class="w-[25%] px-5 py-3"
+              >
+
+                <!-- ACTIVE -->
 
                 <span
-                  *ngIf="employee.status === 'Active'"
-                  class="text-xs font-medium text-green-600">
+                  *ngIf="employee.status === 'ACTIVE'"
+                  class="text-xs font-medium text-green-600"
+                >
 
                   ● Active
 
                 </span>
 
-                <span
-                  *ngIf="employee.status === 'Inactive'"
-                  class="text-xs font-medium text-red-500">
 
-                  ● Inactive
+                <!-- OTHER STATUS -->
+
+                <span
+                  *ngIf="employee.status !== 'ACTIVE'"
+                  class="text-xs font-medium text-red-500"
+                >
+
+                  ● {{ employee.status }}
 
                 </span>
 
               </td>
 
             </tr>
+
 
           </tbody>
 
@@ -236,22 +407,28 @@
     </div>
 
 
-    <!-- Recent Leave Requests -->
+    <!-- ================================================= -->
+    <!-- RECENT LEAVE REQUESTS -->
+    <!-- ================================================= -->
 
-    <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+    <div
+      class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
+    >
 
-      <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+      <div
+        class="flex items-center justify-between border-b border-slate-100 px-5 py-4"
+      >
 
         <h3 class="font-semibold text-slate-800">
           Recent Leave Requests
         </h3>
 
+
         <a
           routerLink="/admin/leave-approval"
-          class="text-xs font-medium text-blue-600">
-
+          class="text-xs font-medium text-blue-600"
+        >
           View All
-
         </a>
 
       </div>
@@ -261,46 +438,66 @@
 
         <table class="w-full text-left text-sm">
 
+          <!-- ================================================= -->
+          <!-- TABLE HEADER -->
+          <!-- ================================================= -->
+
           <thead class="bg-blue-50 text-xs text-slate-500">
 
             <tr>
-              <th class="px-4 py-3">Employee</th>
-              <th class="px-4 py-3">Leave Type</th>
-              <th class="px-4 py-3">From</th>
-              <th class="px-4 py-3">To</th>
-              <th class="px-4 py-3">Status</th>
+
+              <th class="px-4 py-3">
+                Employee
+              </th>
+
+              <th class="px-4 py-3">
+                Leave Type
+              </th>
+
+              <th class="px-4 py-3">
+                From
+              </th>
+
+              <th class="px-4 py-3">
+                To
+              </th>
+
+              <th class="px-4 py-3">
+                Status
+              </th>
+
             </tr>
 
           </thead>
 
+
           <tbody class="divide-y divide-slate-100">
 
-            <tr
-              *ngFor="let leave of leaveRequests"
-              class="hover:bg-blue-50/50">
 
-              <td class="px-4 py-3 font-medium text-slate-700">
-                {{ leave.employee }}
+            <!-- ================================================= -->
+            <!-- NO LEAVE API YET -->
+            <!-- ================================================= -->
+
+            <tr>
+
+              <td class="px-4 py-3 text-slate-500">
+                —
               </td>
 
               <td class="px-4 py-3 text-slate-500">
-                {{ leave.leaveType }}
+                —
               </td>
 
               <td class="px-4 py-3 text-slate-500">
-                {{ leave.from }}
+                —
               </td>
 
               <td class="px-4 py-3 text-slate-500">
-                {{ leave.to }}
+                —
               </td>
 
-              <td class="px-4 py-3">
-
-                <span class="rounded-full bg-orange-50 px-2 py-1 text-xs font-medium text-orange-600">
-                  Pending
-                </span>
-
+              <td class="px-4 py-3 text-slate-500">
+                —
               </td>
 
             </tr>
@@ -312,6 +509,7 @@
       </div>
 
     </div>
+
 
   </div>
 

@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+
+import {
+  HttpClient
+} from '@angular/common/http';
+
+import {
+  Observable
+} from 'rxjs';
+
+import {
+  environment
+} from '../../environments/environment';
 
 
 // ======================================================
@@ -73,6 +82,10 @@ export interface LoginResponse {
 
   userId: string;
 
+  firstName?: string;
+
+  lastName?: string;
+
 }
 
 
@@ -80,6 +93,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
+
 
   // ======================================================
   // BASE API URL

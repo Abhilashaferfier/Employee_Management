@@ -1,101 +1,212 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
-interface Employee {
-  name: string;
-  email: string;
-  department: string;
-  status: string;
-}
+import {
+  DashboardService,
+  DashboardEmployee
+} from '../../../services/dashboard.service';
 
-interface LeaveRequest {
-  employee: string;
-  leaveType: string;
-  from: string;
-  to: string;
-  status: string;
-}
+
+// =====================================================
+// DASHBOARD COMPONENT
+// =====================================================
 
 @Component({
   selector: 'app-admin-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
-  totalEmployees = 120;
-  presentToday = 98;
-  pendingLeaves = 15;
-  pendingPayroll = 2;
 
-  employees: Employee[] = [
-    {
-      name: 'John Doe',
-      email: 'john@example.com',
-      department: 'IT',
-      status: 'Active'
-    },
-    {
-      name: 'Sarah Smith',
-      email: 'sarah@example.com',
-      department: 'HR',
-      status: 'Active'
-    },
-    {
-      name: 'Michael Brown',
-      email: 'michael@example.com',
-      department: 'Finance',
-      status: 'Active'
-    },
-    {
-      name: 'Emily Davis',
-      email: 'emily@example.com',
-      department: 'Marketing',
-      status: 'Active'
-    },
-    {
-      name: 'David Wilson',
-      email: 'david@example.com',
-      department: 'IT',
-      status: 'Inactive'
-    }
-  ];
+  // =====================================================
+  // ALL EMPLOYEES
+  // =====================================================
 
-  leaveRequests: LeaveRequest[] = [
-    {
-      employee: 'John Doe',
-      leaveType: 'Sick Leave',
-      from: '20 May',
-      to: '22 May',
-      status: 'Pending'
-    },
-    {
-      employee: 'Sarah Smith',
-      leaveType: 'Casual Leave',
-      from: '21 May',
-      to: '22 May',
-      status: 'Pending'
-    },
-    {
-      employee: 'Emily Davis',
-      leaveType: 'Annual Leave',
-      from: '25 May',
-      to: '30 May',
-      status: 'Pending'
-    },
-    {
-      employee: 'Michael Brown',
-      leaveType: 'Sick Leave',
-      from: '22 May',
-      to: '22 May',
-      status: 'Pending'
-    },
-    {
-      employee: 'David Wilson',
-      leaveType: 'Casual Leave',
-      from: '23 May',
-      to: '23 May',
-      status: 'Pending'
-    }
-  ];
+  employees: DashboardEmployee[] = [];
+
+
+  // =====================================================
+  // TOTAL EMPLOYEES
+  // =====================================================
+
+  totalEmployees = 0;
+
+
+  // =====================================================
+  // PRESENT TODAY
+  // =====================================================
+
+  presentToday: number | null = null;
+
+
+  // =====================================================
+  // PENDING LEAVES
+  // =====================================================
+
+  pendingLeaves: number | null = null;
+
+
+  // =====================================================
+  // PENDING PAYROLL
+  // =====================================================
+
+  pendingPayroll: number | null = null;
+
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  loadingEmployees = false;
+
+
+  // =====================================================
+  // ERROR
+  // =====================================================
+
+  errorMessage = '';
+
+
+  // =====================================================
+  // CONSTRUCTOR
+  // =====================================================
+
+  constructor(
+    private dashboardService: DashboardService
+  ) {}
+
+
+  // =====================================================
+  // INIT
+  // =====================================================
+
+  ngOnInit(): void {
+
+    this.loadDashboardData();
+
+  }
+
+
+  // =====================================================
+  // LOAD DASHBOARD DATA
+  // =====================================================
+
+  loadDashboardData(): void {
+
+    this.loadEmployees();
+
+  }
+
+
+  // =====================================================
+  // LOAD EMPLOYEES
+  // =====================================================
+
+  loadEmployees(): void {
+
+    this.loadingEmployees = true;
+
+    this.errorMessage = '';
+
+
+    this.dashboardService
+      .getAllEmployees()
+      .subscribe({
+
+        // ===============================================
+        // SUCCESS
+        // ===============================================
+
+        next: (
+          response: DashboardEmployee[]
+        ) => {
+
+          console.log(
+            'DASHBOARD EMPLOYEES:',
+            response
+          );
+
+
+          // ---------------------------------------------
+          // STORE EMPLOYEES
+          // ---------------------------------------------
+
+          this.employees =
+            response || [];
+
+
+          // ---------------------------------------------
+          // TOTAL EMPLOYEES
+          // ---------------------------------------------
+
+          this.totalEmployees =
+            this.employees.length;
+
+
+          // ---------------------------------------------
+          // LOADING COMPLETE
+          // ---------------------------------------------
+
+          this.loadingEmployees = false;
+
+        },
+
+
+        // ===============================================
+        // ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'DASHBOARD EMPLOYEES ERROR:',
+            error
+          );
+
+
+          // ---------------------------------------------
+          // CLEAR DATA
+          // ---------------------------------------------
+
+          this.employees = [];
+
+          this.totalEmployees = 0;
+
+
+          // ---------------------------------------------
+          // ERROR MESSAGE
+          // ---------------------------------------------
+
+          this.errorMessage =
+            error?.error?.message ||
+            error?.error?.responseMessage ||
+            'Unable to load employees.';
+
+
+          // ---------------------------------------------
+          // LOADING COMPLETE
+          // ---------------------------------------------
+
+          this.loadingEmployees = false;
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // RECENT EMPLOYEES
+  // =====================================================
+
+  get recentEmployees(): DashboardEmployee[] {
+
+    return this.employees.slice(0, 5);
+
+  }
 
 }

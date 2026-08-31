@@ -3,14 +3,19 @@
 >
 
   <!-- ================================================= -->
-  <!-- LEFT -->
+  <!-- LEFT SIDE -->
   <!-- ================================================= -->
 
   <div class="flex items-center gap-4">
 
+
+    <!-- ================================================= -->
     <!-- HAMBURGER -->
+    <!-- Only Admin / Employee -->
+    <!-- ================================================= -->
 
     <button
+      *ngIf="isPortalHeader"
       type="button"
       pButton
       class="p-button-text p-button-rounded !text-slate-600 hover:!bg-slate-100"
@@ -23,9 +28,28 @@
     </button>
 
 
-    <!-- DASHBOARD HEADING -->
+    <!-- ================================================= -->
+    <!-- HRMS -->
+    <!-- Public / Role Selection -->
+    <!-- ================================================= -->
 
     <h1
+      *ngIf="!isPortalHeader"
+      class="text-lg font-bold text-slate-800 md:text-xl"
+    >
+
+      HRMS
+
+    </h1>
+
+
+    <!-- ================================================= -->
+    <!-- PORTAL TITLE -->
+    <!-- Admin / Employee -->
+    <!-- ================================================= -->
+
+    <h1
+      *ngIf="isPortalHeader"
       class="text-lg font-semibold text-slate-800 md:text-xl"
     >
 
@@ -37,19 +61,52 @@
 
 
   <!-- ================================================= -->
-  <!-- RIGHT PROFILE -->
+  <!-- RIGHT SIDE -->
   <!-- ================================================= -->
 
   <div class="relative">
 
 
-    <!-- PROFILE BUTTON -->
+    <!-- ================================================= -->
+    <!-- PUBLIC HEADER -->
+    <!-- Role Selection -->
+    <!-- ================================================= -->
 
     <button
+      *ngIf="!isPortalHeader"
       type="button"
-      class="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-slate-100"
+      class="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition hover:bg-red-50"
+      (click)="logout()"
+      [disabled]="logoutLoading"
+    >
+
+      <i class="pi pi-sign-out"></i>
+
+      <span>
+
+        {{
+          logoutLoading
+            ? 'Logging out...'
+            : 'Logout'
+        }}
+
+      </span>
+
+    </button>
+
+
+    <!-- ================================================= -->
+    <!-- PORTAL PROFILE -->
+    <!-- Admin / Employee -->
+    <!-- ================================================= -->
+
+    <button
+      *ngIf="isPortalHeader"
+      type="button"
+      class="flex items-center gap-2 rounded-lg px-2 py-1.5 transition hover:bg-slate-100"
       (click)="toggleProfileMenu()"
     >
+
 
       <!-- INITIALS -->
 
@@ -82,7 +139,10 @@
     <!-- ================================================= -->
 
     <div
-      *ngIf="profileMenuVisible"
+      *ngIf="
+        isPortalHeader &&
+        profileMenuVisible
+      "
       class="absolute right-0 top-12 z-50 w-64 rounded-xl border border-slate-200 bg-white p-2 shadow-xl"
     >
 
@@ -104,7 +164,7 @@
 
 
         <p
-          class="mt-1 text-sm text-slate-500 break-all"
+          class="mt-1 break-all text-sm text-slate-500"
         >
 
           {{ email }}
@@ -115,7 +175,7 @@
 
 
       <!-- ================================================= -->
-      <!-- CURRENT ROLE -->
+      <!-- CURRENT PORTAL -->
       <!-- ================================================= -->
 
       <div
@@ -144,13 +204,12 @@
 
       <!-- ================================================= -->
       <!-- SWITCH ROLE -->
-      <!-- Only if Admin + Employee -->
       <!-- ================================================= -->
 
       <button
         *ngIf="hasBothRoles"
         type="button"
-        class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-slate-700 hover:bg-slate-100"
+        class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-slate-100"
         (click)="switchRole()"
       >
 
@@ -169,7 +228,7 @@
 
       <button
         type="button"
-        class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+        class="mt-1 flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm text-red-600 transition hover:bg-red-50"
         (click)="logout()"
         [disabled]="logoutLoading"
       >

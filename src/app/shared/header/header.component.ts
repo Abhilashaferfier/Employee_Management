@@ -13,13 +13,10 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
-
   templateUrl: './header.component.html',
-
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
 
   // =====================================================
   // CURRENT PORTAL ROLE
@@ -32,8 +29,8 @@ export class HeaderComponent implements OnInit {
   // SIDEBAR EVENT
   // =====================================================
 
-  @Output() menuToggle =
-    new EventEmitter<void>();
+  @Output()
+  menuToggle = new EventEmitter<void>();
 
 
   // =====================================================
@@ -62,14 +59,14 @@ export class HeaderComponent implements OnInit {
 
 
   // =====================================================
-  // USER INITIALS
+  // INITIALS
   // =====================================================
 
   initials = '';
 
 
   // =====================================================
-  // USER ACCESS
+  // ROLES
   // =====================================================
 
   isAdmin = false;
@@ -84,7 +81,7 @@ export class HeaderComponent implements OnInit {
 
 
   // =====================================================
-  // INITIALIZE
+  // INIT
   // =====================================================
 
   ngOnInit(): void {
@@ -95,61 +92,50 @@ export class HeaderComponent implements OnInit {
 
 
   // =====================================================
+  // PORTAL HEADER CHECK
+  // =====================================================
+
+  get isPortalHeader(): boolean {
+
+    return (
+      this.role === 'Admin' ||
+      this.role === 'Employee'
+    );
+
+  }
+
+
+  // =====================================================
   // LOAD USER DATA
   // =====================================================
 
   private loadUserData(): void {
 
-    // ================================================
-    // FIRST NAME
-    // ================================================
-
     this.firstName =
       localStorage.getItem('firstName') || '';
-
-
-    // ================================================
-    // LAST NAME
-    // ================================================
 
     this.lastName =
       localStorage.getItem('lastName') || '';
 
-
-    // ================================================
-    // EMAIL
-    // ================================================
-
     this.email =
       localStorage.getItem('email') || '';
 
-
-    // ================================================
-    // ADMIN ACCESS
-    // ================================================
-
     this.isAdmin =
       localStorage.getItem('admin') === 'true';
-
-
-    // ================================================
-    // EMPLOYEE ACCESS
-    // ================================================
 
     this.isEmployee =
       localStorage.getItem('employee') === 'true';
 
 
-    // ================================================
+    // ===================================================
     // CREATE INITIALS
-    // ================================================
+    // ===================================================
 
     const firstInitial =
       this.firstName
         .trim()
         .charAt(0)
         .toUpperCase();
-
 
     const lastInitial =
       this.lastName
@@ -160,6 +146,17 @@ export class HeaderComponent implements OnInit {
 
     this.initials =
       `${firstInitial}${lastInitial}`;
+
+
+    // ===================================================
+    // FALLBACK
+    // ===================================================
+
+    if (!this.initials.trim()) {
+
+      this.initials = 'U';
+
+    }
 
   }
 
@@ -188,7 +185,7 @@ export class HeaderComponent implements OnInit {
 
 
   // =====================================================
-  // CHECK BOTH ROLES
+  // BOTH ROLES
   // =====================================================
 
   get hasBothRoles(): boolean {
@@ -207,13 +204,6 @@ export class HeaderComponent implements OnInit {
 
   switchRole(): void {
 
-    // ================================================
-    // SAFETY
-    // ================================================
-
-    // Switch Role sirf us user ke liye available hai
-    // jiske paas Admin + Employee dono access hain.
-
     if (!this.hasBothRoles) {
 
       return;
@@ -221,35 +211,16 @@ export class HeaderComponent implements OnInit {
     }
 
 
-    // ================================================
-    // CLOSE PROFILE DROPDOWN
-    // ================================================
-
     this.profileMenuVisible = false;
 
 
-    // ================================================
-    // REMOVE CURRENT SELECTED ROLE
-    // ================================================
-
-    /*
-     * Example:
-     *
-     * selectedRole = ADMIN
-     *
-     * Switch Role ke baad selectedRole remove kar denge.
-     *
-     * Lekin token/admin/employee ko remove nahi karna.
-     */
+    // Token/role permissions remove nahi karne.
+    // Sirf currently selected role remove karna hai.
 
     localStorage.removeItem(
       'selectedRole'
     );
 
-
-    // ================================================
-    // GO TO ROLE SELECTION PAGE
-    // ================================================
 
     this.router.navigate([
       '/role-selection'
@@ -274,18 +245,13 @@ export class HeaderComponent implements OnInit {
     this.logoutLoading = true;
 
 
-    console.log(
-      'Logout API calling...'
-    );
-
-
     this.authService
       .logout()
       .subscribe({
 
-        // ==========================================
+        // =============================================
         // SUCCESS
-        // ==========================================
+        // =============================================
 
         next: (response: any) => {
 
@@ -305,9 +271,9 @@ export class HeaderComponent implements OnInit {
         },
 
 
-        // ==========================================
+        // =============================================
         // ERROR
-        // ==========================================
+        // =============================================
 
         error: (error: any) => {
 
@@ -317,10 +283,8 @@ export class HeaderComponent implements OnInit {
           );
 
 
-          /*
-           * API fail hone par bhi local
-           * authentication data clear karenge.
-           */
+          // API fail ho tab bhi logout
+          // frontend par complete hona chahiye.
 
           this.clearAuthData();
 
