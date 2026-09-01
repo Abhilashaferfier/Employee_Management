@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import {
   HttpClient,
   HttpParams
@@ -7,67 +8,20 @@ import {
 import {
   Observable
 } from 'rxjs';
-import { environment } from '../../environments/environment.development';
 
+import {
+  environment
+} from '../../environments/environment.development';
 
-// =====================================================
-// EMPLOYEE RESPONSE INTERFACE
-// =====================================================
-
-export interface Employee {
-
-  id: string;
-
-  userId: string | null;
-
-  email: string;
-
-  employeeCode: string | null;
-
-  firstName: string;
-
-  lastName: string;
-
-  phone: string | null;
-
-  departmentId: string | null;
-
-  departmentName: string | null;
-
-  designation: string | null;
-
-  dateOfJoining: string | null;
-
-  reportingManagerId: string | null;
-
-  reportingManagerName: string | null;
-
-  status: string;
-
-}
-
-
-// =====================================================
-// SERVICE
-// =====================================================
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeManagementService {
 
-
-  // =====================================================
-  // BASE API URL
-  // =====================================================
-
   private readonly apiUrl =
-      `${environment.apiUrl}/employees`;
+    `${environment.apiUrl}/employees`;
 
-
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
 
   constructor(
     private http: HttpClient
@@ -78,9 +32,9 @@ export class EmployeeManagementService {
   // GET ALL EMPLOYEES
   // =====================================================
 
-  getAllEmployees(): Observable<Employee[]> {
+  getAllEmployees(): Observable<any[]> {
 
-    return this.http.get<Employee[]>(
+    return this.http.get<any[]>(
       this.apiUrl
     );
 
@@ -88,21 +42,20 @@ export class EmployeeManagementService {
 
 
   // =====================================================
-  // UPDATE EMPLOYEE
-  // PATCH
+  // PATCH EMPLOYEE
   // =====================================================
 
   updateEmployee(
     email: string,
     payload: any
-  ): Observable<Employee> {
+  ): Observable<any> {
 
     const params =
       new HttpParams()
         .set('email', email);
 
 
-    return this.http.patch<Employee>(
+    return this.http.patch<any>(
       this.apiUrl,
       payload,
       {

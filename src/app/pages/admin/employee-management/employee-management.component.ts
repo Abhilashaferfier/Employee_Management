@@ -4,9 +4,42 @@ import {
 } from '@angular/core';
 
 import {
-  EmployeeManagementService,
-  Employee
+  HttpErrorResponse
+} from '@angular/common/http';
+
+import {
+  EmployeeManagementService
 } from '../../../services/employee-management.service';
+
+
+// =====================================================
+// EMPLOYEE INTERFACE
+// =====================================================
+// Backend se aane wale sirf wahi fields rakhe hain
+// jo frontend me actually required hain.
+// =====================================================
+
+export interface Employee {
+
+  id: string;
+
+  email: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  departmentName: string | null;
+
+  designation: string | null;
+
+  dateOfJoining: string | null;
+
+  reportingManagerEmail: string | null;
+
+  status: string;
+
+}
 
 
 // =====================================================
@@ -14,20 +47,23 @@ import {
 // =====================================================
 
 @Component({
-  selector: 'app-employee-management',
+
+  selector:
+    'app-employee-management',
 
   templateUrl:
     './employee-management.component.html',
 
   styleUrls:
     ['./employee-management.component.css']
+
 })
 export class EmployeeManagementComponent
   implements OnInit {
 
 
   // =====================================================
-  // EMPLOYEES FROM API
+  // EMPLOYEES
   // =====================================================
 
   employees: Employee[] = [];
@@ -74,7 +110,10 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // FRONTEND DEPARTMENT OPTIONS
+  // DEPARTMENT OPTIONS
+  // =====================================================
+  // Ye frontend se aa rahe hain.
+  // Iske liye backend API nahi hai.
   // =====================================================
 
   departments: string[] = [
@@ -89,13 +128,28 @@ export class EmployeeManagementComponent
 
     'Marketing',
 
-    'Design'
+    'Design',
+
+    'Development'
 
   ];
 
 
   // =====================================================
-  // FRONTEND DESIGNATION OPTIONS
+  // FILTERED DEPARTMENTS
+  // =====================================================
+
+  filteredDepartments: string[] = [
+
+    ...this.departments
+
+  ];
+
+
+  // =====================================================
+  // DESIGNATION OPTIONS
+  // =====================================================
+  // Ye bhi frontend list hai.
   // =====================================================
 
   designations: string[] = [
@@ -114,9 +168,40 @@ export class EmployeeManagementComponent
 
     'Project Manager',
 
-    'Team Lead'
+    'Team Lead',
+
+    'Software Engineer',
+
+    'Senior Software Engineer'
 
   ];
+
+
+  // =====================================================
+  // FILTERED DESIGNATIONS
+  // =====================================================
+
+  filteredDesignations: string[] = [
+
+    ...this.designations
+
+  ];
+
+
+  // =====================================================
+  // REPORTING MANAGER EMAIL LIST
+  // =====================================================
+  // Employees API se emails nikali jayengi.
+  // =====================================================
+
+  reportingManagerEmails: string[] = [];
+
+
+  // =====================================================
+  // FILTERED REPORTING MANAGER EMAILS
+  // =====================================================
+
+  filteredReportingManagers: string[] = [];
 
 
   // =====================================================
@@ -137,9 +222,7 @@ export class EmployeeManagementComponent
 
     dateOfJoining: '',
 
-    reportingManagerId: '',
-
-    reportingManagerName: '',
+    reportingManagerEmail: '',
 
     status: ''
 
@@ -182,9 +265,9 @@ export class EmployeeManagementComponent
       .getAllEmployees()
       .subscribe({
 
-        // ===============================================
+        // =================================================
         // SUCCESS
-        // ===============================================
+        // =================================================
 
         next: (
           response: Employee[]
@@ -196,9 +279,90 @@ export class EmployeeManagementComponent
           );
 
 
-          this.employees =
-            response || [];
+          // -----------------------------------------------
+          // STORE EMPLOYEES
+          // -----------------------------------------------
 
+          this.employees =
+            (response || []).map(
+              employee => ({
+
+                id:
+                  employee.id,
+
+                email:
+                  employee.email,
+
+                firstName:
+                  employee.firstName,
+
+                lastName:
+                  employee.lastName,
+
+                departmentName:
+                  employee.departmentName,
+
+                designation:
+                  employee.designation,
+
+                dateOfJoining:
+                  employee.dateOfJoining,
+
+                reportingManagerEmail:
+                  employee.reportingManagerEmail,
+
+                status:
+                  employee.status
+
+              })
+            );
+
+
+          // -----------------------------------------------
+          // CREATE REPORTING MANAGER EMAIL LIST
+          // -----------------------------------------------
+
+          this.reportingManagerEmails =
+            this.employees
+
+              .map(
+                employee =>
+                  employee.email
+              )
+
+              .filter(
+                (
+                  email
+                ): email is string =>
+                  !!email
+              );
+
+
+          // -----------------------------------------------
+          // REMOVE DUPLICATE EMAILS
+          // -----------------------------------------------
+
+          this.reportingManagerEmails =
+            [
+              ...new Set(
+                this.reportingManagerEmails
+              )
+            ];
+
+
+          // -----------------------------------------------
+          // INITIAL REPORTING MANAGER OPTIONS
+          // -----------------------------------------------
+
+          this.filteredReportingManagers =
+            [
+              ...this.reportingManagerEmails
+            ];
+
+
+          // -----------------------------------------------
+          // LOADING COMPLETE
+          // -----------------------------------------------
 
           this.loadingEmployees =
             false;
@@ -206,11 +370,13 @@ export class EmployeeManagementComponent
         },
 
 
-        // ===============================================
+        // =================================================
         // ERROR
-        // ===============================================
+        // =================================================
 
-        error: (error) => {
+        error: (
+          error: HttpErrorResponse
+        ) => {
 
           console.error(
             'GET EMPLOYEES ERROR:',
@@ -218,14 +384,34 @@ export class EmployeeManagementComponent
           );
 
 
+          // -----------------------------------------------
+          // CLEAR DATA
+          // -----------------------------------------------
+
           this.employees = [];
 
+          this.reportingManagerEmails = [];
+
+          this.filteredReportingManagers = [];
+
+
+          // -----------------------------------------------
+          // ERROR MESSAGE
+          // -----------------------------------------------
 
           this.errorMessage =
             error?.error?.responseMessage ||
+
             error?.error?.message ||
+
+            error?.message ||
+
             'Unable to load employees.';
 
+
+          // -----------------------------------------------
+          // LOADING COMPLETE
+          // -----------------------------------------------
 
           this.loadingEmployees =
             false;
@@ -238,19 +424,142 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // REPORTING MANAGER OPTIONS
+  // SEARCH DEPARTMENTS
   // =====================================================
 
-  get reportingManagers(): Employee[] {
+  searchDepartments(
+    event: any
+  ): void {
 
-    /*
-     * Reporting Manager API se alag nahi aa raha.
-     *
-     * Existing employees API se employees ki list
-     * lekar reporting manager dropdown banega.
-     */
+    const query =
+      (
+        event?.query || ''
+      )
+        .toLowerCase()
+        .trim();
 
-    return this.employees;
+
+    // -----------------------------------------------
+    // SHOW ALL
+    // -----------------------------------------------
+
+    if (!query) {
+
+      this.filteredDepartments =
+        [
+          ...this.departments
+        ];
+
+      return;
+
+    }
+
+
+    // -----------------------------------------------
+    // SEARCH
+    // -----------------------------------------------
+
+    this.filteredDepartments =
+      this.departments.filter(
+        department =>
+          department
+            .toLowerCase()
+            .includes(query)
+      );
+
+  }
+
+
+  // =====================================================
+  // SEARCH DESIGNATIONS
+  // =====================================================
+
+  searchDesignations(
+    event: any
+  ): void {
+
+    const query =
+      (
+        event?.query || ''
+      )
+        .toLowerCase()
+        .trim();
+
+
+    // -----------------------------------------------
+    // SHOW ALL
+    // -----------------------------------------------
+
+    if (!query) {
+
+      this.filteredDesignations =
+        [
+          ...this.designations
+        ];
+
+      return;
+
+    }
+
+
+    // -----------------------------------------------
+    // SEARCH
+    // -----------------------------------------------
+
+    this.filteredDesignations =
+      this.designations.filter(
+        designation =>
+          designation
+            .toLowerCase()
+            .includes(query)
+      );
+
+  }
+
+
+  // =====================================================
+  // SEARCH REPORTING MANAGERS
+  // =====================================================
+
+  searchReportingManagers(
+    event: any
+  ): void {
+
+    const query =
+      (
+        event?.query || ''
+      )
+        .toLowerCase()
+        .trim();
+
+
+    // -----------------------------------------------
+    // SHOW ALL EMAILS
+    // -----------------------------------------------
+
+    if (!query) {
+
+      this.filteredReportingManagers =
+        [
+          ...this.reportingManagerEmails
+        ];
+
+      return;
+
+    }
+
+
+    // -----------------------------------------------
+    // SEARCH EMAIL
+    // -----------------------------------------------
+
+    this.filteredReportingManagers =
+      this.reportingManagerEmails.filter(
+        email =>
+          email
+            .toLowerCase()
+            .includes(query)
+      );
 
   }
 
@@ -269,13 +578,17 @@ export class EmployeeManagementComponent
     );
 
 
+    // -----------------------------------------------
+    // SAVE SELECTED EMPLOYEE
+    // -----------------------------------------------
+
     this.selectedEmployee =
       employee;
 
 
-    // ===============================================
-    // PREFILL FORM
-    // ===============================================
+    // -----------------------------------------------
+    // PREFILL EDIT FORM
+    // -----------------------------------------------
 
     this.editForm = {
 
@@ -297,19 +610,25 @@ export class EmployeeManagementComponent
       dateOfJoining:
         employee.dateOfJoining || '',
 
-      reportingManagerId:
-        employee.reportingManagerId || '',
-
-      reportingManagerName:
-        employee.reportingManagerName || '',
+      reportingManagerEmail:
+        employee.reportingManagerEmail || '',
 
       status:
-        employee.status || ''
+        employee.status || 'ACTIVE'
 
     };
 
 
+    // -----------------------------------------------
+    // RESET ERROR
+    // -----------------------------------------------
+
     this.updateError = '';
+
+
+    // -----------------------------------------------
+    // OPEN MODAL
+    // -----------------------------------------------
 
     this.editModalVisible =
       true;
@@ -318,39 +637,14 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // REPORTING MANAGER CHANGE
-  // =====================================================
-
-  onReportingManagerChange(): void {
-
-    const manager =
-      this.employees.find(
-        employee =>
-          employee.id ===
-          this.editForm.reportingManagerId
-      );
-
-
-    if (manager) {
-
-      this.editForm.reportingManagerName =
-        `${manager.firstName} ${manager.lastName}`;
-
-    } else {
-
-      this.editForm.reportingManagerName =
-        '';
-
-    }
-
-  }
-
-
-  // =====================================================
-  // CLOSE MODAL
+  // CLOSE EDIT MODAL
   // =====================================================
 
   closeEditModal(): void {
+
+    // -----------------------------------------------
+    // DO NOT CLOSE DURING UPDATE
+    // -----------------------------------------------
 
     if (this.updateLoading) {
 
@@ -379,6 +673,10 @@ export class EmployeeManagementComponent
 
   updateEmployee(): void {
 
+    // -----------------------------------------------
+    // CHECK SELECTED EMPLOYEE
+    // -----------------------------------------------
+
     if (!this.selectedEmployee) {
 
       return;
@@ -386,17 +684,20 @@ export class EmployeeManagementComponent
     }
 
 
-    // ===============================================
-    // BASIC VALIDATION
-    // ===============================================
+    // -----------------------------------------------
+    // VALIDATION
+    // -----------------------------------------------
 
     if (
 
-      !this.editForm.firstName.trim() ||
+      !this.editForm.firstName
+        .trim() ||
 
-      !this.editForm.lastName.trim() ||
+      !this.editForm.lastName
+        .trim() ||
 
-      !this.editForm.email.trim()
+      !this.editForm.email
+        .trim()
 
     ) {
 
@@ -408,6 +709,10 @@ export class EmployeeManagementComponent
     }
 
 
+    // -----------------------------------------------
+    // START LOADING
+    // -----------------------------------------------
+
     this.updateLoading =
       true;
 
@@ -415,38 +720,43 @@ export class EmployeeManagementComponent
       '';
 
 
-    // ===============================================
+    // =================================================
     // PATCH PAYLOAD
-    // ===============================================
+    // =================================================
 
     const payload = {
 
       firstName:
-        this.editForm.firstName.trim(),
+        this.editForm.firstName
+          .trim(),
 
       lastName:
-        this.editForm.lastName.trim(),
+        this.editForm.lastName
+          .trim(),
 
       email:
-        this.editForm.email.trim(),
+        this.editForm.email
+          .trim(),
 
       designation:
-        this.editForm.designation || null,
+        this.editForm.designation ||
+        null,
 
       departmentName:
-        this.editForm.departmentName || null,
+        this.editForm.departmentName ||
+        null,
 
       dateOfJoining:
-        this.editForm.dateOfJoining || null,
+        this.editForm.dateOfJoining ||
+        null,
 
-      reportingManagerId:
-        this.editForm.reportingManagerId || null,
-
-      reportingManagerName:
-        this.editForm.reportingManagerName || null,
+      reportingManagerEmail:
+        this.editForm.reportingManagerEmail ||
+        null,
 
       status:
-        this.editForm.status || 'ACTIVE'
+        this.editForm.status ||
+        'ACTIVE'
 
     };
 
@@ -457,14 +767,17 @@ export class EmployeeManagementComponent
     );
 
 
-    // ===============================================
+    // =================================================
     // PATCH API
-    // ===============================================
+    // =================================================
 
     this.employeeService
       .updateEmployee(
+
         this.selectedEmployee.email,
+
         payload
+
       )
       .subscribe({
 
@@ -483,7 +796,7 @@ export class EmployeeManagementComponent
 
 
           // -------------------------------------------
-          // Update employee in local array
+          // UPDATE LOCAL EMPLOYEE
           // -------------------------------------------
 
           const index =
@@ -503,7 +816,7 @@ export class EmployeeManagementComponent
 
 
           // -------------------------------------------
-          // Close modal
+          // CLOSE MODAL
           // -------------------------------------------
 
           this.updateLoading =
@@ -517,7 +830,7 @@ export class EmployeeManagementComponent
 
 
           // -------------------------------------------
-          // Optional: reload latest API data
+          // RELOAD FROM API
           // -------------------------------------------
 
           this.loadEmployees();
@@ -529,7 +842,9 @@ export class EmployeeManagementComponent
         // ERROR
         // =============================================
 
-        error: (error) => {
+        error: (
+          error: HttpErrorResponse
+        ) => {
 
           console.error(
             'PATCH EMPLOYEE ERROR:',
@@ -539,7 +854,11 @@ export class EmployeeManagementComponent
 
           this.updateError =
             error?.error?.responseMessage ||
+
             error?.error?.message ||
+
+            error?.message ||
+
             'Unable to update employee.';
 
 
@@ -554,7 +873,7 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // DELETE
+  // DELETE EMPLOYEE
   // =====================================================
 
   deleteEmployee(
@@ -566,6 +885,7 @@ export class EmployeeManagementComponent
       employee
     );
 
+
     /*
      * Delete API abhi available nahi hai.
      */
@@ -574,7 +894,7 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // FILTER
+  // FILTER EMPLOYEES
   // =====================================================
 
   get filteredEmployees(): Employee[] {
@@ -585,12 +905,20 @@ export class EmployeeManagementComponent
         .toLowerCase();
 
 
+    // -----------------------------------------------
+    // NO SEARCH
+    // -----------------------------------------------
+
     if (!search) {
 
       return this.employees;
 
     }
 
+
+    // -----------------------------------------------
+    // SEARCH EMPLOYEES
+    // -----------------------------------------------
 
     return this.employees.filter(
       employee => {
@@ -612,19 +940,25 @@ export class EmployeeManagementComponent
 
           ||
 
-          (employee.designation || '')
+          (
+            employee.designation || ''
+          )
             .toLowerCase()
             .includes(search)
 
           ||
 
-          (employee.departmentName || '')
+          (
+            employee.departmentName || ''
+          )
             .toLowerCase()
             .includes(search)
 
           ||
 
-          (employee.reportingManagerName || '')
+          (
+            employee.reportingManagerEmail || ''
+          )
             .toLowerCase()
             .includes(search)
 

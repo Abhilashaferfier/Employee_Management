@@ -1,8 +1,13 @@
 <div class="min-h-full bg-slate-50">
 
-  <!-- Header -->
 
-  <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+  <!-- ================================================= -->
+  <!-- HEADER -->
+  <!-- ================================================= -->
+
+  <div
+    class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+
 
     <div>
 
@@ -17,6 +22,10 @@
     </div>
 
 
+    <!-- ================================================= -->
+    <!-- APPLY LEAVE BUTTON -->
+    <!-- ================================================= -->
+
     <button
       type="button"
       (click)="applyLeave()"
@@ -28,18 +37,70 @@
 
     </button>
 
+
   </div>
 
 
-  <!-- Table -->
 
-  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+  <!-- ================================================= -->
+  <!-- ERROR MESSAGE -->
+  <!-- ================================================= -->
 
-    <div class="overflow-x-auto">
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
 
-      <table class="w-full text-left text-sm">
+    {{ errorMessage }}
 
-        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- TABLE -->
+  <!-- ================================================= -->
+
+  <div
+    class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+
+
+    <!-- ================================================= -->
+    <!-- LOADING -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="loading"
+      class="p-10 text-center text-sm text-slate-500">
+
+      <i
+        class="pi pi-spin pi-spinner mr-2">
+      </i>
+
+      Loading leave requests...
+
+    </div>
+
+
+
+    <!-- ================================================= -->
+    <!-- TABLE -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="!loading"
+      class="overflow-x-auto">
+
+
+      <table
+        class="w-full text-left text-sm">
+
+
+        <!-- ================================================= -->
+        <!-- TABLE HEADER -->
+        <!-- ================================================= -->
+
+        <thead
+          class="bg-blue-50 text-xs uppercase text-slate-500">
 
           <tr>
 
@@ -56,6 +117,10 @@
             </th>
 
             <th class="px-5 py-3">
+              Reason
+            </th>
+
+            <th class="px-5 py-3">
               Status
             </th>
 
@@ -64,28 +129,77 @@
         </thead>
 
 
-        <tbody class="divide-y divide-slate-100">
+
+        <!-- ================================================= -->
+        <!-- TABLE BODY -->
+        <!-- ================================================= -->
+
+        <tbody
+          class="divide-y divide-slate-100">
+
+
+          <!-- ================================================= -->
+          <!-- LEAVE ROW -->
+          <!-- ================================================= -->
 
           <tr
             *ngFor="let leave of leaveRequests"
             class="hover:bg-blue-50/50">
 
-            <td class="px-5 py-4 font-medium text-slate-700">
+
+            <!-- Leave Type -->
+
+            <td
+              class="px-5 py-4 font-medium text-slate-700">
+
               {{ leave.leaveType }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
+
+
+            <!-- From -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
               {{ leave.from }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
+
+
+            <!-- To -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
               {{ leave.to }}
+
             </td>
+
+
+
+            <!-- Reason -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ leave.reason }}
+
+            </td>
+
+
+
+            <!-- Status -->
 
             <td class="px-5 py-4">
 
+
+              <!-- PENDING -->
+
               <span
-                *ngIf="leave.status === 'Pending'"
+                *ngIf="leave.status === 'PENDING'"
                 class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
 
                 Pending
@@ -93,8 +207,11 @@
               </span>
 
 
+
+              <!-- APPROVED -->
+
               <span
-                *ngIf="leave.status === 'Approved'"
+                *ngIf="leave.status === 'APPROVED'"
                 class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
 
                 Approved
@@ -102,24 +219,303 @@
               </span>
 
 
+
+              <!-- REJECTED -->
+
               <span
-                *ngIf="leave.status === 'Rejected'"
+                *ngIf="leave.status === 'REJECTED'"
                 class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600">
 
                 Rejected
 
               </span>
 
+
             </td>
 
+
           </tr>
+
+
+
+          <!-- ================================================= -->
+          <!-- NO DATA -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="leaveRequests.length === 0">
+
+
+            <td
+              colspan="5"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              No leave requests found.
+
+            </td>
+
+
+          </tr>
+
 
         </tbody>
 
       </table>
 
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- ================================================= -->
+  <!-- APPLY LEAVE MODAL -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="applyModalVisible"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+
+
+    <div
+      class="w-full max-w-lg rounded-xl bg-white shadow-xl">
+
+
+      <!-- ================================================= -->
+      <!-- MODAL HEADER -->
+      <!-- ================================================= -->
+
+      <div
+        class="flex items-center justify-between border-b border-slate-200 px-6 py-4">
+
+
+        <div>
+
+          <h3
+            class="text-lg font-semibold text-slate-800">
+
+            Apply Leave
+
+          </h3>
+
+          <p
+            class="mt-1 text-xs text-slate-500">
+
+            Submit a new leave request.
+
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="closeApplyModal()"
+          [disabled]="applyLoading"
+          class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+
+          <i class="pi pi-times"></i>
+
+        </button>
+
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- ERROR -->
+      <!-- ================================================= -->
+
+      <div
+        *ngIf="applyError"
+        class="mx-6 mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+
+        {{ applyError }}
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- FORM -->
+      <!-- ================================================= -->
+
+      <div
+        class="grid grid-cols-1 gap-4 p-6">
+
+
+        <!-- ================================================= -->
+        <!-- LEAVE TYPE -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Leave Type
+
+          </label>
+
+
+          <select
+            [(ngModel)]="leaveForm.leaveType"
+            class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+
+            <option
+              value="">
+
+              Select Leave Type
+
+            </option>
+
+
+            <option
+              *ngFor="let type of leaveTypes"
+              [value]="type">
+
+              {{ type }}
+
+            </option>
+
+
+          </select>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- FROM -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            From
+
+          </label>
+
+
+          <input
+            type="date"
+            [(ngModel)]="leaveForm.from"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- TO -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            To
+
+          </label>
+
+
+          <input
+            type="date"
+            [(ngModel)]="leaveForm.to"
+            class="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- REASON -->
+        <!-- ================================================= -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700">
+
+            Reason
+
+          </label>
+
+
+          <textarea
+            [(ngModel)]="leaveForm.reason"
+            rows="4"
+            placeholder="Enter reason for leave..."
+            class="w-full resize-none rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+          </textarea>
+
+        </div>
+
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- MODAL FOOTER -->
+      <!-- ================================================= -->
+
+      <div
+        class="flex justify-end gap-3 border-t border-slate-200 px-6 py-4">
+
+
+        <!-- CANCEL -->
+
+        <button
+          type="button"
+          (click)="closeApplyModal()"
+          [disabled]="applyLoading"
+          class="rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+
+          Cancel
+
+        </button>
+
+
+
+        <!-- SUBMIT -->
+
+        <button
+          type="button"
+          (click)="submitLeave()"
+          [disabled]="applyLoading"
+          class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
+
+
+          <i
+            *ngIf="applyLoading"
+            class="pi pi-spin pi-spinner mr-2">
+          </i>
+
+
+          {{
+            applyLoading
+              ? 'Applying...'
+              : 'Apply Leave'
+          }}
+
+
+        </button>
+
+
+      </div>
+
+
     </div>
 
   </div>
+
 
 </div>

@@ -9,6 +9,7 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { LeaveRequestsComponent } from './leave-requests/leave-requests.component';
 import { PayslipsComponent } from './payslips/payslips.component';
 import { ReportsComponent } from './reports/reports.component';
+import { LeaveApprovalComponent } from './leave-approval/leave-approval.component';
 
 import { authGuard } from '../../guards/auth.guard';
 import { roleGuard } from '../../guards/role.guard';
@@ -67,6 +68,11 @@ const routes: Routes = [
       {
         path: 'reports',
         component: ReportsComponent
+      },
+
+      {
+        path: 'leave-approval',
+        component: LeaveApprovalComponent
       }
 
     ]

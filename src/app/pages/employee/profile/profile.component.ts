@@ -8,52 +8,93 @@ import {
 } from '@angular/common/http';
 
 import {
-  EmployeeService,
-  EmployeeProfile
-} from '../../../services/employee.service';
+  EmployeeService
+} from '../../../services/profile.service';
 
+
+// =====================================================
+// EMPLOYEE PROFILE INTERFACE
+// Only fields required by UI
+// =====================================================
+
+export interface EmployeeProfile {
+
+  id: string;
+
+  email: string;
+
+  firstName: string;
+
+  lastName: string;
+
+  departmentName: string | null;
+
+  designation: string | null;
+
+  dateOfJoining: string | null;
+
+  reportingManagerName: string | null;
+
+  status: string;
+
+}
+
+
+// =====================================================
+// COMPONENT
+// =====================================================
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+
+  selector:
+    'app-profile',
+
+  templateUrl:
+    './profile.component.html',
+
+  styleUrls:
+    ['./profile.component.css']
+
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent
+  implements OnInit {
 
 
-  // ==========================================
-  // EMPLOYEE DATA
-  // ==========================================
+  // =====================================================
+  // EMPLOYEE
+  // =====================================================
 
-  employee: EmployeeProfile | null = null;
+  employee:
+    EmployeeProfile | null = null;
 
 
-  // ==========================================
+  // =====================================================
   // LOADING
-  // ==========================================
+  // =====================================================
 
   loading = false;
 
 
-  // ==========================================
-  // ERROR MESSAGE
-  // ==========================================
+  // =====================================================
+  // ERROR
+  // =====================================================
 
   errorMessage = '';
 
 
-  // ==========================================
+  // =====================================================
   // CONSTRUCTOR
-  // ==========================================
+  // =====================================================
 
   constructor(
-    private employeeService: EmployeeService
+    private employeeService:
+      EmployeeService
   ) {}
 
 
-  // ==========================================
+  // =====================================================
   // ON INIT
-  // ==========================================
+  // =====================================================
 
   ngOnInit(): void {
 
@@ -62,9 +103,9 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  // ==========================================
-  // LOAD PROFILE
-  // ==========================================
+  // =====================================================
+  // LOAD LOGGED-IN USER PROFILE
+  // =====================================================
 
   loadProfile(): void {
 
@@ -73,33 +114,33 @@ export class ProfileComponent implements OnInit {
     this.errorMessage = '';
 
 
-    // ========================================
-    // GET USER ID FROM LOCAL STORAGE
-    // ========================================
+    // ===================================================
+    // GET LOGGED-IN USER EMAIL
+    // ===================================================
 
-    const userId =
-      localStorage.getItem('userId');
+    const loggedInEmail =
+      localStorage.getItem('email');
 
 
     console.log(
-      'Logged in User ID:',
-      userId
+      'Logged-in Email:',
+      loggedInEmail
     );
 
 
-    // ========================================
-    // USER ID NOT FOUND
-    // ========================================
+    // ===================================================
+    // EMAIL NOT FOUND
+    // ===================================================
 
-    if (!userId) {
+    if (!loggedInEmail) {
 
       this.loading = false;
 
       this.errorMessage =
-        'User ID not found. Please login again.';
+        'Logged-in user email not found. Please login again.';
 
       console.error(
-        'User ID not found in localStorage'
+        'Email not found in localStorage.'
       );
 
       return;
@@ -107,30 +148,78 @@ export class ProfileComponent implements OnInit {
     }
 
 
-    // ========================================
-    // API CALL
-    // ========================================
+    // ===================================================
+    // GET ALL EMPLOYEES FROM API
+    // ===================================================
 
     this.employeeService
-      .getEmployeeByUserId(userId)
+      .getAllEmployees()
       .subscribe({
 
-        // ====================================
+        // ===============================================
         // SUCCESS
-        // ====================================
+        // ===============================================
 
         next: (
-          response: EmployeeProfile
+          response: EmployeeProfile[]
         ) => {
 
           console.log(
-            'PROFILE RESPONSE:',
+            'ALL EMPLOYEES API RESPONSE:',
             response
           );
 
 
-          this.employee =
-            response;
+          // =============================================
+          // FIND LOGGED-IN USER
+          // =============================================
+
+          const loggedInEmployee =
+            response.find(
+              employee =>
+                employee.email
+                  ?.toLowerCase()
+                  .trim() ===
+                loggedInEmail
+                  .toLowerCase()
+                  .trim()
+            );
+
+
+          // =============================================
+          // USER FOUND
+          // =============================================
+
+          if (loggedInEmployee) {
+
+            this.employee =
+              loggedInEmployee;
+
+            console.log(
+              'LOGGED-IN EMPLOYEE:',
+              this.employee
+            );
+
+          }
+
+
+          // =============================================
+          // USER NOT FOUND
+          // =============================================
+
+          else {
+
+            this.employee = null;
+
+            this.errorMessage =
+              'Employee profile not found.';
+
+            console.error(
+              'No employee matched logged-in email:',
+              loggedInEmail
+            );
+
+          }
 
 
           this.loading = false;
@@ -138,9 +227,9 @@ export class ProfileComponent implements OnInit {
         },
 
 
-        // ====================================
+        // ===============================================
         // ERROR
-        // ====================================
+        // ===============================================
 
         error: (
           error: HttpErrorResponse
@@ -152,11 +241,16 @@ export class ProfileComponent implements OnInit {
           );
 
 
+          this.employee = null;
+
           this.loading = false;
 
 
           this.errorMessage =
+            error?.error?.responseMessage ||
+
             error?.error?.message ||
+
             'Unable to load profile.';
 
         }
@@ -166,9 +260,9 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  // ==========================================
+  // =====================================================
   // FULL NAME
-  // ==========================================
+  // =====================================================
 
   get fullName(): string {
 
@@ -184,16 +278,16 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  // ==========================================
+  // =====================================================
   // EDIT PROFILE
-  // ==========================================
+  // =====================================================
 
-  editProfile(): void {
+  // editProfile(): void {
 
-    console.log(
-      'Edit profile clicked'
-    );
+  //   console.log(
+  //     'Edit profile clicked'
+  //   );
 
-  }
+  // }
 
 }

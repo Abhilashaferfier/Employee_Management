@@ -14,6 +14,7 @@ import { AttendanceComponent } from './attendance/attendance.component';
 import { LeaveRequestsComponent } from './leave-requests/leave-requests.component';
 import { PayslipsComponent } from './payslips/payslips.component';
 import { ReportsComponent } from './reports/reports.component';
+import { LeaveApprovalComponent } from './leave-approval/leave-approval.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { ReportsComponent } from './reports/reports.component';
     AttendanceComponent,
     LeaveRequestsComponent,
     PayslipsComponent,
-    ReportsComponent
+    ReportsComponent,
+    LeaveApprovalComponent
   ],
   imports: [
     CommonModule,

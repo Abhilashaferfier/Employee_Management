@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 
@@ -38,6 +38,7 @@ import { UsersComponent } from './users/users.component';
     CommonModule,
     FormsModule,
     SharedModule,
+    AutoCompleteModule,
     AdminRoutingModule
   ]
 })

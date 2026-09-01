@@ -81,7 +81,7 @@
 
 
         <!-- ================================================= -->
-        <!-- TABLE HEADER -->
+        <!-- HEADER -->
         <!-- ================================================= -->
 
         <thead
@@ -128,7 +128,7 @@
 
 
         <!-- ================================================= -->
-        <!-- TABLE BODY -->
+        <!-- BODY -->
         <!-- ================================================= -->
 
         <tbody
@@ -139,13 +139,16 @@
           <!-- LOADING -->
           <!-- ================================================= -->
 
-          <tr *ngIf="loadingEmployees">
+          <tr
+            *ngIf="loadingEmployees">
 
             <td
               colspan="8"
               class="px-5 py-8 text-center text-sm text-slate-500">
 
-              <i class="pi pi-spin pi-spinner mr-2"></i>
+              <i
+                class="pi pi-spin pi-spinner mr-2">
+              </i>
 
               Loading employees...
 
@@ -156,7 +159,7 @@
 
 
           <!-- ================================================= -->
-          <!-- EMPLOYEE ROW -->
+          <!-- EMPLOYEE -->
           <!-- ================================================= -->
 
           <tr
@@ -164,9 +167,7 @@
             class="hover:bg-blue-50/50">
 
 
-            <!-- ================================================= -->
             <!-- NAME -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 font-medium text-slate-700">
@@ -178,9 +179,7 @@
 
 
 
-            <!-- ================================================= -->
             <!-- EMAIL -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 text-slate-500">
@@ -191,9 +190,7 @@
 
 
 
-            <!-- ================================================= -->
             <!-- DESIGNATION -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 text-slate-500">
@@ -204,9 +201,7 @@
 
 
 
-            <!-- ================================================= -->
             <!-- DEPARTMENT -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 text-slate-500">
@@ -217,9 +212,7 @@
 
 
 
-            <!-- ================================================= -->
-            <!-- DATE OF JOINING -->
-            <!-- ================================================= -->
+            <!-- DOJ -->
 
             <td
               class="px-5 py-4 text-slate-500">
@@ -230,22 +223,18 @@
 
 
 
-            <!-- ================================================= -->
             <!-- REPORTING MANAGER -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 text-slate-500">
 
-              {{ employee.reportingManagerName || '—' }}
+              {{ employee.reportingManagerEmail || '—' }}
 
             </td>
 
 
 
-            <!-- ================================================= -->
             <!-- STATUS -->
-            <!-- ================================================= -->
 
             <td class="px-5 py-4">
 
@@ -262,9 +251,7 @@
 
 
 
-            <!-- ================================================= -->
             <!-- ACTION -->
-            <!-- ================================================= -->
 
             <td
               class="px-5 py-4 text-center">
@@ -277,7 +264,9 @@
                 (click)="editEmployee(employee)"
                 class="mr-2 rounded-lg p-2 text-blue-600 hover:bg-blue-50">
 
-                <i class="pi pi-pencil"></i>
+                <i
+                  class="pi pi-pencil">
+                </i>
 
               </button>
 
@@ -289,10 +278,11 @@
                 (click)="deleteEmployee(employee)"
                 class="rounded-lg p-2 text-red-500 hover:bg-red-50">
 
-                <i class="pi pi-trash"></i>
+                <i
+                  class="pi pi-trash">
+                </i>
 
               </button>
-
 
             </td>
 
@@ -332,7 +322,7 @@
 
 
   <!-- ================================================= -->
-  <!-- EDIT EMPLOYEE MODAL -->
+  <!-- EDIT MODAL -->
   <!-- ================================================= -->
 
   <div
@@ -376,7 +366,9 @@
           [disabled]="updateLoading"
           class="rounded-lg p-2 text-slate-500 hover:bg-slate-100">
 
-          <i class="pi pi-times"></i>
+          <i
+            class="pi pi-times">
+          </i>
 
         </button>
 
@@ -471,23 +463,26 @@
 
           </label>
 
-          <select
-  [(ngModel)]="editForm.designation"
-  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
->
 
-  <option value="">
-    Select Designation
-  </option>
+          <p-autoComplete
 
-  <option
-    *ngFor="let designation of designations"
-    [value]="designation"
-  >
-    {{ designation }}
-  </option>
+            [(ngModel)]="editForm.designation"
 
-</select>
+            [suggestions]="filteredDesignations"
+
+            (completeMethod)="searchDesignations($event)"
+
+            [dropdown]="true"
+
+            [forceSelection]="true"
+
+            placeholder="Select Designation"
+
+            styleClass="w-full"
+
+            inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+          </p-autoComplete>
 
         </div>
 
@@ -506,23 +501,26 @@
 
           </label>
 
-          <select
-  [(ngModel)]="editForm.departmentName"
-  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
->
 
-  <option value="">
-    Select Department
-  </option>
+          <p-autoComplete
 
-  <option
-    *ngFor="let department of departments"
-    [value]="department"
-  >
-    {{ department }}
-  </option>
+            [(ngModel)]="editForm.departmentName"
 
-</select>
+            [suggestions]="filteredDepartments"
+
+            (completeMethod)="searchDepartments($event)"
+
+            [dropdown]="true"
+
+            [forceSelection]="true"
+
+            placeholder="Select Department"
+
+            styleClass="w-full"
+
+            inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+          </p-autoComplete>
 
         </div>
 
@@ -563,27 +561,26 @@
 
           </label>
 
-          <select
-  [(ngModel)]="editForm.reportingManagerId"
-  (change)="onReportingManagerChange()"
-  class="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
->
 
-  <option value="">
-    Select Reporting Manager
-  </option>
+          <p-autoComplete
 
-  <option
-    *ngFor="let manager of reportingManagers"
-    [value]="manager.id"
-  >
+            [(ngModel)]="editForm.reportingManagerEmail"
 
-    {{ manager.firstName }}
-    {{ manager.lastName }}
+            [suggestions]="filteredReportingManagers"
 
-  </option>
+            (completeMethod)="searchReportingManagers($event)"
 
-</select>
+            [dropdown]="true"
+
+            [forceSelection]="true"
+
+            placeholder="Select Reporting Manager"
+
+            styleClass="w-full"
+
+            inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+          </p-autoComplete>
 
         </div>
 
@@ -601,6 +598,7 @@
             Status
 
           </label>
+
 
           <select
             [(ngModel)]="editForm.status"
@@ -623,7 +621,21 @@
 
 
       <!-- ================================================= -->
-      <!-- MODAL FOOTER -->
+      <!-- UPDATE ERROR -->
+      <!-- ================================================= -->
+
+      <div
+        *ngIf="updateError"
+        class="mx-6 mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+
+        {{ updateError }}
+
+      </div>
+
+
+
+      <!-- ================================================= -->
+      <!-- FOOTER -->
       <!-- ================================================= -->
 
       <div
