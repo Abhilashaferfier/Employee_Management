@@ -10,7 +10,7 @@ import { AttendanceManagementComponent } from './attendance-management/attendanc
 import { PayrollComponent } from './payroll/payroll.component';
 import { ReportsComponent } from './reports/reports.component';
 import { RoleManagementComponent } from './role-management/role-management.component';
-
+import { UsersComponent } from './users/users.component';
 
 import { authGuard } from '../../guards/auth.guard';
 import { roleGuard } from '../../guards/role.guard';
@@ -35,7 +35,7 @@ const routes: Routes = [
       { path: 'payroll', component: PayrollComponent },
       { path: 'reports', component: ReportsComponent },
       { path: 'roles', component: RoleManagementComponent },
-     
+      { path: 'users', component: UsersComponent }
     ]
   }
 ];
