@@ -14,33 +14,6 @@ import {
 
 
 // =====================================================
-// LEAVE RESPONSE INTERFACE
-// =====================================================
-
-export interface LeaveApprovalResponse {
-
-  id: string;
-
-  name: string;
-
-  email: string;
-
-  requestedTo: string;
-
-  leaveType: string;
-
-  from: string;
-
-  to: string;
-
-  reason: string;
-
-  status: string;
-
-}
-
-
-// =====================================================
 // SERVICE
 // =====================================================
 
@@ -68,13 +41,12 @@ export class LeaveApprovalService {
 
 
   // =====================================================
-  // GET TEAM PENDING LEAVES
+  // EXISTING API
   // =====================================================
 
-  getPendingLeaves():
-    Observable<LeaveApprovalResponse[]> {
+  getPendingLeaves(): Observable<any[]> {
 
-    return this.http.get<LeaveApprovalResponse[]>(
+    return this.http.get<any[]>(
       `${this.apiUrl}/team/pending`
     );
 
@@ -82,14 +54,14 @@ export class LeaveApprovalService {
 
 
   // =====================================================
-  // REJECT LEAVE
+  // EXISTING API
   // =====================================================
 
   rejectLeave(
     leaveId: string
-  ): Observable<LeaveApprovalResponse> {
+  ): Observable<any> {
 
-    return this.http.patch<LeaveApprovalResponse>(
+    return this.http.patch<any>(
       `${this.apiUrl}/${leaveId}/reject`,
       {}
     );
@@ -98,28 +70,37 @@ export class LeaveApprovalService {
 
 
   // =====================================================
-  // APPROVE LEAVE
-  // =====================================================
-  //
-  // IMPORTANT:
-  // Backend API documentation says:
-  //
-  // PATCH /leaves/{user_id}/approve
-  //
-  // But GET /team/pending response does NOT contain user_id.
-  //
-  // So don't call this method until backend confirms
-  // which ID should be passed here.
-  //
+  // EXISTING API
   // =====================================================
 
   approveLeave(
     leaveId: string
-  ): Observable<LeaveApprovalResponse> {
+  ): Observable<any> {
 
-    return this.http.patch<LeaveApprovalResponse>(
+    return this.http.patch<any>(
       `${this.apiUrl}/${leaveId}/approve`,
       {}
+    );
+
+  }
+
+
+  // =====================================================
+  // NEW ADMIN API
+  // =====================================================
+  //
+  // GET:
+  // /api/v1/leaves/admin
+  //
+  // Ye PENDING + APPROVED + REJECTED
+  // sabhi leaves return karegi.
+  //
+  // =====================================================
+
+  getAllLeaves(): Observable<any[]> {
+
+    return this.http.get<any[]>(
+      `${this.apiUrl}/admin`
     );
 
   }

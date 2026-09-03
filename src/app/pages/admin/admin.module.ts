@@ -20,6 +20,7 @@ import { RoleManagementComponent } from './role-management/role-management.compo
 import { UsersComponent } from './users/users.component';
 
 
+
 @NgModule({
   declarations: [
     AdminLayoutComponent,
@@ -33,6 +34,7 @@ import { UsersComponent } from './users/users.component';
     ReportsComponent,
     RoleManagementComponent,
     UsersComponent
+    
   ],
   imports: [
     CommonModule,

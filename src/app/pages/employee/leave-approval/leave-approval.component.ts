@@ -1,3 +1,4 @@
+
 import {
   Component,
   OnInit
@@ -8,13 +9,55 @@ import {
 } from '@angular/common/http';
 
 import {
-  LeaveApprovalService,
-  LeaveApprovalResponse
+  LeaveApprovalService
 } from '../../../services/leave-approval.service';
 
 
 // =====================================================
+// BACKEND RESPONSE INTERFACE
+// =====================================================
+//
+// Ye interface pehle service file me tha.
+//
+// Ab service file se interface hata diya hai,
+// isliye Employee component me hi rakha gaya hai.
+//
+// Ye exactly backend API response ke according hai.
+//
+// =====================================================
+
+export interface LeaveApprovalResponse {
+
+  id: string;
+
+  name: string;
+
+  email: string;
+
+  requestedTo: string;
+
+  leaveType: string;
+
+  from: string;
+
+  to: string;
+
+  reason: string;
+
+  status: string;
+
+}
+
+
+// =====================================================
 // FRONTEND INTERFACE
+// =====================================================
+//
+// Backend me employee ka naam "name" hai.
+//
+// UI ke liye hum ise "employee" ke naam se
+// use kar rahe hain.
+//
 // =====================================================
 
 export interface LeaveApproval {
@@ -236,29 +279,73 @@ export class LeaveApprovalComponent
               .map(
                 leave => ({
 
+                  // =====================================
+                  // ID
+                  // =====================================
+
                   id:
                     leave.id,
+
+
+                  // =====================================
+                  // EMPLOYEE NAME
+                  // =====================================
 
                   employee:
                     leave.name,
 
+
+                  // =====================================
+                  // EMPLOYEE EMAIL
+                  // =====================================
+
                   email:
                     leave.email,
+
+
+                  // =====================================
+                  // REPORTING MANAGER
+                  // =====================================
 
                   requestedTo:
                     leave.requestedTo,
 
+
+                  // =====================================
+                  // LEAVE TYPE
+                  // =====================================
+
                   leaveType:
                     leave.leaveType,
+
+
+                  // =====================================
+                  // FROM DATE
+                  // =====================================
 
                   from:
                     leave.from,
 
+
+                  // =====================================
+                  // TO DATE
+                  // =====================================
+
                   to:
                     leave.to,
 
+
+                  // =====================================
+                  // REASON
+                  // =====================================
+
                   reason:
                     leave.reason,
+
+
+                  // =====================================
+                  // STATUS
+                  // =====================================
 
                   status:
                     leave.status
@@ -367,13 +454,11 @@ export class LeaveApprovalComponent
 
     // ===================================================
     // APPROVE API
-    //
-    // Backend API:
+    // ===================================================
     //
     // PATCH
     // /api/v1/leaves/{id}/approve
     //
-    // Here request.id is used.
     // ===================================================
 
     this.leaveService
@@ -413,7 +498,8 @@ export class LeaveApprovalComponent
 
 
           // ===========================================
-          // REMOVE APPROVED LEAVE FROM PENDING LIST
+          // REMOVE APPROVED LEAVE
+          // FROM PENDING LIST
           // ===========================================
 
           this.leaveRequests =
@@ -495,9 +581,11 @@ export class LeaveApprovalComponent
 
     // ===================================================
     // REJECT API
+    // ===================================================
     //
     // PATCH
     // /api/v1/leaves/{id}/reject
+    //
     // ===================================================
 
     this.leaveService
@@ -537,7 +625,8 @@ export class LeaveApprovalComponent
 
 
           // ===========================================
-          // REMOVE REJECTED LEAVE FROM PENDING LIST
+          // REMOVE REJECTED LEAVE
+          // FROM PENDING LIST
           // ===========================================
 
           this.leaveRequests =

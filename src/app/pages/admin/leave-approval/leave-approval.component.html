@@ -1,119 +1,397 @@
 <div class="min-h-full bg-slate-50">
 
+
+  <!-- =====================================================
+       PAGE HEADER
+  ====================================================== -->
+
   <div class="mb-6">
 
     <h2 class="text-2xl font-bold text-slate-800">
-      Leave Approval
+      Leave Requests
     </h2>
 
     <p class="mt-1 text-sm text-slate-500">
-      Review and approve employee leave requests.
+      View all employee leave requests.
     </p>
 
   </div>
 
 
-  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+  <!-- =====================================================
+       ERROR MESSAGE
+  ====================================================== -->
 
-    <div class="border-b border-slate-100 px-5 py-4">
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
 
-      <span class="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600">
+    {{ errorMessage }}
 
-        Pending {{ leaveRequests.length }}
+  </div>
 
-      </span>
+
+  <!-- =====================================================
+       STATUS SUMMARY
+  ====================================================== -->
+
+  <div class="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
+
+
+    <!-- ===================================================
+         PENDING
+    ==================================================== -->
+
+    <div
+      class="rounded-xl border border-orange-100 bg-white p-4 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Pending
+      </p>
+
+      <p class="mt-1 text-2xl font-bold text-orange-600">
+        {{ pendingCount }}
+      </p>
 
     </div>
 
 
-    <div class="overflow-x-auto">
+    <!-- ===================================================
+         APPROVED
+    ==================================================== -->
+
+    <div
+      class="rounded-xl border border-green-100 bg-white p-4 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Approved
+      </p>
+
+      <p class="mt-1 text-2xl font-bold text-green-600">
+        {{ approvedCount }}
+      </p>
+
+    </div>
+
+
+    <!-- ===================================================
+         REJECTED
+    ==================================================== -->
+
+    <div
+      class="rounded-xl border border-red-100 bg-white p-4 shadow-sm">
+
+      <p class="text-sm text-slate-500">
+        Rejected
+      </p>
+
+      <p class="mt-1 text-2xl font-bold text-red-600">
+        {{ rejectedCount }}
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       TABLE CARD
+  ====================================================== -->
+
+  <div
+    class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+
+
+    <!-- ===================================================
+         LOADING
+    ==================================================== -->
+
+    <div
+      *ngIf="loading"
+      class="px-5 py-10 text-center text-sm text-slate-500">
+
+      Loading leave requests...
+
+    </div>
+
+
+    <!-- ===================================================
+         TABLE
+    ==================================================== -->
+
+    <div
+      *ngIf="!loading"
+      class="overflow-x-auto">
 
       <table class="w-full text-left text-sm">
 
-        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+
+        <!-- =================================================
+             TABLE HEADER
+        ================================================== -->
+
+        <thead
+          class="bg-blue-50 text-xs uppercase text-slate-500">
 
           <tr>
 
-            <th class="px-4 py-3">Employee</th>
-            <th class="px-4 py-3">Leave Type</th>
-            <th class="px-4 py-3">From</th>
-            <th class="px-4 py-3">To</th>
-            <th class="px-4 py-3">Reason</th>
-            <th class="px-4 py-3">Action</th>
+
+            <!-- Employee -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Employee
+            </th>
+
+
+            <!-- Email -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Email
+            </th>
+
+
+            <!-- Reporting Manager -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Reporting Manager
+            </th>
+
+
+            <!-- Leave Type -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Leave Type
+            </th>
+
+
+            <!-- From -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              From
+            </th>
+
+
+            <!-- To -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              To
+            </th>
+
+
+            <!-- Reason -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Reason
+            </th>
+
+
+            <!-- Status -->
+
+            <th class="whitespace-nowrap px-4 py-3">
+              Status
+            </th>
+
 
           </tr>
 
         </thead>
 
-        <tbody class="divide-y divide-slate-100">
+
+        <!-- =================================================
+             TABLE BODY
+        ================================================== -->
+
+        <tbody
+          class="divide-y divide-slate-100">
+
+
+          <!-- =================================================
+               ALL LEAVE REQUESTS
+          ================================================== -->
 
           <tr
             *ngFor="let request of leaveRequests"
             class="hover:bg-blue-50/50">
 
-            <td class="px-4 py-4 font-medium text-slate-700">
+
+            <!-- ===============================================
+                 EMPLOYEE
+            ================================================ -->
+
+            <td
+              class="px-4 py-4 font-medium text-slate-700">
+
               {{ request.employee }}
+
             </td>
 
-            <td class="px-4 py-4 text-slate-500">
+
+            <!-- ===============================================
+                 EMAIL
+            ================================================ -->
+
+            <td
+              class="px-4 py-4 text-slate-500">
+
+              {{ request.email }}
+
+            </td>
+
+
+            <!-- ===============================================
+                 REPORTING MANAGER
+            ================================================ -->
+
+            <td
+              class="px-4 py-4 text-slate-500">
+
+              {{ request.requestedTo }}
+
+            </td>
+
+
+            <!-- ===============================================
+                 LEAVE TYPE
+            ================================================ -->
+
+            <td
+              class="px-4 py-4 text-slate-500">
+
               {{ request.leaveType }}
+
             </td>
 
-            <td class="px-4 py-4 text-slate-500">
+
+            <!-- ===============================================
+                 FROM
+            ================================================ -->
+
+            <td
+              class="whitespace-nowrap px-4 py-4 text-slate-500">
+
               {{ request.from }}
+
             </td>
 
-            <td class="px-4 py-4 text-slate-500">
+
+            <!-- ===============================================
+                 TO
+            ================================================ -->
+
+            <td
+              class="whitespace-nowrap px-4 py-4 text-slate-500">
+
               {{ request.to }}
+
             </td>
 
-            <td class="px-4 py-4 text-slate-500">
+
+            <!-- ===============================================
+                 REASON
+            ================================================ -->
+
+            <td
+              class="px-4 py-4 text-slate-500">
+
               {{ request.reason }}
+
             </td>
 
-            <td class="px-4 py-4">
 
-              <ng-container *ngIf="request.status === 'Pending'">
+            <!-- ===============================================
+                 STATUS
+            ================================================ -->
 
-                <button
-                  type="button"
-                  (click)="approve(request)"
-                  class="mr-2 rounded-lg bg-green-50 p-2 text-green-600 hover:bg-green-100">
+            <td
+              class="px-4 py-4">
 
-                  <i class="pi pi-check"></i>
 
-                </button>
-
-                <button
-                  type="button"
-                  (click)="reject(request)"
-                  class="rounded-lg bg-red-50 p-2 text-red-500 hover:bg-red-100">
-
-                  <i class="pi pi-times"></i>
-
-                </button>
-
-              </ng-container>
+              <!-- =============================================
+                   PENDING
+              ============================================== -->
 
               <span
-                *ngIf="request.status === 'Approved'"
-                class="text-xs font-medium text-green-600">
+                *ngIf="
+                  request.status?.toUpperCase() === 'PENDING'
+                "
+                class="rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600">
+
+                Pending
+
+              </span>
+
+
+              <!-- =============================================
+                   APPROVED
+              ============================================== -->
+
+              <span
+                *ngIf="
+                  request.status?.toUpperCase() === 'APPROVED'
+                "
+                class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
 
                 Approved
 
               </span>
 
+
+              <!-- =============================================
+                   REJECTED
+              ============================================== -->
+
               <span
-                *ngIf="request.status === 'Rejected'"
-                class="text-xs font-medium text-red-500">
+                *ngIf="
+                  request.status?.toUpperCase() === 'REJECTED'
+                "
+                class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600">
 
                 Rejected
 
               </span>
 
+
+              <!-- =============================================
+                   OTHER STATUS
+              ============================================== -->
+
+              <span
+                *ngIf="
+                  request.status &&
+                  request.status?.toUpperCase() !== 'PENDING' &&
+                  request.status?.toUpperCase() !== 'APPROVED' &&
+                  request.status?.toUpperCase() !== 'REJECTED'
+                "
+                class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600">
+
+                {{ request.status }}
+
+              </span>
+
+
+            </td>
+
+
+          </tr>
+
+
+          <!-- =================================================
+               NO DATA
+          ================================================== -->
+
+          <tr
+            *ngIf="leaveRequests.length === 0">
+
+            <td
+              colspan="8"
+              class="px-4 py-10 text-center text-sm text-slate-500">
+
+              No leave requests found.
+
             </td>
 
           </tr>
+
 
         </tbody>
 

@@ -8,12 +8,12 @@ import {
 } from '@angular/common/http';
 
 import {
-  EmployeeService
+  ProfileService,
 } from '../../../services/profile.service';
 
 
 // =====================================================
-// EMPLOYEE PROFILE INTERFACE
+// FRONTEND PROFILE INTERFACE
 // Only fields required by UI
 // =====================================================
 
@@ -33,7 +33,7 @@ export interface EmployeeProfile {
 
   dateOfJoining: string | null;
 
-  reportingManagerName: string | null;
+  reportingManagerEmail: string | null;
 
   status: string;
 
@@ -88,7 +88,7 @@ export class ProfileComponent
 
   constructor(
     private employeeService:
-      EmployeeService
+      ProfileService
   ) {}
 
 
@@ -113,47 +113,15 @@ export class ProfileComponent
 
     this.errorMessage = '';
 
-
-    // ===================================================
-    // GET LOGGED-IN USER EMAIL
-    // ===================================================
-
-    const loggedInEmail =
-      localStorage.getItem('email');
-
-
-    console.log(
-      'Logged-in Email:',
-      loggedInEmail
-    );
+    this.employee = null;
 
 
     // ===================================================
-    // EMAIL NOT FOUND
-    // ===================================================
-
-    if (!loggedInEmail) {
-
-      this.loading = false;
-
-      this.errorMessage =
-        'Logged-in user email not found. Please login again.';
-
-      console.error(
-        'Email not found in localStorage.'
-      );
-
-      return;
-
-    }
-
-
-    // ===================================================
-    // GET ALL EMPLOYEES FROM API
+    // CALL /employees/me API
     // ===================================================
 
     this.employeeService
-      .getAllEmployees()
+      .getMyProfile()
       .subscribe({
 
         // ===============================================
@@ -161,65 +129,55 @@ export class ProfileComponent
         // ===============================================
 
         next: (
-          response: EmployeeProfile[]
+          response: any
         ) => {
 
           console.log(
-            'ALL EMPLOYEES API RESPONSE:',
+            'MY PROFILE API RESPONSE:',
             response
           );
 
 
           // =============================================
-          // FIND LOGGED-IN USER
+          // MAP ONLY REQUIRED UI FIELDS
           // =============================================
 
-          const loggedInEmployee =
-            response.find(
-              employee =>
-                employee.email
-                  ?.toLowerCase()
-                  .trim() ===
-                loggedInEmail
-                  .toLowerCase()
-                  .trim()
-            );
+          this.employee = {
+
+            id:
+              response.id,
+
+            email:
+              response.email,
+
+            firstName:
+              response.firstName,
+
+            lastName:
+              response.lastName,
+
+            departmentName:
+              response.departmentName,
+
+            designation:
+              response.designation,
+
+            dateOfJoining:
+              response.dateOfJoining,
+
+            reportingManagerEmail:
+              response.reportingManagerEmail,
+
+            status:
+              response.status
+
+          };
 
 
-          // =============================================
-          // USER FOUND
-          // =============================================
-
-          if (loggedInEmployee) {
-
-            this.employee =
-              loggedInEmployee;
-
-            console.log(
-              'LOGGED-IN EMPLOYEE:',
-              this.employee
-            );
-
-          }
-
-
-          // =============================================
-          // USER NOT FOUND
-          // =============================================
-
-          else {
-
-            this.employee = null;
-
-            this.errorMessage =
-              'Employee profile not found.';
-
-            console.error(
-              'No employee matched logged-in email:',
-              loggedInEmail
-            );
-
-          }
+          console.log(
+            'LOGGED-IN EMPLOYEE PROFILE:',
+            this.employee
+          );
 
 
           this.loading = false;
@@ -276,18 +234,5 @@ export class ProfileComponent
     return `${this.employee.firstName} ${this.employee.lastName}`;
 
   }
-
-
-  // =====================================================
-  // EDIT PROFILE
-  // =====================================================
-
-  // editProfile(): void {
-
-  //   console.log(
-  //     'Edit profile clicked'
-  //   );
-
-  // }
 
 }

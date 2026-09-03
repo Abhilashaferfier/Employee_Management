@@ -1,57 +1,29 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {
-  HttpClient
-} from '@angular/common/http';
-
-import {
-  Observable
-} from 'rxjs';
-
-import {
-  environment
-} from '../../environments/environment';
-
-
-// =====================================================
-// EMPLOYEE SERVICE
-// =====================================================
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EmployeeService {
-
-
-  // =====================================================
-  // BASE API URL
-  // =====================================================
+export class ProfileService {
 
   private readonly apiUrl =
     `${environment.apiUrl}/employees`;
-
-
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
 
   constructor(
     private http: HttpClient
   ) {}
 
+  // ==========================================
+  // GET LOGGED-IN EMPLOYEE PROFILE
+  // ==========================================
 
-  // =====================================================
-  // GET ALL EMPLOYEES
-  // =====================================================
+  getMyProfile(): Observable<any> {
 
-  getAllEmployees(): Observable<any[]> {
-
-    return this.http.get<any[]>(
-      this.apiUrl
+    return this.http.get<any>(
+      `${this.apiUrl}/me`
     );
-
   }
-
 }

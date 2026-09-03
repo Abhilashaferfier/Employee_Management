@@ -1,46 +1,339 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core';
 
-interface Role {
-  name: string;
-  description: string;
-  employees: number;
-  status: string;
-}
+import {
+  AdminService,
+  AdminUser,
+  UserAccessRequest
+} from '../../../services/rolemanagement.service';
+
 
 @Component({
   selector: 'app-role-management',
-  templateUrl: './role-management.component.html',
-  styleUrls: ['./role-management.component.css']
+
+  templateUrl:
+    './role-management.component.html',
+
+  styleUrls: [
+    './role-management.component.css'
+  ]
 })
-export class RoleManagementComponent {
+export class RoleManagementComponent
+  implements OnInit {
 
-  roles: Role[] = [
-    {
-      name: 'Admin',
-      description: 'Full system access',
-      employees: 2,
-      status: 'Active'
-    },
-    {
-      name: 'HR Manager',
-      description: 'Manage employees and leaves',
-      employees: 4,
-      status: 'Active'
-    },
-    {
-      name: 'Employee',
-      description: 'Employee portal access',
-      employees: 114,
-      status: 'Active'
-    }
-  ];
 
-  addRole(): void {
-    console.log('Add role');
+  // =====================================================
+  // USERS FROM API
+  // =====================================================
+
+  users: AdminUser[] = [];
+
+
+  // =====================================================
+  // LOADING
+  // =====================================================
+
+  loading = false;
+
+  updatingAccess = false;
+
+
+  // =====================================================
+  // MESSAGES
+  // =====================================================
+
+  errorMessage = '';
+
+  successMessage = '';
+
+
+  // =====================================================
+  // SELECTED USER
+  // =====================================================
+
+  selectedUser: AdminUser | null = null;
+
+
+  // =====================================================
+  // SELECTED ACCESS
+  // =====================================================
+
+  selectedIsAdmin = false;
+
+  selectedIsEmployee = false;
+
+
+  constructor(
+    private adminService: AdminService
+  ) {}
+
+
+  // =====================================================
+  // INITIALIZE
+  // =====================================================
+
+  ngOnInit(): void {
+
+    this.loadUsers();
+
   }
 
-  editRole(role: Role): void {
-    console.log('Edit role:', role);
+
+  // =====================================================
+  // GET ALL USERS
+  // =====================================================
+
+  loadUsers(): void {
+
+    this.loading = true;
+
+    this.errorMessage = '';
+
+
+    this.adminService
+      .getAllUsers()
+      .subscribe({
+
+        // ===============================================
+        // SUCCESS
+        // ===============================================
+
+        next: (response) => {
+
+          console.log(
+            'GET USERS RESPONSE:',
+            response
+          );
+
+
+          this.users = response;
+
+          this.loading = false;
+
+        },
+
+
+        // ===============================================
+        // ERROR
+        // ===============================================
+
+        error: (error) => {
+
+          console.error(
+            'GET USERS ERROR:',
+            error
+          );
+
+
+          this.loading = false;
+
+
+          this.errorMessage =
+            error?.error?.message ||
+            'Unable to load users.';
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // OPEN ACCESS MODAL
+  // =====================================================
+
+  selectUser(
+    user: AdminUser
+  ): void {
+
+    this.selectedUser = user;
+
+
+    // Current values API se
+    // modal me automatically aa jayengi
+
+    this.selectedIsAdmin =
+      user.isAdmin;
+
+
+    this.selectedIsEmployee =
+      user.isEmployee;
+
+
+    this.errorMessage = '';
+
+    this.successMessage = '';
+
+  }
+
+
+  // =====================================================
+  // CLOSE MODAL
+  // =====================================================
+
+  closeModal(): void {
+
+    this.selectedUser = null;
+
+  }
+
+
+  // =====================================================
+  // SAVE ACCESS
+  // =====================================================
+
+  saveAccess(): void {
+
+    // -----------------------------------------------
+    // Safety
+    // -----------------------------------------------
+
+    if (!this.selectedUser) {
+
+      return;
+
+    }
+
+
+    this.updatingAccess = true;
+
+    this.errorMessage = '';
+
+    this.successMessage = '';
+
+
+    // -----------------------------------------------
+    // REQUEST BODY
+    // -----------------------------------------------
+
+    const access: UserAccessRequest = {
+
+      isAdmin:
+        this.selectedIsAdmin,
+
+      isEmployee:
+        this.selectedIsEmployee
+
+    };
+
+
+    console.log(
+      'ACCESS UPDATE REQUEST:',
+      access
+    );
+
+
+    // -----------------------------------------------
+    // PATCH API
+    // -----------------------------------------------
+
+    this.adminService
+      .updateUserAccess(
+        this.selectedUser.email,
+        access
+      )
+      .subscribe({
+
+        // ===========================================
+        // SUCCESS
+        // ===========================================
+
+        next: (response) => {
+
+          console.log(
+            'ACCESS UPDATE RESPONSE:',
+            response
+          );
+
+
+          this.updatingAccess = false;
+
+
+          this.successMessage =
+            response.message ||
+            'User access updated successfully.';
+
+
+          // -----------------------------------------
+          // CLOSE MODAL
+          // -----------------------------------------
+
+          this.selectedUser = null;
+
+
+          // -----------------------------------------
+          // GET UPDATED USERS
+          // -----------------------------------------
+
+          this.loadUsers();
+
+        },
+
+
+        // ===========================================
+        // ERROR
+        // ===========================================
+
+        error: (error) => {
+
+          console.error(
+            'UPDATE ACCESS ERROR:',
+            error
+          );
+
+
+          this.updatingAccess = false;
+
+
+          this.errorMessage =
+            error?.error?.message ||
+            'Unable to update user access.';
+
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // ROLE LABEL
+  // =====================================================
+
+  getRoleLabel(
+    user: AdminUser
+  ): string {
+
+
+    if (
+      user.isAdmin &&
+      user.isEmployee
+    ) {
+
+      return 'Admin + Employee';
+
+    }
+
+
+    if (user.isAdmin) {
+
+      return 'Admin';
+
+    }
+
+
+    if (user.isEmployee) {
+
+      return 'Employee';
+
+    }
+
+
+    return 'No Access';
+
   }
 
 }

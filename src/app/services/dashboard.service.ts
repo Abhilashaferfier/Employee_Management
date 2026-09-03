@@ -68,46 +68,5 @@ export class DashboardService {
   }
 
 
-  // =====================================================
-  // FUTURE DASHBOARD APIs
-  // =====================================================
-
-  /*
-   * Jab Present Today API milegi:
-   *
-   * getPresentToday(): Observable<number> {
-   *
-   *   return this.http.get<number>(
-   *     `${this.apiUrl}/attendance/present-today`
-   *   );
-   *
-   * }
-   */
-
-
-  /*
-   * Jab Pending Leaves API milegi:
-   *
-   * getPendingLeaves(): Observable<number> {
-   *
-   *   return this.http.get<number>(
-   *     `${this.apiUrl}/leave/pending-count`
-   *   );
-   *
-   * }
-   */
-
-
-  /*
-   * Jab Payroll API milegi:
-   *
-   * getPendingPayroll(): Observable<number> {
-   *
-   *   return this.http.get<number>(
-   *     `${this.apiUrl}/payroll/pending-count`
-   *   );
-   *
-   * }
-   */
-
+  
 }
