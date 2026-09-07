@@ -13,9 +13,6 @@ import {
 } from '../../environments/environment';
 
 
-// =====================================================
-// SERVICE
-// =====================================================
 
 @Injectable({
   providedIn: 'root'
@@ -23,27 +20,19 @@ import {
 export class LeaveApprovalService {
 
 
-  // =====================================================
-  // BASE API URL
-  // =====================================================
+
 
   private readonly apiUrl =
     `${environment.apiUrl}/leaves`;
 
 
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
 
   constructor(
     private http: HttpClient
   ) {}
 
 
-  // =====================================================
-  // EXISTING API
-  // =====================================================
-
+  
   getPendingLeaves(): Observable<any[]> {
 
     return this.http.get<any[]>(
@@ -53,10 +42,7 @@ export class LeaveApprovalService {
   }
 
 
-  // =====================================================
-  // EXISTING API
-  // =====================================================
-
+  
   rejectLeave(
     leaveId: string
   ): Observable<any> {
@@ -69,9 +55,7 @@ export class LeaveApprovalService {
   }
 
 
-  // =====================================================
-  // EXISTING API
-  // =====================================================
+  
 
   approveLeave(
     leaveId: string
@@ -85,18 +69,7 @@ export class LeaveApprovalService {
   }
 
 
-  // =====================================================
-  // NEW ADMIN API
-  // =====================================================
-  //
-  // GET:
-  // /api/v1/leaves/admin
-  //
-  // Ye PENDING + APPROVED + REJECTED
-  // sabhi leaves return karegi.
-  //
-  // =====================================================
-
+  
   getAllLeaves(): Observable<any[]> {
 
     return this.http.get<any[]>(

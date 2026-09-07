@@ -60,6 +60,39 @@ export class RoleSelectionComponent
 
 
     // ================================================
+    // TOKEN CHECK
+    // ================================================
+
+    const token =
+      localStorage.getItem(
+        'token'
+      );
+
+
+    // ================================================
+    // USER NOT LOGGED IN
+    // ================================================
+
+    if (
+      !token ||
+      token.trim() === ''
+    ) {
+
+      console.log(
+        'User not logged in. Redirecting to login.'
+      );
+
+
+      this.router.navigate([
+        '/login'
+      ]);
+
+      return;
+
+    }
+
+
+    // ================================================
     // GET ADMIN ACCESS
     // ================================================
 
@@ -110,6 +143,10 @@ export class RoleSelectionComponent
     // ================================================
     // NO ROLE
     // ================================================
+    //
+    // Viewer is default dashboard
+    //
+    // ================================================
 
     if (
       !this.isAdmin &&
@@ -117,12 +154,12 @@ export class RoleSelectionComponent
     ) {
 
       console.log(
-        'No access. Redirecting login.'
+        'No Admin or Employee role. Redirecting to Viewer.'
       );
 
 
       this.router.navigate([
-        '/login'
+        '/viewer/dashboard'
       ]);
 
       return;
@@ -131,82 +168,24 @@ export class RoleSelectionComponent
 
 
     // ================================================
-    // ONLY ADMIN
+    // USER HAS AT LEAST ONE ROLE
     // ================================================
-
-    if (
-      this.isAdmin &&
-      !this.isEmployee
-    ) {
-
-      console.log(
-        'Only Admin access.'
-      );
-
-
-      this.router.navigate([
-        '/admin/dashboard'
-      ]);
-
-      return;
-
-    }
-
-
+    //
+    // IMPORTANT:
+    //
+    // Admin only
+    // Employee only
+    // Admin + Employee
+    //
+    // Sab cases me user isi page par rahega.
+    //
+    // HTML conditions ke according:
+    //
+    // Viewer Card = Always
+    // Admin Card = isAdmin true
+    // Employee Card = isEmployee true
+    //
     // ================================================
-    // ONLY EMPLOYEE
-    // ================================================
-
-    if (
-      !this.isAdmin &&
-      this.isEmployee
-    ) {
-
-      console.log(
-        'Only Employee access.'
-      );
-
-
-      this.router.navigate([
-        '/employee/dashboard'
-      ]);
-
-      return;
-
-    }
-
-
-    // ================================================
-    // BOTH ROLES
-    // ================================================
-
-    if (
-      this.isAdmin &&
-      this.isEmployee
-    ) {
-
-      console.log(
-        'Admin + Employee access.'
-      );
-
-
-      /*
-       * IMPORTANT:
-       *
-       * Yahan koi navigation nahi hai.
-       *
-       * User isi page par rahega.
-       *
-       * HTML automatically dono cards
-       * show karega because:
-       *
-       * isAdmin = true
-       * isEmployee = true
-       */
-
-      return;
-
-    }
 
   }
 
@@ -216,8 +195,34 @@ export class RoleSelectionComponent
   // ==================================================
 
   selectRole(
-    role: 'ADMIN' | 'EMPLOYEE'
+    role:
+      | 'VIEWER'
+      | 'ADMIN'
+      | 'EMPLOYEE'
   ): void {
+
+
+    // ==================================================
+    // VIEWER
+    // ==================================================
+
+    if (
+      role === 'VIEWER'
+    ) {
+
+      localStorage.setItem(
+        'selectedRole',
+        'VIEWER'
+      );
+
+
+      this.router.navigate([
+        '/viewer/dashboard'
+      ]);
+
+      return;
+
+    }
 
 
     // ==================================================
@@ -228,6 +233,10 @@ export class RoleSelectionComponent
       role === 'ADMIN'
     ) {
 
+      // ----------------------------------------------
+      // ADMIN ACCESS CHECK
+      // ----------------------------------------------
+
       if (
         !this.isAdmin
       ) {
@@ -237,11 +246,19 @@ export class RoleSelectionComponent
       }
 
 
+      // ----------------------------------------------
+      // SAVE SELECTED ROLE
+      // ----------------------------------------------
+
       localStorage.setItem(
         'selectedRole',
         'ADMIN'
       );
 
+
+      // ----------------------------------------------
+      // NAVIGATE
+      // ----------------------------------------------
 
       this.router.navigate([
         '/admin/dashboard'
@@ -260,6 +277,10 @@ export class RoleSelectionComponent
       role === 'EMPLOYEE'
     ) {
 
+      // ----------------------------------------------
+      // EMPLOYEE ACCESS CHECK
+      // ----------------------------------------------
+
       if (
         !this.isEmployee
       ) {
@@ -269,11 +290,19 @@ export class RoleSelectionComponent
       }
 
 
+      // ----------------------------------------------
+      // SAVE SELECTED ROLE
+      // ----------------------------------------------
+
       localStorage.setItem(
         'selectedRole',
         'EMPLOYEE'
       );
 
+
+      // ----------------------------------------------
+      // NAVIGATE
+      // ----------------------------------------------
 
       this.router.navigate([
         '/employee/dashboard'

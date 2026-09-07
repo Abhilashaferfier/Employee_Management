@@ -4,9 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 
-// =====================================================
-// USER RESPONSE
-// =====================================================
 
 export interface AdminUser {
 
@@ -25,9 +22,7 @@ export interface AdminUser {
 }
 
 
-// =====================================================
-// ACCESS REQUEST
-// =====================================================
+
 
 export interface UserAccessRequest {
 
@@ -38,9 +33,7 @@ export interface UserAccessRequest {
 }
 
 
-// =====================================================
-// ACCESS RESPONSE
-// =====================================================
+
 
 export interface UserAccessResponse {
 
@@ -64,10 +57,7 @@ export interface UserAccessResponse {
 })
 export class AdminService {
 
-  // =====================================================
-  // BASE API URL
-  // =====================================================
-
+  
   private readonly apiUrl =
     `${environment.apiUrl}/admin`;
 
@@ -77,9 +67,7 @@ export class AdminService {
   ) {}
 
 
-  // =====================================================
-  // GET ALL USERS
-  // =====================================================
+  
 
   getAllUsers(): Observable<AdminUser[]> {
 
@@ -90,9 +78,7 @@ export class AdminService {
   }
 
 
-  // =====================================================
-  // UPDATE USER ACCESS
-  // =====================================================
+  
 
   updateUserAccess(
     email: string,

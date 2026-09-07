@@ -12,13 +12,6 @@ import {
 } from '../../../services/employee-management.service';
 
 
-// =====================================================
-// EMPLOYEE INTERFACE
-// =====================================================
-// Backend se aane wale sirf wahi fields rakhe hain
-// jo frontend me actually required hain.
-// =====================================================
-
 export interface Employee {
 
   id: string;
@@ -41,10 +34,6 @@ export interface Employee {
 
 }
 
-
-// =====================================================
-// COMPONENT
-// =====================================================
 
 @Component({
 
@@ -74,6 +63,15 @@ export class EmployeeManagementComponent
   // =====================================================
 
   searchText = '';
+
+
+  // =====================================================
+  // PAGINATION
+  // =====================================================
+
+  currentPage = 1;
+
+  itemsPerPage = 8;
 
 
   // =====================================================
@@ -110,10 +108,7 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // DEPARTMENT OPTIONS
-  // =====================================================
-  // Ye frontend se aa rahe hain.
-  // Iske liye backend API nahi hai.
+  // DEPARTMENTS
   // =====================================================
 
   departments: string[] = [
@@ -147,9 +142,7 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // DESIGNATION OPTIONS
-  // =====================================================
-  // Ye bhi frontend list hai.
+  // DESIGNATIONS
   // =====================================================
 
   designations: string[] = [
@@ -189,16 +182,14 @@ export class EmployeeManagementComponent
 
 
   // =====================================================
-  // REPORTING MANAGER EMAIL LIST
-  // =====================================================
-  // Employees API se emails nikali jayengi.
+  // REPORTING MANAGERS
   // =====================================================
 
   reportingManagerEmails: string[] = [];
 
 
   // =====================================================
-  // FILTERED REPORTING MANAGER EMAILS
+  // FILTERED REPORTING MANAGERS
   // =====================================================
 
   filteredReportingManagers: string[] = [];
@@ -228,10 +219,6 @@ export class EmployeeManagementComponent
 
   };
 
-
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
 
   constructor(
     private employeeService:
@@ -265,10 +252,6 @@ export class EmployeeManagementComponent
       .getAllEmployees()
       .subscribe({
 
-        // =================================================
-        // SUCCESS
-        // =================================================
-
         next: (
           response: Employee[]
         ) => {
@@ -278,10 +261,6 @@ export class EmployeeManagementComponent
             response
           );
 
-
-          // -----------------------------------------------
-          // STORE EMPLOYEES
-          // -----------------------------------------------
 
           this.employees =
             (response || []).map(
@@ -318,18 +297,23 @@ export class EmployeeManagementComponent
             );
 
 
-          // -----------------------------------------------
-          // CREATE REPORTING MANAGER EMAIL LIST
-          // -----------------------------------------------
+          // =================================================
+          // RESET PAGINATION
+          // =================================================
+
+          this.currentPage = 1;
+
+
+          // =================================================
+          // CREATE REPORTING MANAGER LIST
+          // =================================================
 
           this.reportingManagerEmails =
             this.employees
-
               .map(
                 employee =>
                   employee.email
               )
-
               .filter(
                 (
                   email
@@ -338,9 +322,9 @@ export class EmployeeManagementComponent
               );
 
 
-          // -----------------------------------------------
-          // REMOVE DUPLICATE EMAILS
-          // -----------------------------------------------
+          // =================================================
+          // REMOVE DUPLICATES
+          // =================================================
 
           this.reportingManagerEmails =
             [
@@ -350,9 +334,9 @@ export class EmployeeManagementComponent
             ];
 
 
-          // -----------------------------------------------
-          // INITIAL REPORTING MANAGER OPTIONS
-          // -----------------------------------------------
+          // =================================================
+          // SET FILTERED MANAGERS
+          // =================================================
 
           this.filteredReportingManagers =
             [
@@ -360,19 +344,11 @@ export class EmployeeManagementComponent
             ];
 
 
-          // -----------------------------------------------
-          // LOADING COMPLETE
-          // -----------------------------------------------
-
           this.loadingEmployees =
             false;
 
         },
 
-
-        // =================================================
-        // ERROR
-        // =================================================
 
         error: (
           error: HttpErrorResponse
@@ -384,20 +360,12 @@ export class EmployeeManagementComponent
           );
 
 
-          // -----------------------------------------------
-          // CLEAR DATA
-          // -----------------------------------------------
-
           this.employees = [];
 
           this.reportingManagerEmails = [];
 
           this.filteredReportingManagers = [];
 
-
-          // -----------------------------------------------
-          // ERROR MESSAGE
-          // -----------------------------------------------
 
           this.errorMessage =
             error?.error?.responseMessage ||
@@ -409,16 +377,406 @@ export class EmployeeManagementComponent
             'Unable to load employees.';
 
 
-          // -----------------------------------------------
-          // LOADING COMPLETE
-          // -----------------------------------------------
-
           this.loadingEmployees =
             false;
 
         }
 
       });
+
+  }
+
+
+  // =====================================================
+  // SEARCH
+  // =====================================================
+
+  onSearch(): void {
+
+    this.currentPage = 1;
+
+  }
+
+
+  // =====================================================
+  // FILTER EMPLOYEES
+  // =====================================================
+
+  get filteredEmployees(): Employee[] {
+
+    const search =
+      this.searchText
+        .trim()
+        .toLowerCase();
+
+
+    if (!search) {
+
+      return this.employees;
+
+    }
+
+
+    return this.employees.filter(
+      employee => {
+
+        const name =
+          `${employee.firstName} ${employee.lastName}`
+            .toLowerCase();
+
+
+        return (
+
+          name.includes(search)
+
+          ||
+
+          (employee.email || '')
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (employee.designation || '')
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (employee.departmentName || '')
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (employee.reportingManagerEmail || '')
+            .toLowerCase()
+            .includes(search)
+
+          ||
+
+          (employee.status || '')
+            .toLowerCase()
+            .includes(search)
+
+        );
+
+      }
+    );
+
+  }
+
+
+  // =====================================================
+  // TOTAL PAGES
+  // =====================================================
+
+  get totalPages(): number {
+
+    return Math.max(
+
+      1,
+
+      Math.ceil(
+        this.filteredEmployees.length /
+        this.itemsPerPage
+      )
+
+    );
+
+  }
+
+
+  // =====================================================
+  // PAGINATED EMPLOYEES
+  // =====================================================
+
+  get paginatedEmployees(): Employee[] {
+
+    const startIndex =
+
+      (
+        this.currentPage - 1
+      )
+
+      *
+
+      this.itemsPerPage;
+
+
+    const endIndex =
+
+      startIndex +
+
+      this.itemsPerPage;
+
+
+    return this.filteredEmployees.slice(
+
+      startIndex,
+
+      endIndex
+
+    );
+
+  }
+
+
+  // =====================================================
+  // START ITEM
+  // =====================================================
+
+  get startItem(): number {
+
+    if (
+      this.filteredEmployees.length === 0
+    ) {
+
+      return 0;
+
+    }
+
+
+    return (
+
+      (
+        this.currentPage - 1
+      )
+
+      *
+
+      this.itemsPerPage
+
+    )
+
+    +
+
+    1;
+
+  }
+
+
+  // =====================================================
+  // END ITEM
+  // =====================================================
+
+  get endItem(): number {
+
+    return Math.min(
+
+      this.currentPage *
+
+      this.itemsPerPage,
+
+      this.filteredEmployees.length
+
+    );
+
+  }
+
+
+  // =====================================================
+  // GO TO PAGE
+  // =====================================================
+
+  goToPage(
+    page: number
+  ): void {
+
+    if (
+
+      page < 1 ||
+
+      page > this.totalPages
+
+    ) {
+
+      return;
+
+    }
+
+
+    this.currentPage = page;
+
+  }
+
+
+  // =====================================================
+  // NEXT PAGE
+  // =====================================================
+
+  nextPage(): void {
+
+    if (
+      this.currentPage <
+      this.totalPages
+    ) {
+
+      this.currentPage++;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // PREVIOUS PAGE
+  // =====================================================
+
+  previousPage(): void {
+
+    if (
+      this.currentPage > 1
+    ) {
+
+      this.currentPage--;
+
+    }
+
+  }
+
+
+  // =====================================================
+  // VISIBLE PAGE NUMBERS
+  //
+  // Example:
+  //
+  // Previous 1 2 3 ... 10 Next
+  //
+  // =====================================================
+
+  get visiblePages(): number[] {
+
+    const pages: number[] = [];
+
+
+    // ===================================================
+    // 7 OR LESS PAGES
+    // ===================================================
+
+    if (
+      this.totalPages <= 7
+    ) {
+
+      for (
+
+        let i = 1;
+
+        i <= this.totalPages;
+
+        i++
+
+      ) {
+
+        pages.push(i);
+
+      }
+
+
+      return pages;
+
+    }
+
+
+    // ===================================================
+    // FIRST PAGE
+    // ===================================================
+
+    pages.push(1);
+
+
+    // ===================================================
+    // NEAR START
+    // ===================================================
+
+    if (
+      this.currentPage <= 4
+    ) {
+
+      pages.push(2);
+
+      pages.push(3);
+
+      pages.push(4);
+
+      pages.push(5);
+
+      pages.push(-1);
+
+      pages.push(
+        this.totalPages
+      );
+
+
+      return pages;
+
+    }
+
+
+    // ===================================================
+    // NEAR END
+    // ===================================================
+
+    if (
+      this.currentPage >=
+      this.totalPages - 3
+    ) {
+
+      pages.push(-1);
+
+
+      for (
+
+        let i =
+          this.totalPages - 4;
+
+        i <= this.totalPages;
+
+        i++
+
+      ) {
+
+        pages.push(i);
+
+      }
+
+
+      return pages;
+
+    }
+
+
+    // ===================================================
+    // MIDDLE
+    // ===================================================
+
+    pages.push(-1);
+
+
+    pages.push(
+      this.currentPage - 1
+    );
+
+
+    pages.push(
+      this.currentPage
+    );
+
+
+    pages.push(
+      this.currentPage + 1
+    );
+
+
+    pages.push(-1);
+
+
+    pages.push(
+      this.totalPages
+    );
+
+
+    return pages;
 
   }
 
@@ -439,10 +797,6 @@ export class EmployeeManagementComponent
         .trim();
 
 
-    // -----------------------------------------------
-    // SHOW ALL
-    // -----------------------------------------------
-
     if (!query) {
 
       this.filteredDepartments =
@@ -454,10 +808,6 @@ export class EmployeeManagementComponent
 
     }
 
-
-    // -----------------------------------------------
-    // SEARCH
-    // -----------------------------------------------
 
     this.filteredDepartments =
       this.departments.filter(
@@ -486,10 +836,6 @@ export class EmployeeManagementComponent
         .trim();
 
 
-    // -----------------------------------------------
-    // SHOW ALL
-    // -----------------------------------------------
-
     if (!query) {
 
       this.filteredDesignations =
@@ -501,10 +847,6 @@ export class EmployeeManagementComponent
 
     }
 
-
-    // -----------------------------------------------
-    // SEARCH
-    // -----------------------------------------------
 
     this.filteredDesignations =
       this.designations.filter(
@@ -533,10 +875,6 @@ export class EmployeeManagementComponent
         .trim();
 
 
-    // -----------------------------------------------
-    // SHOW ALL EMAILS
-    // -----------------------------------------------
-
     if (!query) {
 
       this.filteredReportingManagers =
@@ -548,10 +886,6 @@ export class EmployeeManagementComponent
 
     }
 
-
-    // -----------------------------------------------
-    // SEARCH EMAIL
-    // -----------------------------------------------
 
     this.filteredReportingManagers =
       this.reportingManagerEmails.filter(
@@ -578,17 +912,9 @@ export class EmployeeManagementComponent
     );
 
 
-    // -----------------------------------------------
-    // SAVE SELECTED EMPLOYEE
-    // -----------------------------------------------
-
     this.selectedEmployee =
       employee;
 
-
-    // -----------------------------------------------
-    // PREFILL EDIT FORM
-    // -----------------------------------------------
 
     this.editForm = {
 
@@ -619,16 +945,8 @@ export class EmployeeManagementComponent
     };
 
 
-    // -----------------------------------------------
-    // RESET ERROR
-    // -----------------------------------------------
-
     this.updateError = '';
 
-
-    // -----------------------------------------------
-    // OPEN MODAL
-    // -----------------------------------------------
 
     this.editModalVisible =
       true;
@@ -641,10 +959,6 @@ export class EmployeeManagementComponent
   // =====================================================
 
   closeEditModal(): void {
-
-    // -----------------------------------------------
-    // DO NOT CLOSE DURING UPDATE
-    // -----------------------------------------------
 
     if (this.updateLoading) {
 
@@ -673,10 +987,6 @@ export class EmployeeManagementComponent
 
   updateEmployee(): void {
 
-    // -----------------------------------------------
-    // CHECK SELECTED EMPLOYEE
-    // -----------------------------------------------
-
     if (!this.selectedEmployee) {
 
       return;
@@ -684,20 +994,13 @@ export class EmployeeManagementComponent
     }
 
 
-    // -----------------------------------------------
-    // VALIDATION
-    // -----------------------------------------------
-
     if (
 
-      !this.editForm.firstName
-        .trim() ||
+      !this.editForm.firstName.trim() ||
 
-      !this.editForm.lastName
-        .trim() ||
+      !this.editForm.lastName.trim() ||
 
-      !this.editForm.email
-        .trim()
+      !this.editForm.email.trim()
 
     ) {
 
@@ -709,10 +1012,6 @@ export class EmployeeManagementComponent
     }
 
 
-    // -----------------------------------------------
-    // START LOADING
-    // -----------------------------------------------
-
     this.updateLoading =
       true;
 
@@ -720,23 +1019,16 @@ export class EmployeeManagementComponent
       '';
 
 
-    // =================================================
-    // PATCH PAYLOAD
-    // =================================================
-
     const payload = {
 
       firstName:
-        this.editForm.firstName
-          .trim(),
+        this.editForm.firstName.trim(),
 
       lastName:
-        this.editForm.lastName
-          .trim(),
+        this.editForm.lastName.trim(),
 
       email:
-        this.editForm.email
-          .trim(),
+        this.editForm.email.trim(),
 
       designation:
         this.editForm.designation ||
@@ -767,10 +1059,6 @@ export class EmployeeManagementComponent
     );
 
 
-    // =================================================
-    // PATCH API
-    // =================================================
-
     this.employeeService
       .updateEmployee(
 
@@ -780,10 +1068,6 @@ export class EmployeeManagementComponent
 
       )
       .subscribe({
-
-        // =============================================
-        // SUCCESS
-        // =============================================
 
         next: (
           response: Employee
@@ -795,30 +1079,6 @@ export class EmployeeManagementComponent
           );
 
 
-          // -------------------------------------------
-          // UPDATE LOCAL EMPLOYEE
-          // -------------------------------------------
-
-          const index =
-            this.employees.findIndex(
-              employee =>
-                employee.id ===
-                response.id
-            );
-
-
-          if (index !== -1) {
-
-            this.employees[index] =
-              response;
-
-          }
-
-
-          // -------------------------------------------
-          // CLOSE MODAL
-          // -------------------------------------------
-
           this.updateLoading =
             false;
 
@@ -829,18 +1089,10 @@ export class EmployeeManagementComponent
             null;
 
 
-          // -------------------------------------------
-          // RELOAD FROM API
-          // -------------------------------------------
-
           this.loadEmployees();
 
         },
 
-
-        // =============================================
-        // ERROR
-        // =============================================
 
         error: (
           error: HttpErrorResponse
@@ -885,87 +1137,9 @@ export class EmployeeManagementComponent
       employee
     );
 
-
     /*
      * Delete API abhi available nahi hai.
      */
-
-  }
-
-
-  // =====================================================
-  // FILTER EMPLOYEES
-  // =====================================================
-
-  get filteredEmployees(): Employee[] {
-
-    const search =
-      this.searchText
-        .trim()
-        .toLowerCase();
-
-
-    // -----------------------------------------------
-    // NO SEARCH
-    // -----------------------------------------------
-
-    if (!search) {
-
-      return this.employees;
-
-    }
-
-
-    // -----------------------------------------------
-    // SEARCH EMPLOYEES
-    // -----------------------------------------------
-
-    return this.employees.filter(
-      employee => {
-
-        const name =
-          `${employee.firstName} ${employee.lastName}`
-            .toLowerCase();
-
-
-        return (
-
-          name.includes(search)
-
-          ||
-
-          employee.email
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          (
-            employee.designation || ''
-          )
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          (
-            employee.departmentName || ''
-          )
-            .toLowerCase()
-            .includes(search)
-
-          ||
-
-          (
-            employee.reportingManagerEmail || ''
-          )
-            .toLowerCase()
-            .includes(search)
-
-        );
-
-      }
-    );
 
   }
 

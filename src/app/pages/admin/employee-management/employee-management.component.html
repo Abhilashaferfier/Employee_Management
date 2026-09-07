@@ -40,7 +40,7 @@
   <!-- ================================================= -->
 
   <div
-    class="rounded-xl border border-blue-100 bg-white shadow-sm">
+    class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
 
 
     <!-- ================================================= -->
@@ -61,13 +61,13 @@
         <input
           type="text"
           [(ngModel)]="searchText"
+          (input)="onSearch()"
           placeholder="Search employee..."
           class="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
 
       </div>
 
     </div>
-
 
 
     <!-- ================================================= -->
@@ -126,7 +126,6 @@
         </thead>
 
 
-
         <!-- ================================================= -->
         <!-- BODY -->
         <!-- ================================================= -->
@@ -157,13 +156,12 @@
           </tr>
 
 
-
           <!-- ================================================= -->
           <!-- EMPLOYEE -->
           <!-- ================================================= -->
 
           <tr
-            *ngFor="let employee of filteredEmployees"
+            *ngFor="let employee of paginatedEmployees"
             class="hover:bg-blue-50/50">
 
 
@@ -178,7 +176,6 @@
             </td>
 
 
-
             <!-- EMAIL -->
 
             <td
@@ -187,7 +184,6 @@
               {{ employee.email }}
 
             </td>
-
 
 
             <!-- DESIGNATION -->
@@ -200,7 +196,6 @@
             </td>
 
 
-
             <!-- DEPARTMENT -->
 
             <td
@@ -209,7 +204,6 @@
               {{ employee.departmentName || '—' }}
 
             </td>
-
 
 
             <!-- DOJ -->
@@ -222,7 +216,6 @@
             </td>
 
 
-
             <!-- REPORTING MANAGER -->
 
             <td
@@ -231,7 +224,6 @@
               {{ employee.reportingManagerEmail || '—' }}
 
             </td>
-
 
 
             <!-- STATUS -->
@@ -248,7 +240,6 @@
               </span>
 
             </td>
-
 
 
             <!-- ACTION -->
@@ -289,7 +280,6 @@
           </tr>
 
 
-
           <!-- ================================================= -->
           <!-- NO DATA -->
           <!-- ================================================= -->
@@ -317,8 +307,132 @@
 
     </div>
 
-  </div>
 
+    <!-- ================================================= -->
+    <!-- PAGINATION -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="
+        !loadingEmployees &&
+        filteredEmployees.length > 0
+      "
+      class="flex flex-col items-center justify-between gap-4 border-t border-slate-100 px-5 py-4 sm:flex-row">
+
+
+      <!-- ================================================= -->
+      <!-- SHOWING TEXT -->
+      <!-- ================================================= -->
+
+      <div
+        class="text-sm text-slate-500">
+
+        Showing
+
+        <span class="font-medium text-slate-700">
+          {{ startItem }}
+        </span>
+
+        to
+
+        <span class="font-medium text-slate-700">
+          {{ endItem }}
+        </span>
+
+        of
+
+        <span class="font-medium text-slate-700">
+          {{ filteredEmployees.length }}
+        </span>
+
+        employees
+
+      </div>
+
+
+      <!-- ================================================= -->
+      <!-- PAGE BUTTONS -->
+      <!-- ================================================= -->
+
+      <div
+        class="flex items-center gap-1">
+
+
+        <!-- ============================================= -->
+        <!-- PREVIOUS -->
+        <!-- ============================================= -->
+
+        <button
+          type="button"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">
+
+          Previous
+
+        </button>
+
+
+        <!-- ============================================= -->
+        <!-- PAGE NUMBERS -->
+        <!-- ============================================= -->
+
+        <ng-container
+          *ngFor="let page of visiblePages">
+
+
+          <!-- ELLIPSIS -->
+
+          <span
+            *ngIf="page === -1"
+            class="px-2 text-sm text-slate-500">
+
+            ...
+
+          </span>
+
+
+          <!-- PAGE BUTTON -->
+
+          <button
+            *ngIf="page !== -1"
+            type="button"
+            (click)="goToPage(page)"
+            [class]="
+              currentPage === page
+                ? 'min-w-[38px] rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white'
+                : 'min-w-[38px] rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:bg-slate-50'
+            ">
+
+            {{ page }}
+
+          </button>
+
+
+        </ng-container>
+
+
+        <!-- ============================================= -->
+        <!-- NEXT -->
+        <!-- ============================================= -->
+
+        <button
+          type="button"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          class="rounded-lg border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40">
+
+          Next
+
+        </button>
+
+
+      </div>
+
+    </div>
+
+
+  </div>
 
 
   <!-- ================================================= -->
@@ -375,7 +489,6 @@
       </div>
 
 
-
       <!-- ================================================= -->
       <!-- FORM -->
       <!-- ================================================= -->
@@ -384,9 +497,7 @@
         class="grid grid-cols-1 gap-4 p-6 sm:grid-cols-2">
 
 
-        <!-- ================================================= -->
         <!-- FIRST NAME -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -405,10 +516,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- LAST NAME -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -427,10 +535,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- EMAIL -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -449,10 +554,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- DESIGNATION -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -463,23 +565,14 @@
 
           </label>
 
-
           <p-autoComplete
-
             [(ngModel)]="editForm.designation"
-
             [suggestions]="filteredDesignations"
-
             (completeMethod)="searchDesignations($event)"
-
             [dropdown]="true"
-
             [forceSelection]="true"
-
             placeholder="Select Designation"
-
             styleClass="w-full"
-
             inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
 
           </p-autoComplete>
@@ -487,10 +580,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- DEPARTMENT -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -501,23 +591,14 @@
 
           </label>
 
-
           <p-autoComplete
-
             [(ngModel)]="editForm.departmentName"
-
             [suggestions]="filteredDepartments"
-
             (completeMethod)="searchDepartments($event)"
-
             [dropdown]="true"
-
             [forceSelection]="true"
-
             placeholder="Select Department"
-
             styleClass="w-full"
-
             inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
 
           </p-autoComplete>
@@ -525,10 +606,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- DOJ -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -547,10 +625,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- REPORTING MANAGER -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -561,23 +636,14 @@
 
           </label>
 
-
           <p-autoComplete
-
             [(ngModel)]="editForm.reportingManagerEmail"
-
             [suggestions]="filteredReportingManagers"
-
             (completeMethod)="searchReportingManagers($event)"
-
             [dropdown]="true"
-
             [forceSelection]="true"
-
             placeholder="Select Reporting Manager"
-
             styleClass="w-full"
-
             inputStyleClass="w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
 
           </p-autoComplete>
@@ -585,10 +651,7 @@
         </div>
 
 
-
-        <!-- ================================================= -->
         <!-- STATUS -->
-        <!-- ================================================= -->
 
         <div>
 
@@ -598,7 +661,6 @@
             Status
 
           </label>
-
 
           <select
             [(ngModel)]="editForm.status"
@@ -619,10 +681,7 @@
       </div>
 
 
-
-      <!-- ================================================= -->
       <!-- UPDATE ERROR -->
-      <!-- ================================================= -->
 
       <div
         *ngIf="updateError"
@@ -633,16 +692,11 @@
       </div>
 
 
-
-      <!-- ================================================= -->
       <!-- FOOTER -->
-      <!-- ================================================= -->
 
       <div
         class="flex justify-end gap-3 border-t border-slate-200 px-6 py-4">
 
-
-        <!-- CANCEL -->
 
         <button
           type="button"
@@ -654,9 +708,6 @@
 
         </button>
 
-
-
-        <!-- UPDATE -->
 
         <button
           type="button"

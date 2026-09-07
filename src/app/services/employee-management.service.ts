@@ -28,9 +28,7 @@ export class EmployeeManagementService {
   ) {}
 
 
-  // =====================================================
-  // GET ALL EMPLOYEES
-  // =====================================================
+  
 
   getAllEmployees(): Observable<any[]> {
 
@@ -41,9 +39,7 @@ export class EmployeeManagementService {
   }
 
 
-  // =====================================================
-  // PATCH EMPLOYEE
-  // =====================================================
+  
 
   updateEmployee(
     email: string,

@@ -1,0 +1,40 @@
+<div class="h-screen overflow-hidden bg-slate-100">
+
+  <!-- HEADER -->
+
+  <app-header
+    role="Viewer"
+    (menuToggle)="toggleSidebar()">
+  </app-header>
+
+
+  <!-- BODY -->
+
+  <div
+    class="mt-16 flex h-[calc(100vh-4rem)] overflow-hidden"
+  >
+
+
+    <!-- SIDEBAR -->
+
+    <app-viewer-sidebar
+      *ngIf="sidebarOpen"
+      class="block h-full shrink-0"
+    >
+    </app-viewer-sidebar>
+
+
+    <!-- ONLY CONTENT SCROLLS -->
+
+    <main
+      class="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-6"
+    >
+
+      <router-outlet></router-outlet>
+
+    </main>
+
+
+  </div>
+
+</div>

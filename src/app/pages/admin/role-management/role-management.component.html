@@ -4,30 +4,71 @@
   <!-- HEADER -->
   <!-- ================================================= -->
 
-  <div class="flex items-center justify-between mb-6">
+  <div
+    class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5 mb-6"
+  >
+
+    <!-- TITLE -->
 
     <div>
 
-      <h1 class="text-2xl font-bold text-slate-800">
+      <h1
+        class="text-2xl font-bold text-slate-800"
+      >
         Role Management
       </h1>
 
-      <p class="text-sm text-slate-500 mt-1">
+      <p
+        class="text-sm text-slate-500 mt-1"
+      >
         Manage employee and admin access
       </p>
 
     </div>
 
 
-    <div class="bg-white border border-slate-200 rounded-xl px-5 py-3">
+    <!-- SEARCH + TOTAL USERS -->
 
-      <p class="text-xs text-slate-500">
-        Total Users
-      </p>
+    <div
+      class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4"
+    >
 
-      <p class="text-xl font-bold text-slate-800">
-        {{ users.length }}
-      </p>
+      <!-- SEARCH -->
+
+      <div
+        class="w-full sm:w-72"
+      >
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+          placeholder="Search by email..."
+          class="w-full px-4 py-3 border border-slate-300 rounded-xl bg-white text-sm outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+
+      </div>
+
+
+      <!-- TOTAL USERS -->
+
+      <div
+        class="bg-white border border-slate-200 rounded-xl px-5 py-2.5 min-w-[110px]"
+      >
+
+        <p
+          class="text-xs text-slate-500"
+        >
+          Total Users
+        </p>
+
+        <p
+          class="text-xl font-bold text-slate-800"
+        >
+          {{ filteredUsers.length }}
+        </p>
+
+      </div>
 
     </div>
 
@@ -35,12 +76,12 @@
 
 
   <!-- ================================================= -->
-  <!-- SUCCESS -->
+  <!-- SUCCESS MESSAGE -->
   <!-- ================================================= -->
 
   <div
     *ngIf="successMessage"
-    class="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700"
+    class="mb-5 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700"
   >
 
     {{ successMessage }}
@@ -49,12 +90,12 @@
 
 
   <!-- ================================================= -->
-  <!-- ERROR -->
+  <!-- ERROR MESSAGE -->
   <!-- ================================================= -->
 
   <div
     *ngIf="errorMessage"
-    class="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-700"
+    class="mb-5 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700"
   >
 
     {{ errorMessage }}
@@ -68,10 +109,12 @@
 
   <div
     *ngIf="loading"
-    class="bg-white rounded-xl border p-10 text-center"
+    class="bg-white rounded-xl border border-slate-200 p-10 text-center"
   >
 
-    <p class="text-slate-500">
+    <p
+      class="text-slate-500"
+    >
       Loading users...
     </p>
 
@@ -87,33 +130,47 @@
     class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden"
   >
 
-    <div class="overflow-x-auto">
+    <div
+      class="overflow-x-auto"
+    >
 
-      <table class="w-full">
+      <table
+        class="w-full table-fixed"
+      >
 
-        <!-- HEADER -->
+        <!-- ============================================= -->
+        <!-- TABLE HEADER -->
+        <!-- ============================================= -->
 
-        <thead class="bg-slate-50 border-b">
+        <thead
+          class="bg-slate-50 border-b border-slate-200"
+        >
 
           <tr>
 
-            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
+            <!-- EMAIL -->
+
+            <th
+              class="w-[40%] px-8 py-4 text-left text-sm font-semibold text-slate-600"
+            >
               Email
             </th>
 
-            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
-              User ID
+
+            <!-- ROLES -->
+
+            <th
+              class="w-[35%] px-8 py-4 text-center text-sm font-semibold text-slate-600"
+            >
+              Roles
             </th>
 
-            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
-              Access
-            </th>
 
-            <th class="text-left px-6 py-4 text-sm font-semibold text-slate-600">
-              Status
-            </th>
+            <!-- ACTION -->
 
-            <th class="text-right px-6 py-4 text-sm font-semibold text-slate-600">
+            <th
+              class="w-[25%] px-8 py-4 text-right text-sm font-semibold text-slate-600"
+            >
               Action
             </th>
 
@@ -122,128 +179,105 @@
         </thead>
 
 
-        <!-- BODY -->
+        <!-- ============================================= -->
+        <!-- TABLE BODY -->
+        <!-- ============================================= -->
 
-        <tbody>
-
-          <!-- NO DATA -->
-
-          <tr
-            *ngIf="users.length === 0"
-          >
-
-            <td
-              colspan="5"
-              class="px-6 py-12 text-center text-slate-500"
-            >
-
-              No users found.
-
-            </td>
-
-          </tr>
+        <tbody
+          class="divide-y divide-slate-200"
+        >
 
 
-          <!-- DYNAMIC USERS -->
+          <!-- =========================================== -->
+          <!-- USERS -->
+          <!-- =========================================== -->
 
           <tr
-            *ngFor="let user of users"
-            class="border-b hover:bg-slate-50"
+            *ngFor="let user of paginatedUsers"
+            class="hover:bg-slate-50 transition"
           >
+
 
             <!-- EMAIL -->
 
-            <td class="px-6 py-4">
+            <td
+              class="w-[40%] px-8 py-5"
+            >
 
-              <div class="font-medium text-slate-800">
+              <p
+                class="text-sm font-medium text-slate-800 break-all"
+              >
                 {{ user.email }}
-              </div>
+              </p>
 
             </td>
 
 
-            <!-- USER ID -->
+            <!-- ROLES -->
 
-            <td class="px-6 py-4">
+            <td
+              class="w-[35%] px-8 py-5"
+            >
 
-              <span class="text-xs text-slate-500">
-                {{ user.userId }}
-              </span>
+              <div
+                class="flex items-center justify-center"
+              >
 
-            </td>
-
-
-            <!-- ACCESS -->
-
-            <td class="px-6 py-4">
-
-              <div class="flex gap-2 flex-wrap">
 
                 <!-- ADMIN -->
 
-                <span
-                  *ngIf="user.isAdmin"
-                  class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-medium"
+                <label
+                  class="flex items-center gap-2 w-32 text-sm text-slate-700"
                 >
-                  Admin
-                </span>
+
+                  <input
+                    type="checkbox"
+                    [checked]="user.isAdmin"
+                    disabled
+                    class="w-4 h-4 accent-blue-600 cursor-not-allowed"
+                  />
+
+                  <span>
+                    Admin
+                  </span>
+
+                </label>
 
 
                 <!-- EMPLOYEE -->
 
-                <span
-                  *ngIf="user.isEmployee"
-                  class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium"
+                <label
+                  class="flex items-center gap-2 w-32 text-sm text-slate-700"
                 >
-                  Employee
-                </span>
 
+                  <input
+                    type="checkbox"
+                    [checked]="user.isEmployee"
+                    disabled
+                    class="w-4 h-4 accent-blue-600 cursor-not-allowed"
+                  />
 
-                <!-- NO ACCESS -->
+                  <span>
+                    Employee
+                  </span>
 
-                <span
-                  *ngIf="
-                    !user.isAdmin &&
-                    !user.isEmployee
-                  "
-                  class="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs"
-                >
-                  No Access
-                </span>
+                </label>
 
               </div>
-
-            </td>
-
-
-            <!-- STATUS -->
-
-            <td class="px-6 py-4">
-
-              <span
-                class="px-3 py-1 rounded-full text-xs font-medium"
-                [ngClass]="
-                  user.status === 'ACTIVE'
-                    ? 'bg-green-100 text-green-700'
-                    : 'bg-red-100 text-red-700'
-                "
-              >
-
-                {{ user.status }}
-
-              </span>
 
             </td>
 
 
             <!-- ACTION -->
 
-            <td class="px-6 py-4 text-right">
+            <td
+              class="w-[25%] px-8 py-5 text-right"
+            >
 
               <button
                 type="button"
                 (click)="selectUser(user)"
-                class="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700"
+                class="px-5 py-2.5 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition whitespace-nowrap"
               >
 
                 Manage Access
@@ -254,9 +288,151 @@
 
           </tr>
 
+
+          <!-- =========================================== -->
+          <!-- NO USERS -->
+          <!-- =========================================== -->
+
+          <tr
+            *ngIf="filteredUsers.length === 0"
+          >
+
+            <td
+              colspan="3"
+              class="px-6 py-12 text-center text-slate-500"
+            >
+
+              No users found.
+
+            </td>
+
+          </tr>
+
         </tbody>
 
       </table>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- PAGINATION -->
+    <!-- ================================================= -->
+
+    <div
+      *ngIf="filteredUsers.length > itemsPerPage"
+      class="px-6 py-5 border-t border-slate-200 flex flex-col lg:flex-row items-center justify-between gap-4"
+    >
+
+
+      <!-- PAGINATION INFO -->
+
+      <p
+        class="text-sm text-slate-500"
+      >
+
+        Showing
+
+        <span
+          class="font-medium text-slate-700"
+        >
+          {{ startItem }}
+        </span>
+
+        to
+
+        <span
+          class="font-medium text-slate-700"
+        >
+          {{ endItem }}
+        </span>
+
+        of
+
+        <span
+          class="font-medium text-slate-700"
+        >
+          {{ filteredUsers.length }}
+        </span>
+
+        users
+
+      </p>
+
+
+      <!-- PAGINATION BUTTONS -->
+
+      <div
+        class="flex items-center justify-center gap-1 flex-wrap"
+      >
+
+
+        <!-- PREVIOUS -->
+
+        <button
+          type="button"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          class="px-3 py-2 text-sm border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+
+          Previous
+
+        </button>
+
+
+        <!-- PAGE NUMBERS -->
+
+        <ng-container
+          *ngFor="let page of visiblePages"
+        >
+
+
+          <!-- DOTS -->
+
+          <span
+            *ngIf="page === -1"
+            class="px-2 text-slate-500"
+          >
+            ...
+          </span>
+
+
+          <!-- PAGE BUTTON -->
+
+          <button
+            *ngIf="page !== -1"
+            type="button"
+            (click)="goToPage(page)"
+            class="min-w-[40px] px-3 py-2 text-sm border rounded-lg transition"
+            [ngClass]="
+              currentPage === page
+                ? 'bg-blue-600 border-blue-600 text-white'
+                : 'border-slate-300 text-slate-600 hover:bg-slate-50'
+            "
+          >
+
+            {{ page }}
+
+          </button>
+
+        </ng-container>
+
+
+        <!-- NEXT -->
+
+        <button
+          type="button"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          class="px-3 py-2 text-sm border border-slate-300 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+
+          Next
+
+        </button>
+
+      </div>
 
     </div>
 
@@ -274,21 +450,32 @@
   class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center px-4"
 >
 
-  <div class="bg-white w-full max-w-md rounded-2xl shadow-xl">
+  <div
+    class="bg-white w-full max-w-md rounded-2xl shadow-xl"
+  >
 
-    <!-- HEADER -->
 
-    <div class="px-6 py-5 border-b">
+    <!-- MODAL HEADER -->
 
-      <div class="flex items-center justify-between">
+    <div
+      class="px-6 py-5 border-b border-slate-200"
+    >
+
+      <div
+        class="flex items-center justify-between"
+      >
 
         <div>
 
-          <h2 class="text-lg font-bold text-slate-800">
+          <h2
+            class="text-lg font-bold text-slate-800"
+          >
             Manage Access
           </h2>
 
-          <p class="text-sm text-slate-500 mt-1">
+          <p
+            class="text-sm text-slate-500 mt-1 break-all"
+          >
             {{ selectedUser.email }}
           </p>
 
@@ -298,7 +485,7 @@
         <button
           type="button"
           (click)="closeModal()"
-          class="text-slate-400 text-xl"
+          class="text-slate-400 hover:text-slate-700 text-2xl"
         >
           ×
         </button>
@@ -308,23 +495,30 @@
     </div>
 
 
-    <!-- BODY -->
+    <!-- MODAL BODY -->
 
-    <div class="p-6">
+    <div
+      class="p-6 space-y-4"
+    >
+
 
       <!-- ADMIN -->
 
       <label
-        class="flex items-center justify-between border rounded-xl p-4 mb-3 cursor-pointer"
+        class="flex items-center justify-between border border-slate-200 rounded-xl p-4 cursor-pointer hover:bg-slate-50"
       >
 
         <div>
 
-          <p class="font-semibold text-slate-800">
+          <p
+            class="font-semibold text-slate-800"
+          >
             Admin
           </p>
 
-          <p class="text-xs text-slate-500">
+          <p
+            class="text-xs text-slate-500 mt-1"
+          >
             Admin dashboard access
           </p>
 
@@ -334,7 +528,7 @@
         <input
           type="checkbox"
           [(ngModel)]="selectedIsAdmin"
-          class="w-5 h-5"
+          class="w-5 h-5 accent-blue-600"
         />
 
       </label>
@@ -343,16 +537,20 @@
       <!-- EMPLOYEE -->
 
       <label
-        class="flex items-center justify-between border rounded-xl p-4 cursor-pointer"
+        class="flex items-center justify-between border border-slate-200 rounded-xl p-4 cursor-pointer hover:bg-slate-50"
       >
 
         <div>
 
-          <p class="font-semibold text-slate-800">
+          <p
+            class="font-semibold text-slate-800"
+          >
             Employee
           </p>
 
-          <p class="text-xs text-slate-500">
+          <p
+            class="text-xs text-slate-500 mt-1"
+          >
             Employee dashboard access
           </p>
 
@@ -362,7 +560,7 @@
         <input
           type="checkbox"
           [(ngModel)]="selectedIsEmployee"
-          class="w-5 h-5"
+          class="w-5 h-5 accent-blue-600"
         />
 
       </label>
@@ -370,13 +568,19 @@
 
       <!-- SELECTED ACCESS -->
 
-      <div class="mt-5 bg-slate-50 rounded-xl p-4">
+      <div
+        class="bg-slate-50 rounded-xl p-4"
+      >
 
-        <p class="text-xs text-slate-500">
+        <p
+          class="text-xs text-slate-500"
+        >
           Selected Access
         </p>
 
-        <p class="font-semibold text-slate-800 mt-1">
+        <p
+          class="font-semibold text-slate-800 mt-1"
+        >
 
           {{
             selectedIsAdmin && selectedIsEmployee
@@ -395,14 +599,17 @@
     </div>
 
 
-    <!-- FOOTER -->
+    <!-- MODAL FOOTER -->
 
-    <div class="px-6 py-4 border-t flex justify-end gap-3">
+    <div
+      class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3"
+    >
 
       <button
         type="button"
         (click)="closeModal()"
-        class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700"
+        [disabled]="updatingAccess"
+        class="px-4 py-2.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-50"
       >
 
         Cancel
@@ -414,7 +621,7 @@
         type="button"
         (click)="saveAccess()"
         [disabled]="updatingAccess"
-        class="px-4 py-2 rounded-lg bg-blue-600 text-white disabled:opacity-50"
+        class="px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
       >
 
         {{
@@ -430,4 +637,3 @@
   </div>
 
 </div>
-

@@ -1,18 +1,19 @@
 <div class="min-h-full bg-slate-50">
 
+
   <!-- ================================================= -->
   <!-- HEADING -->
   <!-- ================================================= -->
 
   <div class="mb-6">
 
-    <h2 class="text-2xl font-bold text-slate-800">
-      Welcome back, Admin 👋
-    </h2>
+    <h2
+      class="text-2xl font-bold text-slate-800"
+    >
 
-    <p class="mt-1 text-sm text-slate-500">
-      Here's what's happening in your organization today.
-    </p>
+      Welcome back, {{ loggedInUserName }}
+
+    </h2>
 
   </div>
 
@@ -21,7 +22,9 @@
   <!-- SUMMARY CARDS -->
   <!-- ================================================= -->
 
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+  <div
+    class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+  >
 
 
     <!-- ================================================= -->
@@ -32,20 +35,25 @@
       class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
     >
 
-      <div class="flex items-start justify-between">
+      <div
+        class="flex items-start justify-between"
+      >
 
         <div>
 
           <p class="text-sm text-slate-500">
+
             Total Employees
+
           </p>
 
-          <p class="mt-2 text-3xl font-bold text-slate-800">
+
+          <p
+            class="mt-2 text-3xl font-bold text-slate-800"
+          >
+
             {{ totalEmployees }}
-          </p>
 
-          <p class="mt-1 text-xs text-green-600">
-            &nbsp;
           </p>
 
         </div>
@@ -74,20 +82,25 @@
       class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
     >
 
-      <div class="flex items-start justify-between">
+      <div
+        class="flex items-start justify-between"
+      >
 
         <div>
 
           <p class="text-sm text-slate-500">
+
             Present Today
+
           </p>
 
-          <p class="mt-2 text-3xl font-bold text-slate-800">
+
+          <p
+            class="mt-2 text-3xl font-bold text-slate-800"
+          >
+
             {{ presentToday ?? '—' }}
-          </p>
 
-          <p class="mt-1 text-xs text-slate-500">
-            &nbsp;
           </p>
 
         </div>
@@ -116,20 +129,25 @@
       class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
     >
 
-      <div class="flex items-start justify-between">
+      <div
+        class="flex items-start justify-between"
+      >
 
         <div>
 
           <p class="text-sm text-slate-500">
+
             Pending Leaves
+
           </p>
 
-          <p class="mt-2 text-3xl font-bold text-slate-800">
-            {{ pendingLeaves ?? '—' }}
-          </p>
 
-          <p class="mt-1 text-xs text-orange-500">
-            &nbsp;
+          <p
+            class="mt-2 text-3xl font-bold text-slate-800"
+          >
+
+            {{ pendingLeaves }}
+
           </p>
 
         </div>
@@ -158,20 +176,25 @@
       class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm"
     >
 
-      <div class="flex items-start justify-between">
+      <div
+        class="flex items-start justify-between"
+      >
 
         <div>
 
           <p class="text-sm text-slate-500">
+
             Payroll Status
+
           </p>
 
-          <p class="mt-2 text-3xl font-bold text-slate-800">
+
+          <p
+            class="mt-2 text-3xl font-bold text-slate-800"
+          >
+
             {{ pendingPayroll ?? '—' }}
-          </p>
 
-          <p class="mt-1 text-xs text-slate-500">
-            &nbsp;
           </p>
 
         </div>
@@ -191,6 +214,7 @@
 
     </div>
 
+
   </div>
 
 
@@ -198,7 +222,9 @@
   <!-- TABLES -->
   <!-- ================================================= -->
 
-  <div class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2">
+  <div
+    class="mt-6 grid grid-cols-1 gap-6 xl:grid-cols-2"
+  >
 
 
     <!-- ================================================= -->
@@ -206,201 +232,221 @@
     <!-- ================================================= -->
 
     <div
-      class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
+      class="flex h-[500px] flex-col overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
     >
 
+
+      <!-- HEADER -->
+
       <div
-        class="flex items-center justify-between border-b border-slate-100 px-5 py-4"
+        class="shrink-0 border-b border-slate-100 px-5 py-4"
       >
 
-        <h3 class="font-semibold text-slate-800">
-          Recent Employees
-        </h3>
-
-
-        <a
-          routerLink="/admin/employee-management"
-          class="text-xs font-medium text-blue-600"
+        <h3
+          class="font-semibold text-slate-800"
         >
-          View All
-        </a>
+
+          Recent Employees
+
+        </h3>
 
       </div>
 
 
-      <div class="overflow-x-auto">
+      <!-- SCROLLABLE TABLE -->
 
-        <table class="w-full text-left text-sm">
+      <div
+        class="flex-1 overflow-y-auto"
+      >
 
-          <!-- ================================================= -->
-          <!-- TABLE HEADER -->
-          <!-- ================================================= -->
+        <div
+          class="overflow-x-auto"
+        >
 
-          <thead class="bg-blue-50 text-xs text-slate-500">
-
-            <tr>
-
-              <th class="w-[35%] px-5 py-3">
-                Name
-              </th>
-
-              <th class="w-[40%] px-5 py-3">
-                Email
-              </th>
-
-              <th class="w-[25%] px-5 py-3">
-                Status
-              </th>
-
-            </tr>
-
-          </thead>
+          <table
+            class="w-full text-left text-sm"
+          >
 
 
-          <tbody class="divide-y divide-slate-100">
+            <!-- TABLE HEADER -->
 
-
-            <!-- ================================================= -->
-            <!-- LOADING -->
-            <!-- ================================================= -->
-
-            <tr *ngIf="loadingEmployees">
-
-              <td
-                colspan="3"
-                class="px-4 py-8 text-center text-slate-500"
-              >
-
-                Loading employees...
-
-              </td>
-
-            </tr>
-
-
-            <!-- ================================================= -->
-            <!-- ERROR -->
-            <!-- ================================================= -->
-
-            <tr
-              *ngIf="
-                !loadingEmployees &&
-                errorMessage
-              "
+            <thead
+              class="sticky top-0 z-10 bg-blue-50 text-xs text-slate-500"
             >
 
-              <td
-                colspan="3"
-                class="px-4 py-8 text-center text-red-500"
-              >
+              <tr>
 
-                {{ errorMessage }}
-
-              </td>
-
-            </tr>
-
-
-            <!-- ================================================= -->
-            <!-- NO DATA -->
-            <!-- ================================================= -->
-
-            <tr
-              *ngIf="
-                !loadingEmployees &&
-                !errorMessage &&
-                recentEmployees.length === 0
-              "
-            >
-
-              <td
-                colspan="3"
-                class="px-4 py-8 text-center text-slate-500"
-              >
-
-                No employees found.
-
-              </td>
-
-            </tr>
-
-
-            <!-- ================================================= -->
-            <!-- DYNAMIC EMPLOYEES -->
-            <!-- ================================================= -->
-
-            <tr
-              *ngFor="let employee of recentEmployees"
-              class="hover:bg-blue-50/50"
-            >
-
-
-              <!-- ================================================= -->
-              <!-- NAME -->
-              <!-- ================================================= -->
-
-              <td
-                class="w-[35%] px-5 py-3 font-medium text-slate-700"
-              >
-
-                {{ employee.firstName }}
-                {{ employee.lastName }}
-
-              </td>
-
-
-              <!-- ================================================= -->
-              <!-- EMAIL -->
-              <!-- ================================================= -->
-
-              <td
-                class="w-[40%] px-5 py-3 text-slate-500"
-              >
-
-                {{ employee.email }}
-
-              </td>
-
-
-              <!-- ================================================= -->
-              <!-- STATUS -->
-              <!-- ================================================= -->
-
-              <td
-                class="w-[25%] px-5 py-3"
-              >
-
-                <!-- ACTIVE -->
-
-                <span
-                  *ngIf="employee.status === 'ACTIVE'"
-                  class="text-xs font-medium text-green-600"
+                <th
+                  class="w-[35%] px-5 py-3"
                 >
 
-                  ● Active
+                  Name
 
-                </span>
+                </th>
 
 
-                <!-- OTHER STATUS -->
-
-                <span
-                  *ngIf="employee.status !== 'ACTIVE'"
-                  class="text-xs font-medium text-red-500"
+                <th
+                  class="w-[40%] px-5 py-3"
                 >
 
-                  ● {{ employee.status }}
+                  Email
 
-                </span>
-
-              </td>
-
-            </tr>
+                </th>
 
 
-          </tbody>
+                <th
+                  class="w-[25%] px-5 py-3"
+                >
 
-        </table>
+                  Status
+
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <!-- TABLE BODY -->
+
+            <tbody
+              class="divide-y divide-slate-100"
+            >
+
+
+              <!-- LOADING -->
+
+              <tr
+                *ngIf="loadingEmployees"
+              >
+
+                <td
+                  colspan="3"
+                  class="px-4 py-8 text-center text-slate-500"
+                >
+
+                  <i
+                    class="pi pi-spin pi-spinner mr-2"
+                  ></i>
+
+                  Loading employees...
+
+                </td>
+
+              </tr>
+
+
+              <!-- ERROR -->
+
+              <tr
+                *ngIf="
+                  !loadingEmployees &&
+                  errorMessage
+                "
+              >
+
+                <td
+                  colspan="3"
+                  class="px-4 py-8 text-center text-red-500"
+                >
+
+                  {{ errorMessage }}
+
+                </td>
+
+              </tr>
+
+
+              <!-- NO DATA -->
+
+              <tr
+                *ngIf="
+                  !loadingEmployees &&
+                  !errorMessage &&
+                  recentEmployees.length === 0
+                "
+              >
+
+                <td
+                  colspan="3"
+                  class="px-4 py-8 text-center text-slate-500"
+                >
+
+                  No employees found.
+
+                </td>
+
+              </tr>
+
+
+              <!-- EMPLOYEES -->
+
+              <tr
+                *ngFor="
+                  let employee of recentEmployees
+                "
+                class="hover:bg-blue-50/50"
+              >
+
+
+                <td
+                  class="w-[35%] px-5 py-3 font-medium text-slate-700"
+                >
+
+                  {{ employee.firstName }}
+                  {{ employee.lastName }}
+
+                </td>
+
+
+                <td
+                  class="w-[40%] px-5 py-3 text-slate-500"
+                >
+
+                  {{ employee.email }}
+
+                </td>
+
+
+                <td
+                  class="w-[25%] px-5 py-3"
+                >
+
+                  <span
+                    *ngIf="
+                      employee.status ===
+                      'ACTIVE'
+                    "
+                    class="text-xs font-medium text-green-600"
+                  >
+
+                    ● Active
+
+                  </span>
+
+
+                  <span
+                    *ngIf="
+                      employee.status !==
+                      'ACTIVE'
+                    "
+                    class="text-xs font-medium text-red-500"
+                  >
+
+                    ● {{ employee.status }}
+
+                  </span>
+
+                </td>
+
+              </tr>
+
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 
@@ -412,99 +458,284 @@
     <!-- ================================================= -->
 
     <div
-      class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
+      class="flex h-[500px] flex-col overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
     >
 
+
+      <!-- HEADER -->
+
       <div
-        class="flex items-center justify-between border-b border-slate-100 px-5 py-4"
+        class="shrink-0 border-b border-slate-100 px-5 py-4"
       >
 
-        <h3 class="font-semibold text-slate-800">
-          Recent Leave Requests
-        </h3>
-
-
-        <a
-          routerLink="/admin/leave-approval"
-          class="text-xs font-medium text-blue-600"
+        <h3
+          class="font-semibold text-slate-800"
         >
-          View All
-        </a>
+
+          Recent Leave Requests
+
+        </h3>
 
       </div>
 
 
-      <div class="overflow-x-auto">
+      <!-- SCROLLABLE TABLE -->
 
-        <table class="w-full text-left text-sm">
+      <div
+        class="flex-1 overflow-y-auto"
+      >
 
-          <!-- ================================================= -->
-          <!-- TABLE HEADER -->
-          <!-- ================================================= -->
+        <div
+          class="overflow-x-auto"
+        >
 
-          <thead class="bg-blue-50 text-xs text-slate-500">
-
-            <tr>
-
-              <th class="px-4 py-3">
-                Employee
-              </th>
-
-              <th class="px-4 py-3">
-                Leave Type
-              </th>
-
-              <th class="px-4 py-3">
-                From
-              </th>
-
-              <th class="px-4 py-3">
-                To
-              </th>
-
-              <th class="px-4 py-3">
-                Status
-              </th>
-
-            </tr>
-
-          </thead>
+          <table
+            class="w-full text-left text-sm"
+          >
 
 
-          <tbody class="divide-y divide-slate-100">
+            <!-- =========================================== -->
+            <!-- TABLE HEADER -->
+            <!-- =========================================== -->
+
+            <thead
+              class="sticky top-0 z-10 bg-blue-50 text-xs text-slate-500"
+            >
+
+              <tr>
 
 
-            <!-- ================================================= -->
-            <!-- NO LEAVE API YET -->
-            <!-- ================================================= -->
+                <!-- EMPLOYEE -->
 
-            <tr>
+                <th
+                  class="w-[40%] px-5 py-3"
+                >
 
-              <td class="px-4 py-3 text-slate-500">
-                —
-              </td>
+                  Employee Name
 
-              <td class="px-4 py-3 text-slate-500">
-                —
-              </td>
+                </th>
 
-              <td class="px-4 py-3 text-slate-500">
-                —
-              </td>
 
-              <td class="px-4 py-3 text-slate-500">
-                —
-              </td>
+                <!-- LEAVE TYPE -->
 
-              <td class="px-4 py-3 text-slate-500">
-                —
-              </td>
+                <th
+                  class="w-[30%] px-5 py-3"
+                >
 
-            </tr>
+                  Leave Type
 
-          </tbody>
+                </th>
 
-        </table>
+
+                <!-- STATUS -->
+
+                <th
+                  class="w-[30%] px-5 py-3"
+                >
+
+                  Status
+
+                </th>
+
+
+              </tr>
+
+            </thead>
+
+
+            <!-- =========================================== -->
+            <!-- TABLE BODY -->
+            <!-- =========================================== -->
+
+            <tbody
+              class="divide-y divide-slate-100"
+            >
+
+
+              <!-- ========================================= -->
+              <!-- LOADING -->
+              <!-- ========================================= -->
+
+              <tr
+                *ngIf="loadingLeaves"
+              >
+
+                <td
+                  colspan="3"
+                  class="px-5 py-8 text-center text-slate-500"
+                >
+
+                  <i
+                    class="pi pi-spin pi-spinner mr-2"
+                  ></i>
+
+                  Loading leave requests...
+
+                </td>
+
+              </tr>
+
+
+              <!-- ========================================= -->
+              <!-- ERROR -->
+              <!-- ========================================= -->
+
+              <tr
+                *ngIf="
+                  !loadingLeaves &&
+                  leaveErrorMessage
+                "
+              >
+
+                <td
+                  colspan="3"
+                  class="px-5 py-8 text-center text-red-500"
+                >
+
+                  {{ leaveErrorMessage }}
+
+                </td>
+
+              </tr>
+
+
+              <!-- ========================================= -->
+              <!-- NO DATA -->
+              <!-- ========================================= -->
+
+              <tr
+                *ngIf="
+                  !loadingLeaves &&
+                  !leaveErrorMessage &&
+                  leaves.length === 0
+                "
+              >
+
+                <td
+                  colspan="3"
+                  class="px-5 py-8 text-center text-slate-500"
+                >
+
+                  No leave requests found.
+
+                </td>
+
+              </tr>
+
+
+              <!-- ========================================= -->
+              <!-- LEAVES -->
+              <!-- ========================================= -->
+
+              <tr
+                *ngFor="
+                  let leave of leaves
+                "
+                class="hover:bg-blue-50/50"
+              >
+
+
+                <!-- EMPLOYEE NAME -->
+
+                <td
+                  class="w-[40%] px-5 py-3 font-medium text-slate-700"
+                >
+
+                  {{ getEmployeeName(leave) }}
+
+                </td>
+
+
+                <!-- LEAVE TYPE -->
+
+                <td
+                  class="w-[30%] px-5 py-3 text-slate-600"
+                >
+
+                  {{ leave.leaveType || '-' }}
+
+                </td>
+
+
+                <!-- STATUS -->
+
+                <td
+                  class="w-[30%] px-5 py-3"
+                >
+
+
+                  <!-- PENDING -->
+
+                  <span
+                    *ngIf="
+                      leave.status ===
+                      'PENDING'
+                    "
+                    class="text-xs font-medium text-orange-500"
+                  >
+
+                    ● Pending
+
+                  </span>
+
+
+                  <!-- APPROVED -->
+
+                  <span
+                    *ngIf="
+                      leave.status ===
+                      'APPROVED'
+                    "
+                    class="text-xs font-medium text-green-600"
+                  >
+
+                    ● Approved
+
+                  </span>
+
+
+                  <!-- REJECTED -->
+
+                  <span
+                    *ngIf="
+                      leave.status ===
+                      'REJECTED'
+                    "
+                    class="text-xs font-medium text-red-500"
+                  >
+
+                    ● Rejected
+
+                  </span>
+
+
+                  <!-- OTHER -->
+
+                  <span
+                    *ngIf="
+                      leave.status !== 'PENDING' &&
+                      leave.status !== 'APPROVED' &&
+                      leave.status !== 'REJECTED'
+                    "
+                    class="text-xs font-medium text-slate-500"
+                  >
+
+                    ● {{ leave.status || '-' }}
+
+                  </span>
+
+
+                </td>
+
+
+              </tr>
+
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
 
@@ -512,5 +743,6 @@
 
 
   </div>
+
 
 </div>

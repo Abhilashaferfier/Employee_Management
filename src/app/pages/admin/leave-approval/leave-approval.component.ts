@@ -18,65 +18,21 @@ import {
 
 export interface LeaveApproval {
 
-  // ===================================================
-  // LEAVE ID
-  // ===================================================
-
   id: string;
-
-
-  // ===================================================
-  // EMPLOYEE NAME
-  // ===================================================
 
   employee: string;
 
-
-  // ===================================================
-  // EMPLOYEE EMAIL
-  // ===================================================
-
   email: string;
-
-
-  // ===================================================
-  // REPORTING MANAGER
-  // ===================================================
 
   requestedTo: string;
 
-
-  // ===================================================
-  // LEAVE TYPE
-  // ===================================================
-
   leaveType: string;
-
-
-  // ===================================================
-  // LEAVE FROM DATE
-  // ===================================================
 
   from: string;
 
-
-  // ===================================================
-  // LEAVE TO DATE
-  // ===================================================
-
   to: string;
 
-
-  // ===================================================
-  // LEAVE REASON
-  // ===================================================
-
   reason: string;
-
-
-  // ===================================================
-  // LEAVE STATUS
-  // ===================================================
 
   status: string;
 
@@ -105,25 +61,28 @@ export class LeaveApprovalComponent
   // ===================================================
   // ALL LEAVE REQUESTS
   // ===================================================
-  //
-  // Is array ke andar Admin API se aane wali
-  // saari leaves store hongi.
-  //
-  // PENDING
-  // APPROVED
-  // REJECTED
-  //
-  // ===================================================
 
   leaveRequests: LeaveApproval[] = [];
 
 
   // ===================================================
-  // LOADING STATE
+  // SEARCH
   // ===================================================
-  //
-  // API call ke time true rahega.
-  //
+
+  searchText = '';
+
+
+  // ===================================================
+  // PAGINATION
+  // ===================================================
+
+  currentPage = 1;
+
+  itemsPerPage = 8;
+
+
+  // ===================================================
+  // LOADING
   // ===================================================
 
   loading = false;
@@ -131,11 +90,6 @@ export class LeaveApprovalComponent
 
   // ===================================================
   // ERROR MESSAGE
-  // ===================================================
-  //
-  // Agar API fail hoti hai to yahan error message
-  // store hoga.
-  //
   // ===================================================
 
   errorMessage = '';
@@ -153,10 +107,6 @@ export class LeaveApprovalComponent
   // ===================================================
   // ON INIT
   // ===================================================
-  //
-  // Component load hote hi saari leaves fetch hongi.
-  //
-  // ===================================================
 
   ngOnInit(): void {
 
@@ -166,42 +116,15 @@ export class LeaveApprovalComponent
 
 
   // ===================================================
-  // GET ALL LEAVES - ADMIN
-  // ===================================================
-  //
-  // ONLY API USED BY ADMIN PAGE:
-  //
-  // GET /api/v1/leaves/admin
-  //
-  // Ye API saari leaves return karti hai:
-  //
-  // PENDING
-  // APPROVED
-  // REJECTED
-  //
-  // Is page par approve/reject API call nahi hogi.
-  //
+  // GET ALL LEAVES
   // ===================================================
 
   loadAllLeaves(): void {
 
-    // =================================================
-    // START LOADING
-    // =================================================
-
     this.loading = true;
-
-
-    // =================================================
-    // CLEAR PREVIOUS ERROR
-    // =================================================
 
     this.errorMessage = '';
 
-
-    // =================================================
-    // CALL ADMIN API
-    // =================================================
 
     this.leaveService
       .getAllLeaves()
@@ -215,10 +138,6 @@ export class LeaveApprovalComponent
           response: any[]
         ) => {
 
-          // ===========================================
-          // CONSOLE LOG
-          // ===========================================
-
           console.log(
             'ALL LEAVES:',
             response
@@ -228,60 +147,26 @@ export class LeaveApprovalComponent
           // ===========================================
           // MAP API RESPONSE
           // ===========================================
-          //
-          // Backend se:
-          //
-          // name
-          //
-          // aa raha hai.
-          //
-          // Hum UI ke liye:
-          //
-          // employee
-          //
-          // use kar rahe hain.
-          //
-          // ===========================================
 
           this.leaveRequests =
             (response || []).map(
               leave => ({
 
-                // =====================================
-                // ID
-                // =====================================
-
                 id:
                   leave.id,
 
 
-                // =====================================
-                // EMPLOYEE NAME
-                // =====================================
-
                 employee:
-                  leave.name,
+                  leave.name || '',
 
-
-                // =====================================
-                // EMAIL
-                // =====================================
 
                 email:
-                  leave.email,
+                  leave.email || '',
 
-
-                // =====================================
-                // REPORTING MANAGER
-                // =====================================
 
                 requestedTo:
-                  leave.requestedTo,
+                  leave.requestedTo || '',
 
-
-                // =====================================
-                // LEAVE TYPE
-                // =====================================
 
                 leaveType:
                   this.formatLeaveType(
@@ -289,39 +174,30 @@ export class LeaveApprovalComponent
                   ),
 
 
-                // =====================================
-                // FROM DATE
-                // =====================================
-
                 from:
-                  leave.from,
+                  leave.from || '',
 
-
-                // =====================================
-                // TO DATE
-                // =====================================
 
                 to:
-                  leave.to,
+                  leave.to || '',
 
-
-                // =====================================
-                // REASON
-                // =====================================
 
                 reason:
-                  leave.reason,
+                  leave.reason || '',
 
-
-                // =====================================
-                // STATUS
-                // =====================================
 
                 status:
-                  leave.status
+                  leave.status || ''
 
               })
             );
+
+
+          // ===========================================
+          // RESET PAGE
+          // ===========================================
+
+          this.currentPage = 1;
 
 
           // ===========================================
@@ -341,37 +217,24 @@ export class LeaveApprovalComponent
           error: HttpErrorResponse
         ) => {
 
-          // ===========================================
-          // CONSOLE ERROR
-          // ===========================================
-
           console.error(
             'GET ALL LEAVES ERROR:',
             error
           );
 
 
-          // ===========================================
-          // CLEAR DATA
-          // ===========================================
-
           this.leaveRequests = [];
 
-
-          // ===========================================
-          // STOP LOADING
-          // ===========================================
 
           this.loading = false;
 
 
-          // ===========================================
-          // ERROR MESSAGE
-          // ===========================================
-
           this.errorMessage =
+
             error?.error?.responseMessage ||
+
             error?.error?.message ||
+
             'Unable to load leave requests.';
 
         }
@@ -382,32 +245,418 @@ export class LeaveApprovalComponent
 
 
   // ===================================================
-  // FORMAT LEAVE TYPE
+  // FILTERED LEAVES
   // ===================================================
+
+  get filteredLeaves(): LeaveApproval[] {
+
+
+    const search =
+
+      this.searchText
+        .trim()
+        .toLowerCase();
+
+
+    // ===============================================
+    // NO SEARCH
+    // ===============================================
+
+    if (!search) {
+
+      return this.leaveRequests;
+
+    }
+
+
+    // ===============================================
+    // SEARCH
+    // ===============================================
+
+    return this.leaveRequests.filter(
+      leave =>
+
+        (leave.employee || '')
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (leave.email || '')
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (leave.requestedTo || '')
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (leave.leaveType || '')
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        (leave.status || '')
+          .toLowerCase()
+          .includes(search)
+
+    );
+
+  }
+
+
+  // ===================================================
+  // TOTAL PAGES
+  // ===================================================
+
+  get totalPages(): number {
+
+    return Math.max(
+
+      1,
+
+      Math.ceil(
+        this.filteredLeaves.length /
+        this.itemsPerPage
+      )
+
+    );
+
+  }
+
+
+  // ===================================================
+  // PAGINATED LEAVES
+  // ===================================================
+
+  get paginatedLeaves(): LeaveApproval[] {
+
+
+    const startIndex =
+
+      (
+        this.currentPage - 1
+      )
+      *
+      this.itemsPerPage;
+
+
+    const endIndex =
+
+      startIndex +
+      this.itemsPerPage;
+
+
+    return this.filteredLeaves.slice(
+
+      startIndex,
+
+      endIndex
+
+    );
+
+  }
+
+
+  // ===================================================
+  // START ITEM
+  // ===================================================
+
+  get startItem(): number {
+
+
+    if (
+
+      this.filteredLeaves.length === 0
+
+    ) {
+
+      return 0;
+
+    }
+
+
+    return (
+
+      (
+        this.currentPage - 1
+      )
+      *
+      this.itemsPerPage
+
+    )
+    +
+    1;
+
+  }
+
+
+  // ===================================================
+  // END ITEM
+  // ===================================================
+
+  get endItem(): number {
+
+    return Math.min(
+
+      this.currentPage *
+      this.itemsPerPage,
+
+      this.filteredLeaves.length
+
+    );
+
+  }
+
+
+  // ===================================================
+  // SEARCH
+  // ===================================================
+
+  onSearch(): void {
+
+    // Search karte hi
+    // first page par jaayenge
+
+    this.currentPage = 1;
+
+  }
+
+
+  // ===================================================
+  // GO TO PAGE
+  // ===================================================
+
+  goToPage(
+    page: number
+  ): void {
+
+
+    if (
+
+      page < 1 ||
+
+      page > this.totalPages
+
+    ) {
+
+      return;
+
+    }
+
+
+    this.currentPage = page;
+
+  }
+
+
+  // ===================================================
+  // NEXT PAGE
+  // ===================================================
+
+  nextPage(): void {
+
+
+    if (
+
+      this.currentPage <
+      this.totalPages
+
+    ) {
+
+      this.currentPage++;
+
+    }
+
+  }
+
+
+  // ===================================================
+  // PREVIOUS PAGE
+  // ===================================================
+
+  previousPage(): void {
+
+
+    if (
+
+      this.currentPage > 1
+
+    ) {
+
+      this.currentPage--;
+
+    }
+
+  }
+
+
+  // ===================================================
+  // VISIBLE PAGES
   //
   // Example:
   //
-  // CASUAL
-  //      ↓
-  // Casual
+  // Previous
+  // 1 2 3 ... 10
+  // Next
   //
-  // SICK
-  //      ↓
-  // Sick
-  //
-  // MATERNITY
-  //      ↓
-  // Maternity
-  //
+  // ===================================================
+
+  get visiblePages(): number[] {
+
+
+    const pages: number[] = [];
+
+
+    // ===============================================
+    // 7 OR LESS PAGES
+    // ===============================================
+
+    if (
+
+      this.totalPages <= 7
+
+    ) {
+
+      for (
+
+        let i = 1;
+
+        i <= this.totalPages;
+
+        i++
+
+      ) {
+
+        pages.push(i);
+
+      }
+
+
+      return pages;
+
+    }
+
+
+    // ===============================================
+    // FIRST PAGE
+    // ===============================================
+
+    pages.push(1);
+
+
+    // ===============================================
+    // CURRENT PAGE NEAR START
+    // ===============================================
+
+    if (
+
+      this.currentPage <= 4
+
+    ) {
+
+      pages.push(2);
+
+      pages.push(3);
+
+      pages.push(4);
+
+      pages.push(5);
+
+      pages.push(-1);
+
+      pages.push(
+        this.totalPages
+      );
+
+
+      return pages;
+
+    }
+
+
+    // ===============================================
+    // CURRENT PAGE NEAR END
+    // ===============================================
+
+    if (
+
+      this.currentPage >=
+      this.totalPages - 3
+
+    ) {
+
+      pages.push(-1);
+
+
+      for (
+
+        let i =
+          this.totalPages - 4;
+
+        i <= this.totalPages;
+
+        i++
+
+      ) {
+
+        pages.push(i);
+
+      }
+
+
+      return pages;
+
+    }
+
+
+    // ===============================================
+    // MIDDLE
+    // ===============================================
+
+    pages.push(-1);
+
+
+    pages.push(
+      this.currentPage - 1
+    );
+
+
+    pages.push(
+      this.currentPage
+    );
+
+
+    pages.push(
+      this.currentPage + 1
+    );
+
+
+    pages.push(-1);
+
+
+    pages.push(
+      this.totalPages
+    );
+
+
+    return pages;
+
+  }
+
+
+  // ===================================================
+  // FORMAT LEAVE TYPE
   // ===================================================
 
   formatLeaveType(
     leaveType: string
   ): string {
 
-    // =================================================
-    // EMPTY CHECK
-    // =================================================
 
     if (!leaveType) {
 
@@ -416,16 +665,15 @@ export class LeaveApprovalComponent
     }
 
 
-    // =================================================
-    // FORMAT
-    // =================================================
-
     return leaveType
       .toLowerCase()
       .replace(
+
         /\b\w/g,
+
         character =>
           character.toUpperCase()
+
       );
 
   }
@@ -434,17 +682,16 @@ export class LeaveApprovalComponent
   // ===================================================
   // PENDING COUNT
   // ===================================================
-  //
-  // Total PENDING leaves.
-  //
-  // ===================================================
 
   get pendingCount(): number {
 
     return this.leaveRequests
       .filter(
+
         leave =>
-          leave.status?.toUpperCase() === 'PENDING'
+          leave.status
+            ?.toUpperCase() === 'PENDING'
+
       )
       .length;
 
@@ -454,17 +701,16 @@ export class LeaveApprovalComponent
   // ===================================================
   // APPROVED COUNT
   // ===================================================
-  //
-  // Total APPROVED leaves.
-  //
-  // ===================================================
 
   get approvedCount(): number {
 
     return this.leaveRequests
       .filter(
+
         leave =>
-          leave.status?.toUpperCase() === 'APPROVED'
+          leave.status
+            ?.toUpperCase() === 'APPROVED'
+
       )
       .length;
 
@@ -474,17 +720,16 @@ export class LeaveApprovalComponent
   // ===================================================
   // REJECTED COUNT
   // ===================================================
-  //
-  // Total REJECTED leaves.
-  //
-  // ===================================================
 
   get rejectedCount(): number {
 
     return this.leaveRequests
       .filter(
+
         leave =>
-          leave.status?.toUpperCase() === 'REJECTED'
+          leave.status
+            ?.toUpperCase() === 'REJECTED'
+
       )
       .length;
 

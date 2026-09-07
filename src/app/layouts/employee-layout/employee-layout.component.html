@@ -1,8 +1,6 @@
-<div class="min-h-screen bg-slate-50">
+<div class="h-screen overflow-hidden bg-slate-50">
 
-  <!-- ================================================= -->
   <!-- HEADER -->
-  <!-- ================================================= -->
 
   <app-header
     role="Employee"
@@ -10,31 +8,32 @@
   </app-header>
 
 
-  <!-- ================================================= -->
   <!-- BODY -->
-  <!-- ================================================= -->
 
-  <div class="flex">
+  <div
+    class="mt-16 flex h-[calc(100vh-4rem)] overflow-hidden"
+  >
 
-    <!-- ================================================= -->
+
     <!-- SIDEBAR -->
-    <!-- ================================================= -->
 
     <app-employee-sidebar
-      *ngIf="sidebarOpen">
+      *ngIf="sidebarOpen"
+      class="block h-full shrink-0"
+    >
     </app-employee-sidebar>
 
 
-    <!-- ================================================= -->
-    <!-- MAIN CONTENT -->
-    <!-- ================================================= -->
+    <!-- SCROLLABLE CONTENT -->
 
     <main
-      class="min-h-[calc(100vh-4rem)] flex-1 overflow-auto p-4 transition-all duration-300 md:p-6">
+      class="min-w-0 flex-1 overflow-y-auto overflow-x-hidden p-4 md:p-6"
+    >
 
       <router-outlet></router-outlet>
 
     </main>
+
 
   </div>
 

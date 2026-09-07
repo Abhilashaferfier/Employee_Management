@@ -15,9 +15,6 @@ import {
 } from '../../environments/environment';
 
 
-// =====================================================
-// LEAVE REQUEST SERVICE
-// =====================================================
 
 @Injectable({
   providedIn: 'root'
@@ -25,27 +22,20 @@ import {
 export class LeaveRequestsService {
 
 
-  // =====================================================
-  // BASE API URL
-  // =====================================================
+  
 
   private readonly apiUrl =
     `${environment.apiUrl}/leaves`;
 
 
-  // =====================================================
-  // CONSTRUCTOR
-  // =====================================================
+  
 
   constructor(
     private http: HttpClient
   ) {}
 
 
-  // =====================================================
-  // GET MY LEAVE REQUESTS
-  // =====================================================
-
+  
   getMyLeaves(): Observable<any[]> {
 
     return this.http.get<any[]>(
@@ -55,9 +45,7 @@ export class LeaveRequestsService {
   }
 
 
-  // =====================================================
-  // CREATE LEAVE REQUEST
-  // =====================================================
+  
 
   createLeave(
     payload: any

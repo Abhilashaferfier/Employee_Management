@@ -5,9 +5,6 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 
-// =====================================================
-// ATTENDANCE RECORD
-// =====================================================
 
 export interface AttendanceRecord {
 
@@ -24,9 +21,7 @@ export interface AttendanceRecord {
 }
 
 
-// =====================================================
-// ATTENDANCE SUMMARY
-// =====================================================
+
 
 export interface AttendanceSummary {
 
@@ -39,9 +34,6 @@ export interface AttendanceSummary {
 }
 
 
-// =====================================================
-// ATTENDANCE RESPONSE
-// =====================================================
 
 export interface AttendanceResponse {
 
@@ -54,19 +46,13 @@ export interface AttendanceResponse {
 }
 
 
-// =====================================================
-// SERVICE
-// =====================================================
 
 @Injectable({
   providedIn: 'root'
 })
 export class AttendanceService {
 
-  // ===================================================
-  // BASE API URL
-  // ===================================================
-
+  
   private readonly apiUrl =
     `${environment.apiUrl}/admin/attendance`;
 
@@ -76,9 +62,7 @@ export class AttendanceService {
   ) {}
 
 
-  // ===================================================
-  // GET ATTENDANCE BY DATE
-  // ===================================================
+  
 
   getAttendance(
     date: string

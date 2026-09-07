@@ -1,7 +1,15 @@
-<aside class="h-[calc(100vh-4rem)] w-64 bg-slate-800 text-white">
+<aside
+  class="flex h-full w-64 shrink-0 flex-col overflow-hidden bg-slate-800 text-white"
+>
 
-  <!-- Logo -->
-  <div class="flex h-16 items-center border-b border-slate-700 px-5">
+
+  <!-- =============================================== -->
+  <!-- LOGO -->
+  <!-- =============================================== -->
+
+  <div
+    class="flex h-16 shrink-0 items-center border-b border-slate-700 px-5"
+  >
 
     <h2 class="text-xl font-bold">
       HRMS
@@ -10,115 +18,153 @@
   </div>
 
 
-  <!-- Menu -->
-  <nav class="flex flex-col gap-1 p-3">
+  <!-- =============================================== -->
+  <!-- MENU -->
+  <!-- =============================================== -->
+
+  <nav
+    class="flex-1 overflow-y-auto p-3"
+  >
 
 
     <!-- Dashboard -->
+
     <a
       routerLink="/admin/dashboard"
       routerLinkActive="bg-slate-700 text-white"
       [routerLinkActiveOptions]="{ exact: true }"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-home"></i>
 
-      <span>Dashboard</span>
+      <span>
+        Dashboard
+      </span>
 
     </a>
 
 
     <!-- Employee Management -->
+
     <a
       routerLink="/admin/employees"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-users"></i>
 
-      <span>Employee Management</span>
+      <span>
+        Employee Management
+      </span>
 
     </a>
 
 
     <!-- Leave Approval -->
+
     <a
       routerLink="/admin/leave-approval"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-calendar"></i>
 
-      <span>Leave Approval</span>
+      <span>
+        Leave Approval
+      </span>
 
     </a>
 
 
     <!-- Attendance -->
+
     <a
       routerLink="/admin/attendance"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-clock"></i>
 
-      <span>Attendance Management</span>
+      <span>
+        Attendance Management
+      </span>
 
     </a>
 
 
     <!-- Payroll -->
+
     <a
       routerLink="/admin/payroll"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-money-bill"></i>
 
-      <span>Payroll Management</span>
+      <span>
+        Payroll Management
+      </span>
 
     </a>
 
 
     <!-- Reports -->
+
     <a
       routerLink="/admin/reports"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-chart-bar"></i>
 
-      <span>Reports</span>
+      <span>
+        Reports
+      </span>
 
     </a>
 
 
     <!-- Role Management -->
+
     <a
       routerLink="/admin/roles"
       routerLinkActive="bg-slate-700 text-white"
-      class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
       <i class="pi pi-shield"></i>
 
-      <span>Role Management</span>
+      <span>
+        Role Management
+      </span>
 
     </a>
 
+
+    <!-- Users -->
+
     <a
-  routerLink="/admin/users"
-  routerLinkActive="bg-slate-700 text-white"
-  class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white">
+      routerLink="/admin/users"
+      routerLinkActive="bg-slate-700 text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+    >
 
-  <i class="pi pi-users"></i>
+      <i class="pi pi-users"></i>
 
-  <span >
-    Users
-  </span>
-</a>
+      <span>
+        Users
+      </span>
 
+    </a>
 
 
   </nav>
+
 
 </aside>

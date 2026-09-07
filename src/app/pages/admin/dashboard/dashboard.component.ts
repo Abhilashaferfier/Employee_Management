@@ -5,7 +5,8 @@ import {
 
 import {
   DashboardService,
-  DashboardEmployee
+  DashboardEmployee,
+  DashboardLeave
 } from '../../../services/dashboard.service';
 
 
@@ -14,18 +15,42 @@ import {
 // =====================================================
 
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+
+  selector:
+    'app-admin-dashboard',
+
+  templateUrl:
+    './dashboard.component.html',
+
+  styleUrls:
+    ['./dashboard.component.css']
+
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent
+  implements OnInit {
 
 
   // =====================================================
-  // ALL EMPLOYEES
+  // LOGGED IN USER NAME
   // =====================================================
 
-  employees: DashboardEmployee[] = [];
+  loggedInUserName = 'User';
+
+
+  // =====================================================
+  // EMPLOYEES
+  // =====================================================
+
+  employees:
+    DashboardEmployee[] = [];
+
+
+  // =====================================================
+  // LEAVES
+  // =====================================================
+
+  leaves:
+    DashboardLeave[] = [];
 
 
   // =====================================================
@@ -39,35 +64,52 @@ export class DashboardComponent implements OnInit {
   // PRESENT TODAY
   // =====================================================
 
-  presentToday: number | null = null;
+  presentToday:
+    number | null = null;
 
 
   // =====================================================
   // PENDING LEAVES
   // =====================================================
 
-  pendingLeaves: number | null = null;
+  pendingLeaves:
+    number | null = null;
 
 
   // =====================================================
   // PENDING PAYROLL
   // =====================================================
 
-  pendingPayroll: number | null = null;
+  pendingPayroll:
+    number | null = null;
 
 
   // =====================================================
-  // LOADING
+  // EMPLOYEE LOADING
   // =====================================================
 
   loadingEmployees = false;
 
 
   // =====================================================
-  // ERROR
+  // LEAVE LOADING
+  // =====================================================
+
+  loadingLeaves = false;
+
+
+  // =====================================================
+  // EMPLOYEE ERROR
   // =====================================================
 
   errorMessage = '';
+
+
+  // =====================================================
+  // LEAVE ERROR
+  // =====================================================
+
+  leaveErrorMessage = '';
 
 
   // =====================================================
@@ -75,7 +117,8 @@ export class DashboardComponent implements OnInit {
   // =====================================================
 
   constructor(
-    private dashboardService: DashboardService
+    private dashboardService:
+      DashboardService
   ) {}
 
 
@@ -85,7 +128,58 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.getLoggedInUserName();
+
     this.loadDashboardData();
+
+  }
+
+
+  // =====================================================
+  // GET LOGGED IN USER NAME
+  // =====================================================
+
+  getLoggedInUserName(): void {
+
+    const firstName =
+      localStorage.getItem(
+        'firstName'
+      );
+
+
+    const lastName =
+      localStorage.getItem(
+        'lastName'
+      );
+
+
+    // DEFAULT
+
+    this.loggedInUserName =
+      'User';
+
+
+    // FIRST NAME
+
+    if (firstName) {
+
+      this.loggedInUserName =
+        firstName;
+
+    }
+
+
+    // FULL NAME
+
+    if (
+      firstName &&
+      lastName
+    ) {
+
+      this.loggedInUserName =
+        `${firstName} ${lastName}`;
+
+    }
 
   }
 
@@ -97,6 +191,8 @@ export class DashboardComponent implements OnInit {
   loadDashboardData(): void {
 
     this.loadEmployees();
+
+    this.loadLeaves();
 
   }
 
@@ -116,12 +212,14 @@ export class DashboardComponent implements OnInit {
       .getAllEmployees()
       .subscribe({
 
-        // ===============================================
+
+        // =================================================
         // SUCCESS
-        // ===============================================
+        // =================================================
 
         next: (
-          response: DashboardEmployee[]
+          response:
+            DashboardEmployee[]
         ) => {
 
           console.log(
@@ -130,36 +228,33 @@ export class DashboardComponent implements OnInit {
           );
 
 
-          // ---------------------------------------------
           // STORE EMPLOYEES
-          // ---------------------------------------------
 
           this.employees =
             response || [];
 
 
-          // ---------------------------------------------
           // TOTAL EMPLOYEES
-          // ---------------------------------------------
 
           this.totalEmployees =
             this.employees.length;
 
 
-          // ---------------------------------------------
           // LOADING COMPLETE
-          // ---------------------------------------------
 
-          this.loadingEmployees = false;
+          this.loadingEmployees =
+            false;
 
         },
 
 
-        // ===============================================
+        // =================================================
         // ERROR
-        // ===============================================
+        // =================================================
 
-        error: (error) => {
+        error: (
+          error
+        ) => {
 
           console.error(
             'DASHBOARD EMPLOYEES ERROR:',
@@ -167,30 +262,128 @@ export class DashboardComponent implements OnInit {
           );
 
 
-          // ---------------------------------------------
-          // CLEAR DATA
-          // ---------------------------------------------
-
           this.employees = [];
 
           this.totalEmployees = 0;
 
 
-          // ---------------------------------------------
-          // ERROR MESSAGE
-          // ---------------------------------------------
-
           this.errorMessage =
+
             error?.error?.message ||
+
             error?.error?.responseMessage ||
+
             'Unable to load employees.';
 
 
-          // ---------------------------------------------
-          // LOADING COMPLETE
-          // ---------------------------------------------
+          this.loadingEmployees =
+            false;
 
-          this.loadingEmployees = false;
+        }
+
+      });
+
+  }
+
+
+  // =====================================================
+  // LOAD LEAVES
+  // =====================================================
+
+  loadLeaves(): void {
+
+    this.loadingLeaves = true;
+
+    this.leaveErrorMessage = '';
+
+
+    this.dashboardService
+      .getAllLeaves()
+      .subscribe({
+
+
+        // =================================================
+        // SUCCESS
+        // =================================================
+
+        next: (
+          response:
+            DashboardLeave[]
+        ) => {
+
+          console.log(
+            'DASHBOARD LEAVES:',
+            response
+          );
+
+
+          // STORE LEAVES
+
+          this.leaves =
+            response || [];
+
+
+          // ===============================================
+          // COUNT PENDING LEAVES
+          // ===============================================
+
+          this.pendingLeaves =
+            this.leaves.filter(
+
+              leave =>
+                leave.status?.toUpperCase() ===
+                'PENDING'
+
+            ).length;
+
+
+          // LOADING COMPLETE
+
+          this.loadingLeaves =
+            false;
+
+        },
+
+
+        // =================================================
+        // ERROR
+        // =================================================
+
+        error: (
+          error
+        ) => {
+
+          console.error(
+            'DASHBOARD LEAVES ERROR:',
+            error
+          );
+
+
+          // CLEAR LEAVES
+
+          this.leaves = [];
+
+
+          // RESET PENDING LEAVES
+
+          this.pendingLeaves = 0;
+
+
+          // ERROR MESSAGE
+
+          this.leaveErrorMessage =
+
+            error?.error?.message ||
+
+            error?.error?.responseMessage ||
+
+            'Unable to load leave requests.';
+
+
+          // LOADING COMPLETE
+
+          this.loadingLeaves =
+            false;
 
         }
 
@@ -203,9 +396,47 @@ export class DashboardComponent implements OnInit {
   // RECENT EMPLOYEES
   // =====================================================
 
-  get recentEmployees(): DashboardEmployee[] {
+  get recentEmployees():
+    DashboardEmployee[] {
 
-    return this.employees.slice(0, 5);
+    return this.employees;
+
+  }
+
+
+  // =====================================================
+  // GET EMPLOYEE NAME
+  // =====================================================
+
+  getEmployeeName(
+    leave:
+      DashboardLeave
+  ): string {
+
+    // IF API DIRECTLY SENDS EMPLOYEE NAME
+
+    if (leave.employeeName) {
+
+      return leave.employeeName;
+
+    }
+
+
+    // IF API SENDS FIRST + LAST NAME
+
+    const firstName =
+      leave.firstName || '';
+
+    const lastName =
+      leave.lastName || '';
+
+
+    const fullName =
+      `${firstName} ${lastName}`
+        .trim();
+
+
+    return fullName || '-';
 
   }
 

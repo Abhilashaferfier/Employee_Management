@@ -7,11 +7,16 @@ import {
   Routes
 } from '@angular/router';
 
-import { authGuard }
-  from './guards/auth.guard';
 
-import { roleGuard }
-  from './guards/role.guard';
+import {
+  authGuard
+} from './guards/auth.guard';
+
+
+import {
+  roleGuard
+} from './guards/role.guard';
+
 
 import {
   RoleSelectionComponent
@@ -52,19 +57,6 @@ const routes: Routes = [
   // ROLE SELECTION
   // =====================================================
 
-  /*
-   * IMPORTANT:
-   *
-   * Login ke baad agar user ke paas
-   * Admin + Employee dono roles hain,
-   * to yahan aayega.
-   *
-   * Is route par roleGuard nahi lagana hai.
-   *
-   * Sirf authGuard chahiye,
-   * kyunki user logged-in hona chahiye.
-   */
-
   {
     path: 'role-selection',
 
@@ -74,6 +66,25 @@ const routes: Routes = [
 
     component:
       RoleSelectionComponent
+  },
+
+
+  // =====================================================
+  // VIEWER
+  // =====================================================
+
+  {
+    path: 'viewer',
+
+    canActivate: [
+      authGuard
+    ],
+
+    loadChildren: () =>
+      import('./pages/viewer/viewer.module')
+        .then(
+          m => m.ViewerModule
+        )
   },
 
 

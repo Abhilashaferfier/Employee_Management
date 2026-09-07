@@ -4,9 +4,13 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 
-import { inject } from '@angular/core';
+import {
+  inject
+} from '@angular/core';
 
-import { Router } from '@angular/router';
+import {
+  Router
+} from '@angular/router';
 
 import {
   catchError,
@@ -59,6 +63,7 @@ export const authInterceptor: HttpInterceptorFn = (
   const isLoginRequest =
     req.url.includes('/auth/login');
 
+
   const isSignupRequest =
     req.url.includes('/auth/register');
 
@@ -74,11 +79,15 @@ export const authInterceptor: HttpInterceptorFn = (
 
     return next(req).pipe(
 
+      // ==================================================
+      // RESPONSE CHECK
+      // ==================================================
+
       tap((event) => {
 
-        // ==================================================
+        // ================================================
         // LOGIN SUCCESS
-        // ==================================================
+        // ================================================
 
         if (
           isLoginRequest &&
@@ -89,9 +98,9 @@ export const authInterceptor: HttpInterceptorFn = (
             event.body as LoginResponse;
 
 
-          // ================================================
+          // ==============================================
           // TOKEN
-          // ================================================
+          // ==============================================
 
           if (body?.token) {
 
@@ -103,9 +112,9 @@ export const authInterceptor: HttpInterceptorFn = (
           }
 
 
-          // ================================================
+          // ==============================================
           // USER ID
-          // ================================================
+          // ==============================================
 
           if (body?.userId) {
 
@@ -117,38 +126,37 @@ export const authInterceptor: HttpInterceptorFn = (
           }
 
 
-           // ================================================
-  // FIRST NAME
-  // ================================================
+          // ==============================================
+          // FIRST NAME
+          // ==============================================
 
-  if (body?.firstName) {
+          if (body?.firstName) {
 
-    localStorage.setItem(
-      'firstName',
-      body.firstName
-    );
+            localStorage.setItem(
+              'firstName',
+              body.firstName
+            );
 
-  }
-
-
-         // ================================================
-  // LAST NAME
-  // ================================================
-
-  if (body?.lastName) {
-
-    localStorage.setItem(
-      'lastName',
-      body.lastName
-    );
-
-  }
- 
+          }
 
 
-          // ================================================
+          // ==============================================
+          // LAST NAME
+          // ==============================================
+
+          if (body?.lastName) {
+
+            localStorage.setItem(
+              'lastName',
+              body.lastName
+            );
+
+          }
+
+
+          // ==============================================
           // EMAIL
-          // ================================================
+          // ==============================================
 
           if (body?.email) {
 
@@ -160,9 +168,9 @@ export const authInterceptor: HttpInterceptorFn = (
           }
 
 
-          // ================================================
+          // ==============================================
           // ADMIN ACCESS
-          // ================================================
+          // ==============================================
 
           localStorage.setItem(
             'admin',
@@ -170,9 +178,9 @@ export const authInterceptor: HttpInterceptorFn = (
           );
 
 
-          // ================================================
+          // ==============================================
           // EMPLOYEE ACCESS
-          // ================================================
+          // ==============================================
 
           localStorage.setItem(
             'employee',
@@ -180,9 +188,9 @@ export const authInterceptor: HttpInterceptorFn = (
           );
 
 
-          // ================================================
+          // ==============================================
           // TOKEN TYPE
-          // ================================================
+          // ==============================================
 
           if (body?.tokenType) {
 
@@ -194,10 +202,25 @@ export const authInterceptor: HttpInterceptorFn = (
           }
 
 
+          // ==============================================
+          // CLEAR OLD SELECTED ROLE
+          // ==============================================
+
+          localStorage.removeItem(
+            'selectedRole'
+          );
+
+
+          console.log(
+            'LOGIN DATA SAVED'
+          );
+
+
           console.log(
             'ADMIN ACCESS:',
             body?.admin
           );
+
 
           console.log(
             'EMPLOYEE ACCESS:',
@@ -210,7 +233,7 @@ export const authInterceptor: HttpInterceptorFn = (
 
 
       // ====================================================
-      // ERROR
+      // AUTH API ERROR
       // ====================================================
 
       catchError(
@@ -245,18 +268,22 @@ export const authInterceptor: HttpInterceptorFn = (
   // TOKEN AVAILABLE
   // ======================================================
 
-  if (token) {
+  if (
+    token &&
+    token.trim() !== ''
+  ) {
 
-    const authReq = req.clone({
+    const authReq =
+      req.clone({
 
-      setHeaders: {
+        setHeaders: {
 
-        Authorization:
-          `Bearer ${token}`
+          Authorization:
+            `Bearer ${token}`
 
-      }
+        }
 
-    });
+      });
 
 
     return next(authReq).pipe(
@@ -274,38 +301,62 @@ export const authInterceptor: HttpInterceptorFn = (
           // 401 UNAUTHORIZED
           // ================================================
 
-          if (error.status === 401) {
+          if (
+            error.status === 401
+          ) {
 
-            // Clear authentication
+            // ==============================================
+            // CLEAR AUTH DATA
+            // ==============================================
 
             localStorage.removeItem(
               'token'
             );
 
+
             localStorage.removeItem(
               'userId'
             );
+
 
             localStorage.removeItem(
               'email'
             );
 
+
+            localStorage.removeItem(
+              'firstName'
+            );
+
+
+            localStorage.removeItem(
+              'lastName'
+            );
+
+
             localStorage.removeItem(
               'admin'
             );
+
 
             localStorage.removeItem(
               'employee'
             );
 
+
             localStorage.removeItem(
               'tokenType'
             );
+
 
             localStorage.removeItem(
               'selectedRole'
             );
 
+
+            // ==============================================
+            // REDIRECT TO LOGIN
+            // ==============================================
 
             router.navigate([
               '/login'

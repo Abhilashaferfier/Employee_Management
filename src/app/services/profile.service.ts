@@ -16,9 +16,7 @@ export class ProfileService {
     private http: HttpClient
   ) {}
 
-  // ==========================================
-  // GET LOGGED-IN EMPLOYEE PROFILE
-  // ==========================================
+  
 
   getMyProfile(): Observable<any> {
 

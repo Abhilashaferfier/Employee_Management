@@ -6,23 +6,35 @@ import {
   OnInit
 } from '@angular/core';
 
-import { Router } from '@angular/router';
+import {
+  Router
+} from '@angular/router';
 
-import { AuthService } from '../../services/auth.service';
+import {
+  AuthService
+} from '../../services/auth.service';
 
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+
+  templateUrl:
+    './header.component.html',
+
+  styleUrls: [
+    './header.component.css'
+  ]
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent
+  implements OnInit {
+
 
   // =====================================================
   // CURRENT PORTAL ROLE
   // =====================================================
 
-  @Input() role: string = '';
+  @Input()
+  role: string = '';
 
 
   // =====================================================
@@ -30,7 +42,8 @@ export class HeaderComponent implements OnInit {
   // =====================================================
 
   @Output()
-  menuToggle = new EventEmitter<void>();
+  menuToggle =
+    new EventEmitter<void>();
 
 
   // =====================================================
@@ -98,8 +111,13 @@ export class HeaderComponent implements OnInit {
   get isPortalHeader(): boolean {
 
     return (
+
       this.role === 'Admin' ||
-      this.role === 'Employee'
+
+      this.role === 'Employee' ||
+
+      this.role === 'Viewer'
+
     );
 
   }
@@ -111,31 +129,59 @@ export class HeaderComponent implements OnInit {
 
   private loadUserData(): void {
 
+
+    // ===============================================
+    // USER DETAILS
+    // ===============================================
+
     this.firstName =
-      localStorage.getItem('firstName') || '';
+      localStorage.getItem(
+        'firstName'
+      ) || '';
+
 
     this.lastName =
-      localStorage.getItem('lastName') || '';
+      localStorage.getItem(
+        'lastName'
+      ) || '';
+
 
     this.email =
-      localStorage.getItem('email') || '';
+      localStorage.getItem(
+        'email'
+      ) || '';
+
+
+    // ===============================================
+    // ADMIN ACCESS
+    // ===============================================
 
     this.isAdmin =
-      localStorage.getItem('admin') === 'true';
+      localStorage.getItem(
+        'admin'
+      ) === 'true';
+
+
+    // ===============================================
+    // EMPLOYEE ACCESS
+    // ===============================================
 
     this.isEmployee =
-      localStorage.getItem('employee') === 'true';
+      localStorage.getItem(
+        'employee'
+      ) === 'true';
 
 
-    // ===================================================
+    // ===============================================
     // CREATE INITIALS
-    // ===================================================
+    // ===============================================
 
     const firstInitial =
       this.firstName
         .trim()
         .charAt(0)
         .toUpperCase();
+
 
     const lastInitial =
       this.lastName
@@ -148,15 +194,39 @@ export class HeaderComponent implements OnInit {
       `${firstInitial}${lastInitial}`;
 
 
-    // ===================================================
+    // ===============================================
     // FALLBACK
-    // ===================================================
+    // ===============================================
 
-    if (!this.initials.trim()) {
+    if (
+      !this.initials.trim()
+    ) {
 
       this.initials = 'U';
 
     }
+
+
+    // ===============================================
+    // CONSOLE
+    // ===============================================
+
+    console.log(
+      'HEADER ROLE:',
+      this.role
+    );
+
+
+    console.log(
+      'IS ADMIN:',
+      this.isAdmin
+    );
+
+
+    console.log(
+      'IS EMPLOYEE:',
+      this.isEmployee
+    );
 
   }
 
@@ -185,14 +255,45 @@ export class HeaderComponent implements OnInit {
 
 
   // =====================================================
-  // BOTH ROLES
+  // MULTIPLE ROLES
+  // =====================================================
+  //
+  // Viewer sabke paas default hai.
+  //
+  // Agar:
+  //
+  // Admin = false
+  // Employee = false
+  //
+  // => Only Viewer
+  // => Switch Role nahi
+  //
+  //
+  // Agar:
+  //
+  // Admin = true
+  //
+  // => Viewer + Admin
+  // => Switch Role
+  //
+  //
+  // Agar:
+  //
+  // Employee = true
+  //
+  // => Viewer + Employee
+  // => Switch Role
+  //
   // =====================================================
 
-  get hasBothRoles(): boolean {
+  get hasMultipleRoles(): boolean {
 
     return (
-      this.isAdmin &&
+
+      this.isAdmin ||
+
       this.isEmployee
+
     );
 
   }
@@ -204,23 +305,40 @@ export class HeaderComponent implements OnInit {
 
   switchRole(): void {
 
-    if (!this.hasBothRoles) {
+
+    // ===============================================
+    // CHECK
+    // ===============================================
+
+    if (
+      !this.hasMultipleRoles
+    ) {
 
       return;
 
     }
 
 
-    this.profileMenuVisible = false;
+    // ===============================================
+    // CLOSE MENU
+    // ===============================================
+
+    this.profileMenuVisible =
+      false;
 
 
-    // Token/role permissions remove nahi karne.
-    // Sirf currently selected role remove karna hai.
+    // ===============================================
+    // REMOVE CURRENT ROLE
+    // ===============================================
 
     localStorage.removeItem(
       'selectedRole'
     );
 
+
+    // ===============================================
+    // GO TO ROLE SELECTION
+    // ===============================================
 
     this.router.navigate([
       '/role-selection'
@@ -235,25 +353,45 @@ export class HeaderComponent implements OnInit {
 
   logout(): void {
 
-    if (this.logoutLoading) {
+
+    // ===============================================
+    // ALREADY LOADING
+    // ===============================================
+
+    if (
+      this.logoutLoading
+    ) {
 
       return;
 
     }
 
 
-    this.logoutLoading = true;
+    // ===============================================
+    // START
+    // ===============================================
 
+    this.logoutLoading =
+      true;
+
+
+    // ===============================================
+    // LOGOUT API
+    // ===============================================
 
     this.authService
       .logout()
       .subscribe({
 
+
         // =============================================
         // SUCCESS
         // =============================================
 
-        next: (response: any) => {
+        next: (
+          response: any
+        ) => {
+
 
           console.log(
             'Logout successful:',
@@ -275,7 +413,10 @@ export class HeaderComponent implements OnInit {
         // ERROR
         // =============================================
 
-        error: (error: any) => {
+        error: (
+          error: any
+        ) => {
+
 
           console.error(
             'Logout API error:',
@@ -283,8 +424,7 @@ export class HeaderComponent implements OnInit {
           );
 
 
-          // API fail ho tab bhi logout
-          // frontend par complete hona chahiye.
+          // API fail ho tab bhi frontend logout
 
           this.clearAuthData();
 
@@ -306,25 +446,55 @@ export class HeaderComponent implements OnInit {
 
   private clearAuthData(): void {
 
-    localStorage.removeItem('token');
 
-    localStorage.removeItem('userId');
+    localStorage.removeItem(
+      'token'
+    );
 
-    localStorage.removeItem('firstName');
 
-    localStorage.removeItem('lastName');
+    localStorage.removeItem(
+      'userId'
+    );
 
-    localStorage.removeItem('email');
 
-    localStorage.removeItem('admin');
+    localStorage.removeItem(
+      'firstName'
+    );
 
-    localStorage.removeItem('employee');
 
-    localStorage.removeItem('role');
+    localStorage.removeItem(
+      'lastName'
+    );
 
-    localStorage.removeItem('selectedRole');
 
-    localStorage.removeItem('tokenType');
+    localStorage.removeItem(
+      'email'
+    );
+
+
+    localStorage.removeItem(
+      'admin'
+    );
+
+
+    localStorage.removeItem(
+      'employee'
+    );
+
+
+    localStorage.removeItem(
+      'role'
+    );
+
+
+    localStorage.removeItem(
+      'selectedRole'
+    );
+
+
+    localStorage.removeItem(
+      'tokenType'
+    );
 
   }
 

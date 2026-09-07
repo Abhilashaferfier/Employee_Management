@@ -23,7 +23,13 @@ export const roleGuard: CanActivateFn = (
     localStorage.getItem('token');
 
 
-  if (!token || token.trim() === '') {
+  // User is not logged in
+  // Redirect to Login
+
+  if (
+    !token ||
+    token.trim() === ''
+  ) {
 
     return router.createUrlTree([
       '/login'
@@ -49,76 +55,67 @@ export const roleGuard: CanActivateFn = (
   const isAdmin =
     localStorage.getItem('admin') === 'true';
 
+
   const isEmployee =
     localStorage.getItem('employee') === 'true';
 
 
   // =====================================================
-  // ADMIN ROUTE
+  // ADMIN ACCESS
   // =====================================================
 
   if (requiredRole === 'ADMIN') {
 
+    // User has Admin access
+
     if (isAdmin) {
 
       return true;
 
     }
 
-    // User has no Admin access
-    // but may have Employee access
 
-    if (isEmployee) {
-
-      return router.createUrlTree([
-        '/employee/dashboard'
-      ]);
-
-    }
+    // User does not have Admin access
+    // Viewer is the default dashboard
 
     return router.createUrlTree([
-      '/login'
+      '/viewer/dashboard'
     ]);
 
   }
 
 
   // =====================================================
-  // EMPLOYEE ROUTE
+  // EMPLOYEE ACCESS
   // =====================================================
 
   if (requiredRole === 'EMPLOYEE') {
 
+    // User has Employee access
+
     if (isEmployee) {
 
       return true;
 
     }
 
-    // User has no Employee access
-    // but may have Admin access
 
-    if (isAdmin) {
-
-      return router.createUrlTree([
-        '/admin/dashboard'
-      ]);
-
-    }
+    // User does not have Employee access
+    // Viewer is the default dashboard
 
     return router.createUrlTree([
-      '/login'
+      '/viewer/dashboard'
     ]);
 
   }
 
 
   // =====================================================
-  // UNKNOWN ROLE
+  // INVALID / UNKNOWN ROLE
   // =====================================================
 
   return router.createUrlTree([
-    '/login'
+    '/viewer/dashboard'
   ]);
 
 };

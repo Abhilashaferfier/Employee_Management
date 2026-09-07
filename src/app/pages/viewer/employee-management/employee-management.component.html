@@ -1,0 +1,273 @@
+<div class="min-h-full bg-slate-50">
+
+  <!-- ================================================= -->
+  <!-- HEADING -->
+  <!-- ================================================= -->
+
+  <div
+    class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+
+    <div>
+
+      <h2 class="text-2xl font-bold text-slate-800">
+        Employee Management
+      </h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        View employees in your organization.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- ERROR MESSAGE -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="errorMessage"
+    class="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+
+    {{ errorMessage }}
+
+  </div>
+
+
+  <!-- ================================================= -->
+  <!-- TABLE CARD -->
+  <!-- ================================================= -->
+
+  <div
+    class="rounded-xl border border-blue-100 bg-white shadow-sm">
+
+
+    <!-- ================================================= -->
+    <!-- SEARCH -->
+    <!-- ================================================= -->
+
+    <div
+      class="border-b border-slate-100 p-4">
+
+      <div
+        class="relative max-w-md">
+
+        <i
+          class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+        </i>
+
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          placeholder="Search employee..."
+          class="w-full rounded-lg border border-slate-200 py-2.5 pl-10 pr-4 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- TABLE -->
+    <!-- ================================================= -->
+
+    <div class="overflow-x-auto">
+
+      <table
+        class="w-full text-left text-sm">
+
+
+        <!-- ================================================= -->
+        <!-- HEADER -->
+        <!-- ================================================= -->
+
+        <thead
+          class="bg-blue-50 text-xs uppercase text-slate-500">
+
+          <tr>
+
+            <th class="px-5 py-3">
+              Name
+            </th>
+
+            <th class="px-5 py-3">
+              Email
+            </th>
+
+            <th class="px-5 py-3">
+              Designation
+            </th>
+
+            <th class="px-5 py-3">
+              Department
+            </th>
+
+            <th class="px-5 py-3">
+              DOJ
+            </th>
+
+            <th class="px-5 py-3">
+              Reporting Manager
+            </th>
+
+            <th class="px-5 py-3">
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <!-- ================================================= -->
+        <!-- BODY -->
+        <!-- ================================================= -->
+
+        <tbody
+          class="divide-y divide-slate-100">
+
+
+          <!-- ================================================= -->
+          <!-- LOADING -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="loadingEmployees">
+
+            <td
+              colspan="7"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              <i
+                class="pi pi-spin pi-spinner mr-2">
+              </i>
+
+              Loading employees...
+
+            </td>
+
+          </tr>
+
+
+          <!-- ================================================= -->
+          <!-- EMPLOYEE -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngFor="let employee of filteredEmployees"
+            class="hover:bg-blue-50/50">
+
+
+            <!-- NAME -->
+
+            <td
+              class="px-5 py-4 font-medium text-slate-700">
+
+              {{ employee.firstName }}
+              {{ employee.lastName }}
+
+            </td>
+
+
+            <!-- EMAIL -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.email }}
+
+            </td>
+
+
+            <!-- DESIGNATION -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.designation || '—' }}
+
+            </td>
+
+
+            <!-- DEPARTMENT -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.departmentName || '—' }}
+
+            </td>
+
+
+            <!-- DOJ -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.dateOfJoining || '—' }}
+
+            </td>
+
+
+            <!-- REPORTING MANAGER -->
+
+            <td
+              class="px-5 py-4 text-slate-500">
+
+              {{ employee.reportingManagerEmail || '—' }}
+
+            </td>
+
+
+            <!-- STATUS -->
+
+            <td
+              class="px-5 py-4">
+
+              <span
+                [class]="employee.status === 'ACTIVE'
+                  ? 'text-xs font-medium text-green-600'
+                  : 'text-xs font-medium text-red-500'">
+
+                ● {{ employee.status }}
+
+              </span>
+
+            </td>
+
+
+          </tr>
+
+
+          <!-- ================================================= -->
+          <!-- NO DATA -->
+          <!-- ================================================= -->
+
+          <tr
+            *ngIf="
+              !loadingEmployees &&
+              filteredEmployees.length === 0
+            ">
+
+            <td
+              colspan="7"
+              class="px-5 py-8 text-center text-sm text-slate-500">
+
+              No employees found.
+
+            </td>
+
+          </tr>
+
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

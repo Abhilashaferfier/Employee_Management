@@ -1,4 +1,3 @@
-
 <div class="min-h-screen bg-slate-100 p-6">
 
   <!-- ================================================= -->
@@ -6,48 +5,65 @@
   <!-- ================================================= -->
 
   <div
-    class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
+    class="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between"
   >
 
     <div>
 
-      <h1
-        class="text-2xl font-bold text-slate-800"
-      >
+      <h1 class="text-2xl font-bold text-slate-800">
         Users
       </h1>
 
-      <p
-        class="text-sm text-slate-500 mt-1"
-      >
-        Manage all system users
+      <p class="mt-1 text-sm text-slate-500">
+        View all system users
       </p>
 
     </div>
 
 
-    <!-- ADD USER BUTTON -->
+    <!-- ================================================= -->
+    <!-- RIGHT SIDE -->
+    <!-- ================================================= -->
 
-    <button
-      type="button"
-      (click)="openAddUserModal()"
-      class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition"
+    <div
+      class="flex w-full flex-col gap-3 md:w-auto md:flex-row"
     >
-      + Add User
-    </button>
 
-  </div>
+      <!-- =============================================== -->
+      <!-- SEARCH -->
+      <!-- =============================================== -->
+
+      <div class="w-full md:w-80">
+
+        <input
+          type="text"
+          [(ngModel)]="searchText"
+          (input)="onSearch()"
+          placeholder="Search by name or email..."
+          class="w-full rounded-lg border border-slate-300 bg-white px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+        />
+
+      </div>
 
 
-  <!-- ================================================= -->
-  <!-- SUCCESS MESSAGE -->
-  <!-- ================================================= -->
+      <!-- =============================================== -->
+      <!-- ADD USER BUTTON -->
+      <!-- =============================================== -->
 
-  <div
-    *ngIf="successMessage"
-    class="mb-5 p-4 rounded-lg bg-green-50 border border-green-200 text-green-700"
-  >
-    {{ successMessage }}
+      <button
+        type="button"
+        (click)="openAddUserModal()"
+        class="flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+      >
+
+        <i class="pi pi-plus"></i>
+
+        Add User
+
+      </button>
+
+    </div>
+
   </div>
 
 
@@ -57,9 +73,11 @@
 
   <div
     *ngIf="errorMessage"
-    class="mb-5 p-4 rounded-lg bg-red-50 border border-red-200 text-red-700"
+    class="mb-5 rounded-lg border border-red-200 bg-red-50 p-4 text-red-700"
   >
+
     {{ errorMessage }}
+
   </div>
 
 
@@ -68,33 +86,47 @@
   <!-- ================================================= -->
 
   <div
-    class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden"
+    class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm"
   >
+
 
     <!-- ================================================= -->
     <!-- CARD HEADER -->
     <!-- ================================================= -->
 
     <div
-      class="px-6 py-4 border-b border-slate-200 flex items-center justify-between"
+      class="flex flex-col gap-2 border-b border-slate-200 px-6 py-4 sm:flex-row sm:items-center sm:justify-between"
     >
 
       <div>
 
-        <h2
-          class="text-lg font-semibold text-slate-800"
-        >
+        <h2 class="text-lg font-semibold text-slate-800">
           All Users
         </h2>
 
-        <p
-          class="text-sm text-slate-500"
-        >
+        <p class="mt-1 text-sm text-slate-500">
           Total users:
-          {{ users.length }}
+          {{ filteredUsers.length }}
         </p>
 
       </div>
+
+
+      <!-- PAGE INFO -->
+
+      <p
+        *ngIf="filteredUsers.length > 0"
+        class="text-sm text-slate-500"
+      >
+
+        Showing
+        {{ startUser }}
+        -
+        {{ endUser }}
+        of
+        {{ filteredUsers.length }}
+
+      </p>
 
     </div>
 
@@ -107,6 +139,8 @@
       *ngIf="loading"
       class="p-10 text-center text-slate-500"
     >
+
+      <i class="pi pi-spin pi-spinner mr-2"></i>
 
       Loading users...
 
@@ -122,43 +156,33 @@
       class="overflow-x-auto"
     >
 
-      <table
-        class="w-full text-left"
-      >
+      <table class="w-full text-left">
+
 
         <!-- TABLE HEADER -->
 
         <thead
-          class="bg-slate-50 border-b border-slate-200"
+          class="border-b border-slate-200 bg-slate-50"
         >
 
           <tr>
 
             <th
-              class="px-6 py-4 text-sm font-semibold text-slate-600"
+              class="w-1/3 px-6 py-4 text-sm font-semibold text-slate-600"
             >
               First Name
             </th>
 
-
             <th
-              class="px-6 py-4 text-sm font-semibold text-slate-600"
+              class="w-1/3 px-6 py-4 text-sm font-semibold text-slate-600"
             >
               Last Name
             </th>
 
-
             <th
-              class="px-6 py-4 text-sm font-semibold text-slate-600"
+              class="w-1/3 px-6 py-4 text-sm font-semibold text-slate-600"
             >
               Email
-            </th>
-
-
-            <th
-              class="px-6 py-4 text-sm font-semibold text-slate-600"
-            >
-              Status
             </th>
 
           </tr>
@@ -173,66 +197,42 @@
         >
 
           <tr
-            *ngFor="let user of users"
-            class="hover:bg-slate-50"
+            *ngFor="let user of paginatedUsers"
+            class="transition hover:bg-slate-50"
           >
 
             <td
-              class="px-6 py-4 text-sm text-slate-800"
+              class="w-1/3 px-6 py-4 text-sm text-slate-800"
             >
               {{ user.firstName }}
             </td>
 
 
             <td
-              class="px-6 py-4 text-sm text-slate-800"
+              class="w-1/3 px-6 py-4 text-sm text-slate-800"
             >
               {{ user.lastName }}
             </td>
 
 
             <td
-              class="px-6 py-4 text-sm text-slate-600"
+              class="w-1/3 px-6 py-4 text-sm text-slate-600"
             >
               {{ user.email }}
-            </td>
-
-
-            <td
-              class="px-6 py-4"
-            >
-
-              <span
-                *ngIf="user.status === 'ACTIVE'"
-                class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"
-              >
-                Active
-              </span>
-
-
-              <span
-                *ngIf="user.status !== 'ACTIVE'"
-                class="inline-flex px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-600"
-              >
-                {{ user.status || 'Inactive' }}
-              </span>
-
             </td>
 
           </tr>
 
 
-          <!-- ================================================= -->
           <!-- NO USERS -->
-          <!-- ================================================= -->
 
           <tr
-            *ngIf="users.length === 0"
+            *ngIf="filteredUsers.length === 0"
           >
 
             <td
-              colspan="4"
-              class="px-6 py-10 text-center text-slate-500"
+              colspan="3"
+              class="px-6 py-12 text-center text-slate-500"
             >
 
               No users found.
@@ -247,194 +247,335 @@
 
     </div>
 
-  </div>
-
-</div>
-
-
-<!-- ===================================================== -->
-<!-- ADD USER MODAL -->
-<!-- ===================================================== -->
-
-<div
-  *ngIf="showAddUserModal"
-  class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
->
-
-  <div
-    class="w-full max-w-lg bg-white rounded-xl shadow-xl"
-  >
 
     <!-- ================================================= -->
-    <!-- MODAL HEADER -->
+    <!-- PAGINATION -->
     <!-- ================================================= -->
 
     <div
-      class="px-6 py-4 border-b border-slate-200 flex items-center justify-between"
+      *ngIf="
+        !loading &&
+        filteredUsers.length > itemsPerPage
+      "
+      class="border-t border-slate-200 px-6 py-4"
     >
-
-      <div>
-
-        <h2
-          class="text-xl font-semibold text-slate-800"
-        >
-          Add User
-        </h2>
-
-        <p
-          class="text-sm text-slate-500 mt-1"
-        >
-          Create a new system user
-        </p>
-
-      </div>
-
-
-      <button
-        type="button"
-        (click)="closeAddUserModal()"
-        class="text-slate-400 hover:text-slate-700 text-xl"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <!-- ================================================= -->
-    <!-- MODAL BODY -->
-    <!-- ================================================= -->
-
-    <div
-      class="p-6 space-y-5"
-    >
-
-      <!-- FIRST NAME -->
-
-      <div>
-
-        <label
-          class="block text-sm font-medium text-slate-700 mb-2"
-        >
-          First Name
-        </label>
-
-        <input
-          type="text"
-          [(ngModel)]="firstName"
-          placeholder="Enter first name"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-      </div>
-
-
-      <!-- LAST NAME -->
-
-      <div>
-
-        <label
-          class="block text-sm font-medium text-slate-700 mb-2"
-        >
-          Last Name
-        </label>
-
-        <input
-          type="text"
-          [(ngModel)]="lastName"
-          placeholder="Enter last name"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-      </div>
-
-
-      <!-- EMAIL -->
-
-      <div>
-
-        <label
-          class="block text-sm font-medium text-slate-700 mb-2"
-        >
-          Email
-        </label>
-
-        <input
-          type="email"
-          [(ngModel)]="email"
-          placeholder="Enter email"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-      </div>
-
-
-      <!-- PASSWORD -->
-
-      <div>
-
-        <label
-          class="block text-sm font-medium text-slate-700 mb-2"
-        >
-          Password
-        </label>
-
-        <input
-          type="password"
-          [(ngModel)]="password"
-          placeholder="Enter password"
-          class="w-full px-4 py-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500"
-        />
-
-      </div>
-
-
-      <!-- MODAL ERROR -->
 
       <div
-        *ngIf="errorMessage"
-        class="p-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700"
+        class="flex flex-col items-center justify-between gap-4 sm:flex-row"
       >
-        {{ errorMessage }}
+
+        <p class="text-sm text-slate-500">
+
+          Page
+          {{ currentPage }}
+          of
+          {{ totalPages }}
+
+        </p>
+
+
+        <div
+          class="flex flex-wrap items-center justify-center gap-2"
+        >
+
+
+          <!-- PREVIOUS -->
+
+          <button
+            type="button"
+            (click)="previousPage()"
+            [disabled]="currentPage === 1"
+            class="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+
+            Previous
+
+          </button>
+
+
+          <!-- FIRST PAGE -->
+
+          <button
+            *ngIf="showFirstPage"
+            type="button"
+            (click)="goToPage(1)"
+            class="h-10 w-10 rounded-lg border border-slate-300 text-sm hover:bg-slate-50"
+            [ngClass]="{
+              'border-blue-600 bg-blue-600 text-white':
+                currentPage === 1
+            }"
+          >
+
+            1
+
+          </button>
+
+
+          <!-- LEFT DOTS -->
+
+          <span
+            *ngIf="showLeftDots"
+            class="px-1 text-slate-500"
+          >
+            ...
+          </span>
+
+
+          <!-- PAGE NUMBERS -->
+
+          <button
+            *ngFor="let page of visiblePages"
+            type="button"
+            (click)="goToPage(page)"
+            class="h-10 w-10 rounded-lg border border-slate-300 text-sm hover:bg-slate-50"
+            [ngClass]="{
+              'border-blue-600 bg-blue-600 text-white':
+                currentPage === page
+            }"
+          >
+
+            {{ page }}
+
+          </button>
+
+
+          <!-- RIGHT DOTS -->
+
+          <span
+            *ngIf="showRightDots"
+            class="px-1 text-slate-500"
+          >
+            ...
+          </span>
+
+
+          <!-- LAST PAGE -->
+
+          <button
+            *ngIf="showLastPage"
+            type="button"
+            (click)="goToPage(totalPages)"
+            class="h-10 w-10 rounded-lg border border-slate-300 text-sm hover:bg-slate-50"
+            [ngClass]="{
+              'border-blue-600 bg-blue-600 text-white':
+                currentPage === totalPages
+            }"
+          >
+
+            {{ totalPages }}
+
+          </button>
+
+
+          <!-- NEXT -->
+
+          <button
+            type="button"
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages"
+            class="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+
+            Next
+
+          </button>
+
+        </div>
+
       </div>
 
     </div>
 
+  </div>
 
-    <!-- ================================================= -->
-    <!-- MODAL FOOTER -->
-    <!-- ================================================= -->
+
+  <!-- ================================================= -->
+  <!-- ADD USER MODAL -->
+  <!-- ================================================= -->
+
+  <div
+    *ngIf="addUserModalVisible"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+  >
 
     <div
-      class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3"
+      class="w-full max-w-lg rounded-xl bg-white shadow-xl"
     >
 
-      <button
-        type="button"
-        (click)="closeAddUserModal()"
-        [disabled]="addingUser"
-        class="px-5 py-2.5 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 disabled:opacity-50"
-      >
-        Cancel
-      </button>
 
+      <!-- =============================================== -->
+      <!-- MODAL HEADER -->
+      <!-- =============================================== -->
 
-      <button
-        type="button"
-        (click)="addUser()"
-        [disabled]="addingUser"
-        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg disabled:opacity-50"
+      <div
+        class="flex items-center justify-between border-b border-slate-200 px-6 py-4"
       >
 
-        <span *ngIf="!addingUser">
-          Add User
-        </span>
+        <div>
 
-        <span *ngIf="addingUser">
-          Adding...
-        </span>
+          <h2 class="text-lg font-semibold text-slate-800">
+            Add User
+          </h2>
 
-      </button>
+          <p class="mt-1 text-sm text-slate-500">
+            Create a new system user.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="closeAddUserModal()"
+          [disabled]="addUserLoading"
+          class="rounded-lg p-2 text-slate-500 hover:bg-slate-100"
+        >
+
+          <i class="pi pi-times"></i>
+
+        </button>
+
+      </div>
+
+
+      <!-- =============================================== -->
+      <!-- FORM -->
+      <!-- =============================================== -->
+
+      <div class="space-y-4 p-6">
+
+
+        <!-- FIRST NAME -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700"
+          >
+            First Name
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="addUserForm.firstName"
+            placeholder="Enter first name"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+        </div>
+
+
+        <!-- LAST NAME -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700"
+          >
+            Last Name
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="addUserForm.lastName"
+            placeholder="Enter last name"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+        </div>
+
+
+        <!-- EMAIL -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700"
+          >
+            Email
+          </label>
+
+          <input
+            type="email"
+            [(ngModel)]="addUserForm.email"
+            placeholder="Enter email"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+        </div>
+
+
+        <!-- PASSWORD -->
+
+        <div>
+
+          <label
+            class="mb-1 block text-sm font-medium text-slate-700"
+          >
+            Password
+          </label>
+
+          <input
+            type="password"
+            [(ngModel)]="addUserForm.password"
+            placeholder="Enter password"
+            class="w-full rounded-lg border border-slate-300 px-4 py-2.5 outline-none focus:ring-2 focus:ring-blue-500"
+          />
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+          *ngIf="addUserError"
+          class="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600"
+        >
+
+          {{ addUserError }}
+
+        </div>
+
+      </div>
+
+
+      <!-- =============================================== -->
+      <!-- MODAL FOOTER -->
+      <!-- =============================================== -->
+
+      <div
+        class="flex justify-end gap-3 border-t border-slate-200 px-6 py-4"
+      >
+
+        <button
+          type="button"
+          (click)="closeAddUserModal()"
+          [disabled]="addUserLoading"
+          class="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+        >
+
+          Cancel
+
+        </button>
+
+
+        <button
+          type="button"
+          (click)="addUser()"
+          [disabled]="addUserLoading"
+          class="rounded-lg bg-blue-600 px-5 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+        >
+
+          <i
+            *ngIf="addUserLoading"
+            class="pi pi-spin pi-spinner mr-2"
+          ></i>
+
+          {{ addUserLoading ? 'Adding...' : 'Add User' }}
+
+        </button>
+
+      </div>
 
     </div>
 

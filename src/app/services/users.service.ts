@@ -10,17 +10,12 @@ import { environment } from '../../environments/environment';
 })
 export class UsersService {
 
-  // ==========================================
-  // EMPLOYEE API
-  // ==========================================
-
+  
   private readonly apiUrl =
     `${environment.apiUrl}/employees`;
 
 
-  // ==========================================
-  // AUTH API
-  // ==========================================
+  
 
   private readonly authApiUrl =
     `${environment.apiUrl}/auth`;

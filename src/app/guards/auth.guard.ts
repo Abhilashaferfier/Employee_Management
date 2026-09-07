@@ -16,8 +16,7 @@ export const authGuard: CanActivateFn = () => {
   // GET TOKEN
   // =====================================================
 
-  const token =
-    localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
 
   // =====================================================
@@ -25,7 +24,6 @@ export const authGuard: CanActivateFn = () => {
   // =====================================================
 
   if (token && token.trim() !== '') {
-
     return true;
 
   }
