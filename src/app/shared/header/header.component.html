@@ -15,18 +15,17 @@
     <!-- HAMBURGER -->
 
     <button
-      *ngIf="isPortalHeader"
-      type="button"
-      pButton
-      class="p-button-text p-button-rounded !text-slate-600 hover:!bg-slate-100"
-      (click)="toggleSidebar()"
-    >
+  *ngIf="isPortalHeader"
+  type="button"
+  class="flex h-10 w-10 items-center justify-center text-slate-900 transition hover:bg-transparent focus:outline-none focus:ring-0 active:bg-transparent"
+  (click)="toggleSidebar()"
+>
 
-      <i
-        class="pi pi-bars text-lg"
-      ></i>
+  <i
+    class="pi pi-bars text-xl font-bold"
+  ></i>
 
-    </button>
+</button>
 
 
     <!-- HRMS -->

@@ -1,197 +1,343 @@
 <div class="min-h-full bg-slate-50">
 
-  <!-- Header -->
+  <!-- ============================================== -->
+  <!-- HEADER -->
+  <!-- ============================================== -->
 
-  <div class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+  <div
+    class="mb-6 flex flex-col justify-between gap-3 sm:flex-row sm:items-center"
+  >
 
     <div>
 
-      <h2 class="text-2xl font-bold text-slate-800">
+      <h2
+        class="text-2xl font-bold text-slate-800"
+      >
         My Attendance
       </h2>
-
-      <p class="mt-1 text-sm text-slate-500">
-        Track your daily attendance.
-      </p>
 
     </div>
 
 
-    <!-- Month -->
+    <!-- ============================================ -->
+    <!-- MONTH -->
+    <!-- ============================================ -->
 
     <select
-      
-      class="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm text-slate-700 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+      class="rounded-lg border border-blue-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+    >
 
-      <option>May 2025</option>
-      <option>April 2025</option>
-      <option>March 2025</option>
+      <option>
+        May 2025
+      </option>
+
+      <option>
+        April 2025
+      </option>
+
+      <option>
+        March 2025
+      </option>
 
     </select>
 
   </div>
 
 
-  <!-- Summary -->
+  <!-- ============================================== -->
+  <!-- SUMMARY -->
+  <!-- ============================================== -->
 
-  <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+  <div
+    class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2"
+  >
 
 
-    <!-- Present -->
+    <!-- ============================================ -->
+    <!-- PRESENT -->
+    <!-- ============================================ -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:border-blue-600 hover:shadow-md"
+    >
 
-      <p class="text-sm text-slate-500">
+      <p
+        class="text-sm font-bold text-slate-700"
+      >
         Present
       </p>
 
-      <p class="mt-2 text-3xl font-bold text-blue-600">
+
+      <p
+        class="mt-2 text-3xl font-bold text-blue-600"
+      >
         {{ attendanceSummary.present }}
       </p>
 
-      <p class="mt-1 text-xs text-slate-400">
+
+      <p
+        class="mt-1 text-xs text-slate-500"
+      >
         Days
       </p>
 
     </div>
 
 
-    <!-- Absent -->
 
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+    <!-- ============================================ -->
+    <!-- ABSENT -->
+    <!-- ============================================ -->
 
-      <p class="text-sm text-slate-500">
+    <div
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm transition-all duration-200 hover:border-blue-600 hover:shadow-md"
+    >
+
+      <p
+        class="text-sm font-bold text-slate-700"
+      >
         Absent
       </p>
 
-      <p class="mt-2 text-3xl font-bold text-red-500">
+
+      <p
+        class="mt-2 text-3xl font-bold text-red-500"
+      >
         {{ attendanceSummary.absent }}
       </p>
 
-      <p class="mt-1 text-xs text-slate-400">
+
+      <p
+        class="mt-1 text-xs text-slate-500"
+      >
         Days
       </p>
 
     </div>
 
-
-    <!-- Late -->
-
-    <div class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
-
-      <p class="text-sm text-slate-500">
-        Late
-      </p>
-
-      <p class="mt-2 text-3xl font-bold text-amber-500">
-        {{ attendanceSummary.late }}
-      </p>
-
-      <p class="mt-1 text-xs text-slate-400">
-        Days
-      </p>
-
-    </div>
 
   </div>
 
 
-  <!-- Attendance Table -->
 
-  <div class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
+  <!-- ============================================== -->
+  <!-- ATTENDANCE HISTORY -->
+  <!-- ============================================== -->
 
-    <div class="border-b border-slate-100 px-5 py-4">
+  <div
+    class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm"
+  >
 
-      <h3 class="font-semibold text-slate-800">
+
+    <!-- ============================================ -->
+    <!-- TABLE TITLE -->
+    <!-- ============================================ -->
+
+    <div
+      class="border-b border-slate-100 px-5 py-4"
+    >
+
+      <h3
+        class="font-bold text-slate-800"
+      >
         Attendance History
       </h3>
 
     </div>
 
 
-    <div class="overflow-x-auto">
 
-      <table class="w-full text-left text-sm">
+    <!-- ============================================ -->
+    <!-- TABLE -->
+    <!-- ============================================ -->
 
-        <thead class="bg-blue-50 text-xs uppercase text-slate-500">
+    <div
+      class="overflow-x-auto"
+    >
+
+      <table
+        class="w-full text-left text-sm"
+      >
+
+
+        <!-- ========================================== -->
+        <!-- TABLE HEADER -->
+        <!-- ========================================== -->
+
+        <thead
+          class="bg-blue-600 text-xs uppercase text-white"
+        >
 
           <tr>
 
-            <th class="px-5 py-3">
+
+            <!-- DATE -->
+
+            <th
+              class="px-5 py-4 font-bold text-white"
+            >
               Date
             </th>
 
-            <th class="px-5 py-3">
+
+
+            <!-- CHECK IN -->
+
+            <th
+              class="px-5 py-4 font-bold text-white"
+            >
               Check In
             </th>
 
-            <th class="px-5 py-3">
+
+
+            <!-- CHECK OUT -->
+
+            <th
+              class="px-5 py-4 font-bold text-white"
+            >
               Check Out
             </th>
 
-            <th class="px-5 py-3">
+
+
+            <!-- STATUS -->
+
+            <th
+              class="px-5 py-4 font-bold text-white"
+            >
               Status
             </th>
+
 
           </tr>
 
         </thead>
 
 
-        <tbody class="divide-y divide-slate-100">
+
+        <!-- ========================================== -->
+        <!-- TABLE BODY -->
+        <!-- ========================================== -->
+
+        <tbody
+          class="divide-y divide-slate-100"
+        >
+
+
+          <!-- ======================================== -->
+          <!-- RECORD -->
+          <!-- ======================================== -->
 
           <tr
             *ngFor="let record of attendanceRecords"
-            class="hover:bg-blue-50/50">
+            class="transition hover:bg-blue-50/50"
+          >
 
-            <td class="px-5 py-4 font-medium text-slate-700">
+
+            <!-- DATE -->
+
+            <td
+              class="px-5 py-4 font-medium text-slate-700"
+            >
+
               {{ record.date }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
+
+
+            <!-- CHECK IN -->
+
+            <td
+              class="px-5 py-4 text-slate-500"
+            >
+
               {{ record.checkIn }}
+
             </td>
 
-            <td class="px-5 py-4 text-slate-500">
+
+
+            <!-- CHECK OUT -->
+
+            <td
+              class="px-5 py-4 text-slate-500"
+            >
+
               {{ record.checkOut }}
+
             </td>
 
-            <td class="px-5 py-4">
+
+
+            <!-- STATUS -->
+
+            <td
+              class="px-5 py-4"
+            >
+
+
+              <!-- ==================================== -->
+              <!-- PRESENT -->
+              <!-- ==================================== -->
 
               <span
                 *ngIf="record.status === 'Present'"
-                class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
+                class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600"
+              >
 
                 Present
 
               </span>
 
+
+
+              <!-- ==================================== -->
+              <!-- LATE -->
+              <!-- ==================================== -->
+
               <span
                 *ngIf="record.status === 'Late'"
-                class="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600">
+                class="rounded-full bg-amber-50 px-3 py-1 text-xs font-medium text-amber-600"
+              >
 
                 Late
 
               </span>
 
+
+
+              <!-- ==================================== -->
+              <!-- ABSENT -->
+              <!-- ==================================== -->
+
               <span
                 *ngIf="record.status === 'Absent'"
-                class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600">
+                class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-600"
+              >
 
                 Absent
 
               </span>
 
+
             </td>
+
 
           </tr>
 
+
         </tbody>
+
 
       </table>
 
+
     </div>
 
+
   </div>
+
 
 </div>

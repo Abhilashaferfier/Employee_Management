@@ -1,147 +1,161 @@
 <aside
-  class="flex h-full w-64 shrink-0 flex-col overflow-hidden border-r border-blue-100 bg-white"
+  class="flex h-full w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white"
 >
 
 
-  <!-- LOGO -->
-
-  <div
-    class="flex h-16 shrink-0 items-center border-b border-blue-100 px-5"
-  >
-
-    <div
-      class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-600"
-    >
-
-      <i class="pi pi-building text-lg text-white"></i>
-
-    </div>
-
-
-    <div class="ml-3">
-
-      <h2 class="text-sm font-bold text-slate-800">
-        EMP Portal
-      </h2>
-
-      <p class="text-xs text-slate-400">
-        Employee
-      </p>
-
-    </div>
-
-  </div>
-
-
+  <!-- =============================================== -->
   <!-- NAVIGATION -->
+  <!-- =============================================== -->
 
   <nav
     class="flex-1 overflow-y-auto p-3"
   >
 
 
-    <!-- Dashboard -->
+    <!-- ============================================ -->
+    <!-- DASHBOARD -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/dashboard"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
       [routerLinkActiveOptions]="{ exact: true }"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-home text-base"></i>
+      <i
+        class="pi pi-home text-base"
+      ></i>
 
-      <span>Dashboard</span>
+      <span>
+        Dashboard
+      </span>
 
     </a>
 
 
-    <!-- Profile -->
+    <!-- ============================================ -->
+    <!-- PROFILE -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/profile"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-user text-base"></i>
+      <i
+        class="pi pi-user text-base"
+      ></i>
 
-      <span>Profile</span>
+      <span>
+        Profile
+      </span>
 
     </a>
 
 
-    <!-- Attendance -->
+    <!-- ============================================ -->
+    <!-- ATTENDANCE -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/attendance"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-calendar text-base"></i>
+      <i
+        class="pi pi-calendar text-base"
+      ></i>
 
-      <span>Attendance</span>
+      <span>
+        Attendance
+      </span>
 
     </a>
 
 
-    <!-- Leave Requests -->
+    <!-- ============================================ -->
+    <!-- LEAVE REQUESTS -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/leave-requests"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-calendar-plus text-base"></i>
+      <i
+        class="pi pi-calendar-plus text-base"
+      ></i>
 
-      <span>Leave Requests</span>
+      <span>
+        Leave Requests
+      </span>
 
     </a>
 
 
-    <!-- Payslips -->
+    <!-- ============================================ -->
+    <!-- PAYSLIPS -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/payslips"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-file text-base"></i>
+      <i
+        class="pi pi-file text-base"
+      ></i>
 
-      <span>Payslips</span>
+      <span>
+        Payslips
+      </span>
 
     </a>
 
 
-    <!-- Reports -->
+    <!-- ============================================ -->
+    <!-- REPORTS -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/reports"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-chart-bar text-base"></i>
+      <i
+        class="pi pi-chart-bar text-base"
+      ></i>
 
-      <span>Reports</span>
+      <span>
+        Reports
+      </span>
 
     </a>
 
 
-    <!-- Leave Approval -->
+    <!-- ============================================ -->
+    <!-- LEAVE APPROVAL -->
+    <!-- ============================================ -->
 
     <a
       routerLink="/employee/leave-approval"
-      routerLinkActive="bg-blue-600 text-white shadow-sm"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-600 transition hover:bg-blue-50 hover:text-blue-600"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      <i class="pi pi-file"></i>
+      <i
+        class="pi pi-file text-base"
+      ></i>
 
-      <span>Leave Approval</span>
+      <span>
+        Leave Approval
+      </span>
 
     </a>
 

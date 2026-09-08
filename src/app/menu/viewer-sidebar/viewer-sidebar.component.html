@@ -1,22 +1,6 @@
 <aside
-  class="flex h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-hidden bg-slate-900 text-white"
+  class="flex h-[calc(100vh-4rem)] w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white"
 >
-
-  <!-- ============================================== -->
-  <!-- LOGO -->
-  <!-- ============================================== -->
-
-  <div class="shrink-0 border-b border-slate-700 px-6 py-6">
-
-    <h2 class="text-xl font-bold">
-      HRMS
-    </h2>
-
-    <p class="mt-1 text-xs text-slate-400">
-      Viewer Panel
-    </p>
-
-  </div>
 
 
   <!-- ============================================== -->
@@ -24,7 +8,7 @@
   <!-- ============================================== -->
 
   <nav
-    class="flex-1 space-y-2 overflow-y-auto p-4"
+    class="flex-1 space-y-2 overflow-y-auto p-3"
   >
 
 
@@ -34,11 +18,18 @@
 
     <a
       routerLink="/viewer/dashboard"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      [routerLinkActiveOptions]="{ exact: true }"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Dashboard
+      <i
+        class="pi pi-home"
+      ></i>
+
+      <span>
+        Dashboard
+      </span>
 
     </a>
 
@@ -49,11 +40,17 @@
 
     <a
       routerLink="/viewer/employees"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Employee Management
+      <i
+        class="pi pi-users"
+      ></i>
+
+      <span>
+        Employee Management
+      </span>
 
     </a>
 
@@ -64,26 +61,38 @@
 
     <a
       routerLink="/viewer/leave-approval"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Leave Approval
+      <i
+        class="pi pi-calendar"
+      ></i>
+
+      <span>
+        Leave Approval
+      </span>
 
     </a>
 
 
     <!-- ============================================ -->
-    <!-- ATTENDANCE -->
+    <!-- ATTENDANCE MANAGEMENT -->
     <!-- ============================================ -->
 
     <a
       routerLink="/viewer/attendance"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Attendance Management
+      <i
+        class="pi pi-clock"
+      ></i>
+
+      <span>
+        Attendance Management
+      </span>
 
     </a>
 
@@ -94,11 +103,17 @@
 
     <a
       routerLink="/viewer/payroll"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Payroll
+      <i
+        class="pi pi-money-bill"
+      ></i>
+
+      <span>
+        Payroll
+      </span>
 
     </a>
 
@@ -109,11 +124,17 @@
 
     <a
       routerLink="/viewer/reports"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Reports
+      <i
+        class="pi pi-chart-bar"
+      ></i>
+
+      <span>
+        Reports
+      </span>
 
     </a>
 
@@ -124,11 +145,17 @@
 
     <a
       routerLink="/viewer/roles"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Role Management
+      <i
+        class="pi pi-shield"
+      ></i>
+
+      <span>
+        Role Management
+      </span>
 
     </a>
 
@@ -139,33 +166,22 @@
 
     <a
       routerLink="/viewer/users"
-      routerLinkActive="bg-slate-700"
-      class="block rounded-lg px-4 py-3 hover:bg-slate-800"
+      routerLinkActive="!bg-blue-600 !text-white"
+      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-100 hover:text-slate-950"
     >
 
-      Users
+      <i
+        class="pi pi-users"
+      ></i>
+
+      <span>
+        Users
+      </span>
 
     </a>
 
 
   </nav>
-
-
-  <!-- ============================================== -->
-  <!-- VIEWER LABEL -->
-  <!-- ============================================== -->
-
-  <div
-    class="shrink-0 border-t border-slate-700 p-4"
-  >
-
-    <p class="text-xs text-slate-400">
-
-      Read Only Access
-
-    </p>
-
-  </div>
 
 
 </aside>
