@@ -1,21 +1,6 @@
 <aside
-  class="flex h-full w-64 shrink-0 flex-col overflow-hidden bg-slate-800 text-white"
+  class="flex h-full w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white"
 >
-
-
-  <!-- =============================================== -->
-  <!-- LOGO -->
-  <!-- =============================================== -->
-
-  <div
-    class="flex h-16 shrink-0 items-center border-b border-slate-700 px-5"
-  >
-
-    <h2 class="text-xl font-bold">
-      HRMS
-    </h2>
-
-  </div>
 
 
   <!-- =============================================== -->
@@ -23,20 +8,24 @@
   <!-- =============================================== -->
 
   <nav
-    class="flex-1 overflow-y-auto p-3"
+    class="flex-1 overflow-y-auto px-3 py-4"
   >
 
 
-    <!-- Dashboard -->
+    <!-- ============================================= -->
+    <!-- DASHBOARD -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/dashboard"
-      routerLinkActive="bg-slate-700 text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
       [routerLinkActiveOptions]="{ exact: true }"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-home"></i>
+      <i
+        class="pi pi-home text-base"
+      ></i>
 
       <span>
         Dashboard
@@ -45,15 +34,19 @@
     </a>
 
 
-    <!-- Employee Management -->
+    <!-- ============================================= -->
+    <!-- EMPLOYEE MANAGEMENT -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/employees"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-users"></i>
+      <i
+        class="pi pi-users text-base"
+      ></i>
 
       <span>
         Employee Management
@@ -62,15 +55,19 @@
     </a>
 
 
-    <!-- Leave Approval -->
+    <!-- ============================================= -->
+    <!-- LEAVE APPROVAL -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/leave-approval"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-calendar"></i>
+      <i
+        class="pi pi-calendar text-base"
+      ></i>
 
       <span>
         Leave Approval
@@ -79,15 +76,19 @@
     </a>
 
 
-    <!-- Attendance -->
+    <!-- ============================================= -->
+    <!-- ATTENDANCE MANAGEMENT -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/attendance"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-clock"></i>
+      <i
+        class="pi pi-clock text-base"
+      ></i>
 
       <span>
         Attendance Management
@@ -96,15 +97,19 @@
     </a>
 
 
-    <!-- Payroll -->
+    <!-- ============================================= -->
+    <!-- PAYROLL MANAGEMENT -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/payroll"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-money-bill"></i>
+      <i
+        class="pi pi-money-bill text-base"
+      ></i>
 
       <span>
         Payroll Management
@@ -113,15 +118,19 @@
     </a>
 
 
-    <!-- Reports -->
+    <!-- ============================================= -->
+    <!-- REPORTS -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/reports"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-chart-bar"></i>
+      <i
+        class="pi pi-chart-bar text-base"
+      ></i>
 
       <span>
         Reports
@@ -130,15 +139,19 @@
     </a>
 
 
-    <!-- Role Management -->
+    <!-- ============================================= -->
+    <!-- ROLE MANAGEMENT -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/roles"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-shield"></i>
+      <i
+        class="pi pi-shield text-base"
+      ></i>
 
       <span>
         Role Management
@@ -147,15 +160,19 @@
     </a>
 
 
-    <!-- Users -->
+    <!-- ============================================= -->
+    <!-- USERS -->
+    <!-- ============================================= -->
 
     <a
       routerLink="/admin/users"
-      routerLinkActive="bg-slate-700 text-white"
-      class="mb-1 flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-slate-300 transition hover:bg-slate-700 hover:text-white"
+      routerLinkActive="!bg-blue-600 !text-white shadow-sm"
+      class="mb-2 flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-bold text-slate-900 transition-all duration-200 hover:bg-blue-50 hover:text-blue-700"
     >
 
-      <i class="pi pi-users"></i>
+      <i
+        class="pi pi-users text-base"
+      ></i>
 
       <span>
         Users
