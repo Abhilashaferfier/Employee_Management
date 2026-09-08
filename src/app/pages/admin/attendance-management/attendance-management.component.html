@@ -50,14 +50,14 @@
     <!-- ================================================= -->
 
     <div
-      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm transition hover:border-blue-500">
 
       <p class="text-sm text-slate-500">
         Present
       </p>
 
       <p class="mt-2 text-3xl font-bold text-blue-600">
-        {{ summary.present ?? '—' }}
+        {{ summary.present }}
       </p>
 
     </div>
@@ -68,14 +68,14 @@
     <!-- ================================================= -->
 
     <div
-      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm">
+      class="rounded-xl border border-blue-100 bg-white p-5 shadow-sm transition hover:border-blue-500">
 
       <p class="text-sm text-slate-500">
         Absent
       </p>
 
       <p class="mt-2 text-3xl font-bold text-red-500">
-        {{ summary.absent ?? '—' }}
+        {{ summary.absent }}
       </p>
 
     </div>
@@ -90,6 +90,7 @@
   <div
     class="overflow-hidden rounded-xl border border-blue-100 bg-white shadow-sm">
 
+
     <div class="overflow-x-auto">
 
       <table class="w-full text-left text-sm">
@@ -100,25 +101,60 @@
         <!-- ================================================= -->
 
         <thead
-          class="bg-blue-50 text-xs uppercase text-slate-500">
+          class="bg-blue-600 text-xs uppercase text-white">
 
           <tr>
 
-            <th class="px-5 py-3">
-              Employee
+
+            <!-- EMAIL -->
+
+            <th
+              class="px-5 py-3 font-bold text-white">
+
+              Email
+
             </th>
 
-            <th class="px-5 py-3">
+
+            <!-- CHECK IN -->
+
+            <th
+              class="px-5 py-3 font-bold text-white">
+
               Check In
+
             </th>
 
-            <th class="px-5 py-3">
+
+            <!-- CHECK OUT -->
+
+            <th
+              class="px-5 py-3 font-bold text-white">
+
               Check Out
+
             </th>
 
-            <th class="px-5 py-3">
+
+            <!-- STATUS -->
+
+            <th
+              class="px-5 py-3 font-bold text-white">
+
               Status
+
             </th>
+
+
+            <!-- WORKING HOURS -->
+
+            <th
+              class="px-5 py-3 font-bold text-white">
+
+              Working Hours
+
+            </th>
+
 
           </tr>
 
@@ -129,18 +165,24 @@
         <!-- TABLE BODY -->
         <!-- ================================================= -->
 
-        <tbody class="divide-y divide-slate-100">
+        <tbody
+          class="divide-y divide-slate-100">
 
 
           <!-- ================================================= -->
           <!-- LOADING -->
           <!-- ================================================= -->
 
-          <tr *ngIf="loading">
+          <tr
+            *ngIf="loading">
 
             <td
-              colspan="4"
+              colspan="5"
               class="px-5 py-8 text-center text-sm text-slate-500">
+
+              <i
+                class="pi pi-spin pi-spinner mr-2">
+              </i>
 
               Loading attendance...
 
@@ -160,7 +202,7 @@
             ">
 
             <td
-              colspan="4"
+              colspan="5"
               class="px-5 py-8 text-center text-sm text-red-500">
 
               {{ errorMessage }}
@@ -176,22 +218,23 @@
 
           <tr
             *ngFor="let record of records"
-            class="hover:bg-blue-50/50">
+            class="transition hover:bg-blue-50/50">
 
 
-            <!-- EMPLOYEE -->
+            <!-- EMAIL -->
 
             <td
               class="px-5 py-4 font-medium text-slate-700">
 
-              {{ record.employee }}
+              {{ record.email }}
 
             </td>
 
 
             <!-- CHECK IN -->
 
-            <td class="px-5 py-4 text-slate-500">
+            <td
+              class="whitespace-nowrap px-5 py-4 text-slate-500">
 
               {{ record.checkIn || '--' }}
 
@@ -200,7 +243,8 @@
 
             <!-- CHECK OUT -->
 
-            <td class="px-5 py-4 text-slate-500">
+            <td
+              class="whitespace-nowrap px-5 py-4 text-slate-500">
 
               {{ record.checkOut || '--' }}
 
@@ -209,35 +253,48 @@
 
             <!-- STATUS -->
 
-            <td class="px-5 py-4">
+            <td
+              class="px-5 py-4">
 
 
-              <!-- ================================================= -->
-              <!-- PRESENT -->
-              <!-- ================================================= -->
+              <!-- COMPLETED -->
 
               <span
-                *ngIf="record.status === 'Present'"
+                *ngIf="record.status === 'COMPLETED'"
+                class="rounded-full bg-green-50 px-3 py-1 text-xs font-medium text-green-600">
+
+                Completed
+
+              </span>
+
+
+              <!-- OPEN -->
+
+              <span
+                *ngIf="record.status === 'OPEN'"
                 class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-600">
 
-                Present
+                Open
 
               </span>
 
-
-              <!-- ================================================= -->
-              <!-- ABSENT -->
-              <!-- ================================================= -->
-
-              <span
-                *ngIf="record.status === 'Absent'"
-                class="rounded-full bg-red-50 px-3 py-1 text-xs font-medium text-red-500">
-
-                Absent
-
-              </span>
 
             </td>
+
+
+            <!-- WORKING HOURS -->
+
+            <td
+              class="whitespace-nowrap px-5 py-4 font-medium text-slate-700">
+
+              {{
+                formatWorkingTime(
+                  record.workingMinutes
+                )
+              }}
+
+            </td>
+
 
           </tr>
 
@@ -254,7 +311,7 @@
             ">
 
             <td
-              colspan="4"
+              colspan="5"
               class="px-5 py-8 text-center text-sm text-slate-400">
 
               No attendance data available.
