@@ -53,17 +53,17 @@
       <!-- TOTAL USERS -->
 
       <div
-        class="bg-white border border-slate-200 rounded-xl px-5 py-2.5 min-w-[110px]"
+        class="bg-blue-600 border border-blue-600 rounded-xl px-5 py-2.5 min-w-[110px]"
       >
 
         <p
-          class="text-xs text-slate-500"
+          class="text-xs text-blue-100"
         >
           Total Users
         </p>
 
         <p
-          class="text-xl font-bold text-slate-800"
+          class="text-xl font-bold text-white"
         >
           {{ filteredUsers.length }}
         </p>
@@ -143,7 +143,7 @@
         <!-- ============================================= -->
 
         <thead
-          class="bg-slate-50 border-b border-slate-200"
+          class="border-b border-blue-700 bg-blue-600 text-white"
         >
 
           <tr>
@@ -151,7 +151,7 @@
             <!-- EMAIL -->
 
             <th
-              class="w-[40%] px-8 py-4 text-left text-sm font-semibold text-slate-600"
+              class="w-[40%] px-8 py-4 text-left text-sm font-semibold text-white"
             >
               Email
             </th>
@@ -160,7 +160,7 @@
             <!-- ROLES -->
 
             <th
-              class="w-[35%] px-8 py-4 text-center text-sm font-semibold text-slate-600"
+              class="w-[35%] px-8 py-4 text-center text-sm font-semibold text-white"
             >
               Roles
             </th>
@@ -169,7 +169,7 @@
             <!-- ACTION -->
 
             <th
-              class="w-[25%] px-8 py-4 text-right text-sm font-semibold text-slate-600"
+              class="w-[25%] px-8 py-4 text-right text-sm font-semibold text-white"
             >
               Action
             </th>
@@ -198,7 +198,9 @@
           >
 
 
+            <!-- ========================================= -->
             <!-- EMAIL -->
+            <!-- ========================================= -->
 
             <td
               class="w-[40%] px-8 py-5"
@@ -213,62 +215,144 @@
             </td>
 
 
+            <!-- ========================================= -->
             <!-- ROLES -->
+            <!-- ========================================= -->
 
             <td
               class="w-[35%] px-8 py-5"
             >
 
+              <!-- IMPORTANT:
+                   cursor-not-allowed added here
+                   Roles are display only
+              -->
+
               <div
-                class="flex items-center justify-center"
+                class="flex items-center justify-center gap-6 cursor-not-allowed select-none"
+                aria-disabled="true"
               >
 
 
+                <!-- ===================================== -->
                 <!-- ADMIN -->
+                <!-- ===================================== -->
 
-                <label
-                  class="flex items-center gap-2 w-32 text-sm text-slate-700"
+                <div
+                  class="flex items-center gap-2 w-32 cursor-not-allowed"
                 >
 
-                  <input
-                    type="checkbox"
-                    [checked]="user.isAdmin"
-                    disabled
-                    class="w-4 h-4 accent-blue-600 cursor-not-allowed"
-                  />
 
-                  <span>
+                  <!-- CHECKED ADMIN -->
+
+                  <div
+                    *ngIf="user.isAdmin"
+                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-600 cursor-not-allowed"
+                  >
+
+                    <svg
+                      class="h-4 w-4 cursor-not-allowed"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+
+                      <path
+                        d="M5 12L10 17L19 7"
+                        stroke="white"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+
+                    </svg>
+
+                  </div>
+
+
+                  <!-- UNCHECKED ADMIN -->
+
+                  <div
+                    *ngIf="!user.isAdmin"
+                    class="h-5 w-5 shrink-0 rounded border-2 border-slate-300 bg-white cursor-not-allowed"
+                  >
+                  </div>
+
+
+                  <!-- ADMIN TEXT -->
+
+                  <span
+                    class="text-sm text-slate-700 cursor-not-allowed"
+                  >
                     Admin
                   </span>
 
-                </label>
+                </div>
 
 
+                <!-- ===================================== -->
                 <!-- EMPLOYEE -->
+                <!-- ===================================== -->
 
-                <label
-                  class="flex items-center gap-2 w-32 text-sm text-slate-700"
+                <div
+                  class="flex items-center gap-2 w-32 cursor-not-allowed"
                 >
 
-                  <input
-                    type="checkbox"
-                    [checked]="user.isEmployee"
-                    disabled
-                    class="w-4 h-4 accent-blue-600 cursor-not-allowed"
-                  />
 
-                  <span>
+                  <!-- CHECKED EMPLOYEE -->
+
+                  <div
+                    *ngIf="user.isEmployee"
+                    class="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-blue-600 cursor-not-allowed"
+                  >
+
+                    <svg
+                      class="h-4 w-4 cursor-not-allowed"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+
+                      <path
+                        d="M5 12L10 17L19 7"
+                        stroke="white"
+                        stroke-width="4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+
+                    </svg>
+
+                  </div>
+
+
+                  <!-- UNCHECKED EMPLOYEE -->
+
+                  <div
+                    *ngIf="!user.isEmployee"
+                    class="h-5 w-5 shrink-0 rounded border-2 border-slate-300 bg-white cursor-not-allowed"
+                  >
+                  </div>
+
+
+                  <!-- EMPLOYEE TEXT -->
+
+                  <span
+                    class="text-sm text-slate-700 cursor-not-allowed"
+                  >
                     Employee
                   </span>
 
-                </label>
+                </div>
 
               </div>
 
             </td>
 
 
+            <!-- ========================================= -->
             <!-- ACTION -->
+            <!-- ========================================= -->
 
             <td
               class="w-[25%] px-8 py-5 text-right"
@@ -455,7 +539,9 @@
   >
 
 
+    <!-- ================================================= -->
     <!-- MODAL HEADER -->
+    <!-- ================================================= -->
 
     <div
       class="px-6 py-5 border-b border-slate-200"
@@ -495,7 +581,9 @@
     </div>
 
 
+    <!-- ================================================= -->
     <!-- MODAL BODY -->
+    <!-- ================================================= -->
 
     <div
       class="p-6 space-y-4"
@@ -599,7 +687,9 @@
     </div>
 
 
+    <!-- ================================================= -->
     <!-- MODAL FOOTER -->
+    <!-- ================================================= -->
 
     <div
       class="px-6 py-4 border-t border-slate-200 flex justify-end gap-3"

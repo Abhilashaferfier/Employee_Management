@@ -10,6 +10,10 @@ import {
   Observable
 } from 'rxjs';
 
+import {
+  environment
+} from '../../environments/environment';
+
 
 // =====================================================
 // EMPLOYEE INTERFACE
@@ -34,13 +38,21 @@ export interface DashboardEmployee {
 
 export interface DashboardLeave {
 
-  employeeName?: string;
+  id: string;
 
-  firstName?: string;
+  name: string;
 
-  lastName?: string;
+  email: string;
+
+  requestedTo: string;
 
   leaveType: string;
+
+  from: string;
+
+  to: string;
+
+  reason: string;
 
   status: string;
 
@@ -57,20 +69,12 @@ export interface DashboardLeave {
 export class DashboardService {
 
 
-  // =====================================================
-  // EMPLOYEE API URL
-  // =====================================================
+  // ===================================================
+  // BASE API URL
+  // ===================================================
 
-  private employeeApiUrl =
-    'http://localhost:8081/api/v1/employees';
-
-
-  // =====================================================
-  // LEAVE API URL
-  // =====================================================
-
-  private leaveApiUrl =
-    'http://localhost:8081/api/v1/leaves';
+  private readonly apiUrl =
+    environment.apiUrl;
 
 
   constructor(
@@ -78,9 +82,9 @@ export class DashboardService {
   ) {}
 
 
-  // =====================================================
+  // ===================================================
   // GET ALL EMPLOYEES
-  // =====================================================
+  // ===================================================
 
   getAllEmployees():
     Observable<DashboardEmployee[]> {
@@ -88,15 +92,15 @@ export class DashboardService {
     return this.http.get<
       DashboardEmployee[]
     >(
-      this.employeeApiUrl
+      `${this.apiUrl}/employees`
     );
 
   }
 
 
-  // =====================================================
+  // ===================================================
   // GET ALL LEAVES
-  // =====================================================
+  // ===================================================
 
   getAllLeaves():
     Observable<DashboardLeave[]> {
@@ -104,7 +108,7 @@ export class DashboardService {
     return this.http.get<
       DashboardLeave[]
     >(
-      `${this.leaveApiUrl}/admin`
+      `${this.apiUrl}/leaves/admin`
     );
 
   }

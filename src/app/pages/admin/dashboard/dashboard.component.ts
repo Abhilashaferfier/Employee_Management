@@ -15,16 +15,13 @@ import {
 // =====================================================
 
 @Component({
-
-  selector:
-    'app-admin-dashboard',
+  selector: 'app-admin-dashboard',
 
   templateUrl:
     './dashboard.component.html',
 
   styleUrls:
     ['./dashboard.component.css']
-
 })
 export class DashboardComponent
   implements OnInit {
@@ -72,8 +69,7 @@ export class DashboardComponent
   // PENDING LEAVES
   // =====================================================
 
-  pendingLeaves:
-    number | null = null;
+  pendingLeaves = 0;
 
 
   // =====================================================
@@ -128,7 +124,16 @@ export class DashboardComponent
 
   ngOnInit(): void {
 
+    // -----------------------------------------------
+    // GET LOGGED IN USER NAME
+    // -----------------------------------------------
+
     this.getLoggedInUserName();
+
+
+    // -----------------------------------------------
+    // LOAD DASHBOARD DATA
+    // -----------------------------------------------
 
     this.loadDashboardData();
 
@@ -153,13 +158,17 @@ export class DashboardComponent
       );
 
 
+    // -----------------------------------------------
     // DEFAULT
+    // -----------------------------------------------
 
     this.loggedInUserName =
       'User';
 
 
+    // -----------------------------------------------
     // FIRST NAME
+    // -----------------------------------------------
 
     if (firstName) {
 
@@ -169,7 +178,9 @@ export class DashboardComponent
     }
 
 
+    // -----------------------------------------------
     // FULL NAME
+    // -----------------------------------------------
 
     if (
       firstName &&
@@ -203,19 +214,20 @@ export class DashboardComponent
 
   loadEmployees(): void {
 
-    this.loadingEmployees = true;
+    this.loadingEmployees =
+      true;
 
-    this.errorMessage = '';
+    this.errorMessage =
+      '';
 
 
     this.dashboardService
       .getAllEmployees()
       .subscribe({
 
-
-        // =================================================
+        // ===============================================
         // SUCCESS
-        // =================================================
+        // ===============================================
 
         next: (
           response:
@@ -228,19 +240,25 @@ export class DashboardComponent
           );
 
 
+          // ---------------------------------------------
           // STORE EMPLOYEES
+          // ---------------------------------------------
 
           this.employees =
             response || [];
 
 
+          // ---------------------------------------------
           // TOTAL EMPLOYEES
+          // ---------------------------------------------
 
           this.totalEmployees =
             this.employees.length;
 
 
+          // ---------------------------------------------
           // LOADING COMPLETE
+          // ---------------------------------------------
 
           this.loadingEmployees =
             false;
@@ -248,9 +266,9 @@ export class DashboardComponent
         },
 
 
-        // =================================================
+        // ===============================================
         // ERROR
-        // =================================================
+        // ===============================================
 
         error: (
           error
@@ -262,10 +280,20 @@ export class DashboardComponent
           );
 
 
-          this.employees = [];
+          // ---------------------------------------------
+          // CLEAR DATA
+          // ---------------------------------------------
 
-          this.totalEmployees = 0;
+          this.employees =
+            [];
 
+          this.totalEmployees =
+            0;
+
+
+          // ---------------------------------------------
+          // ERROR MESSAGE
+          // ---------------------------------------------
 
           this.errorMessage =
 
@@ -275,6 +303,10 @@ export class DashboardComponent
 
             'Unable to load employees.';
 
+
+          // ---------------------------------------------
+          // LOADING COMPLETE
+          // ---------------------------------------------
 
           this.loadingEmployees =
             false;
@@ -292,19 +324,20 @@ export class DashboardComponent
 
   loadLeaves(): void {
 
-    this.loadingLeaves = true;
+    this.loadingLeaves =
+      true;
 
-    this.leaveErrorMessage = '';
+    this.leaveErrorMessage =
+      '';
 
 
     this.dashboardService
       .getAllLeaves()
       .subscribe({
 
-
-        // =================================================
+        // ===============================================
         // SUCCESS
-        // =================================================
+        // ===============================================
 
         next: (
           response:
@@ -317,27 +350,28 @@ export class DashboardComponent
           );
 
 
+          // ---------------------------------------------
           // STORE LEAVES
+          // ---------------------------------------------
 
           this.leaves =
             response || [];
 
 
-          // ===============================================
+          // ---------------------------------------------
           // COUNT PENDING LEAVES
-          // ===============================================
+          // ---------------------------------------------
 
           this.pendingLeaves =
             this.leaves.filter(
-
               leave =>
-                leave.status?.toUpperCase() ===
-                'PENDING'
-
+                leave.status === 'PENDING'
             ).length;
 
 
+          // ---------------------------------------------
           // LOADING COMPLETE
+          // ---------------------------------------------
 
           this.loadingLeaves =
             false;
@@ -345,9 +379,9 @@ export class DashboardComponent
         },
 
 
-        // =================================================
+        // ===============================================
         // ERROR
-        // =================================================
+        // ===============================================
 
         error: (
           error
@@ -359,17 +393,20 @@ export class DashboardComponent
           );
 
 
-          // CLEAR LEAVES
+          // ---------------------------------------------
+          // CLEAR DATA
+          // ---------------------------------------------
 
-          this.leaves = [];
+          this.leaves =
+            [];
+
+          this.pendingLeaves =
+            0;
 
 
-          // RESET PENDING LEAVES
-
-          this.pendingLeaves = 0;
-
-
+          // ---------------------------------------------
           // ERROR MESSAGE
+          // ---------------------------------------------
 
           this.leaveErrorMessage =
 
@@ -377,10 +414,12 @@ export class DashboardComponent
 
             error?.error?.responseMessage ||
 
-            'Unable to load leave requests.';
+            'Unable to load leaves.';
 
 
+          // ---------------------------------------------
           // LOADING COMPLETE
+          // ---------------------------------------------
 
           this.loadingLeaves =
             false;
@@ -405,38 +444,47 @@ export class DashboardComponent
 
 
   // =====================================================
-  // GET EMPLOYEE NAME
+  // RECENT LEAVES
   // =====================================================
 
-  getEmployeeName(
-    leave:
-      DashboardLeave
+  get recentLeaves():
+    DashboardLeave[] {
+
+    return this.leaves;
+
+  }
+
+
+  // =====================================================
+  // STATUS CLASS
+  // =====================================================
+
+  getLeaveStatusClass(
+    status: string
   ): string {
 
-    // IF API DIRECTLY SENDS EMPLOYEE NAME
+    switch (status) {
 
-    if (leave.employeeName) {
+      case 'PENDING':
 
-      return leave.employeeName;
+        return 'text-orange-600';
+
+
+      case 'APPROVED':
+
+        return 'text-green-600';
+
+
+      case 'REJECTED':
+
+        return 'text-red-600';
+
+
+      default:
+
+        return 'text-slate-600';
 
     }
-
-
-    // IF API SENDS FIRST + LAST NAME
-
-    const firstName =
-      leave.firstName || '';
-
-    const lastName =
-      leave.lastName || '';
-
-
-    const fullName =
-      `${firstName} ${lastName}`
-        .trim();
-
-
-    return fullName || '-';
 
   }
 
